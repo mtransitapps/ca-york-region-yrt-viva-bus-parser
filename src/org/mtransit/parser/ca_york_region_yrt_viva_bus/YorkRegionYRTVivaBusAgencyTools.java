@@ -342,15 +342,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public int getStopId(GStop gStop) {
-		if (gStop.stop_code != null && gStop.stop_code.length() > 0 && Utils.isDigitsOnly(gStop.stop_code)) {
-			return Integer.valueOf(gStop.stop_code);
-		}
-		String stopId = gStop.stop_id;
-		if (Utils.isDigitsOnly(stopId)) {
-			return 100000 + Integer.valueOf(stopId);
-		}
-		System.out.println("Unexpected stop ID for " + gStop + " !");
-		System.exit(-1);
-		return -1;
+		return super.getStopId(gStop); // original stop ID used by real-time API
 	}
 }
