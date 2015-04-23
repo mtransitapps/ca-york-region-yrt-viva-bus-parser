@@ -327,7 +327,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern AND = Pattern.compile("( and )", Pattern.CASE_INSENSITIVE);
 	private static final String AND_REPLACEMENT = " & ";
 
-	private static final Pattern STOP_CODE = Pattern.compile("( stop # [0-9]{1,4})", Pattern.CASE_INSENSITIVE);
+	private static final Pattern STOP_CODE = Pattern.compile("( stop #[\\W]*[0-9]{1,4})", Pattern.CASE_INSENSITIVE);
 	private static final String STOP_CODE_REPLACEMENT = "";
 
 	@Override
