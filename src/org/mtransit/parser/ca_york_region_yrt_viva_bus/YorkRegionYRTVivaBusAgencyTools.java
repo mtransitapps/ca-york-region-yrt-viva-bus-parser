@@ -324,9 +324,17 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern AT = Pattern.compile("( at )", Pattern.CASE_INSENSITIVE);
 	private static final String AT_REPLACEMENT = " / ";
 
+	private static final Pattern AND = Pattern.compile("( and )", Pattern.CASE_INSENSITIVE);
+	private static final String AND_REPLACEMENT = " & ";
+
+	private static final Pattern STOP_CODE = Pattern.compile("( stop # [0-9]{1,4})", Pattern.CASE_INSENSITIVE);
+	private static final String STOP_CODE_REPLACEMENT = "";
+
 	@Override
 	public String cleanStopName(String gStopName) {
 		gStopName = gStopName.toLowerCase(Locale.ENGLISH);
+		gStopName = STOP_CODE.matcher(gStopName).replaceAll(STOP_CODE_REPLACEMENT);
+		gStopName = AND.matcher(gStopName).replaceAll(AND_REPLACEMENT);
 		gStopName = AT.matcher(gStopName).replaceAll(AT_REPLACEMENT);
 		gStopName = FIRST.matcher(gStopName).replaceAll(FIRST_REPLACEMENT);
 		gStopName = SECOND.matcher(gStopName).replaceAll(SECOND_REPLACEMENT);
