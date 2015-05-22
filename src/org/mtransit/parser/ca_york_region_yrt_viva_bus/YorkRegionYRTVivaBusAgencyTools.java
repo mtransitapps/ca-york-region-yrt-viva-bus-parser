@@ -11,6 +11,7 @@ import org.mtransit.parser.Utils;
 import org.mtransit.parser.gtfs.data.GCalendar;
 import org.mtransit.parser.gtfs.data.GCalendarDate;
 import org.mtransit.parser.gtfs.data.GRoute;
+import org.mtransit.parser.gtfs.data.GSpec;
 import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.gtfs.data.GTrip;
 import org.mtransit.parser.mt.data.MAgency;
@@ -213,11 +214,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String BERCZY_GO_SHUTTLE = "Berczy GO Shuttle";
 	private static final String OAK_RIDGES = "Oak Ridges";
 	private static final String AURORA_NORTH = "Aurora North";
-	private static final String AFTERNOON = "Afternoon";
-	private static final String MORNING = "Morning";
+	private static final String AM_HEADSIGN = "AM";
+	private static final String PM_HEADSIGN = "PM";
 
 	@Override
-	public void setTripHeadsign(MRoute route, MTrip mTrip, GTrip gTrip) {
+	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip, GSpec gtfs) {
 		String gTripHeadsignLC = gTrip.trip_headsign.toLowerCase(Locale.ENGLISH);
 		if (gTripHeadsignLC.endsWith(NB)) {
 			mTrip.setHeadsignDirection(MDirectionType.NORTH);
@@ -235,62 +236,62 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		int directionId = gTrip.direction_id;
 		String stationName = cleanTripHeadsign(gTrip.trip_headsign);
 		if (gTripHeadsignLC.endsWith(MO)) {
-			stationName = MORNING;
+			stationName = AM_HEADSIGN;
 		} else if (gTripHeadsignLC.endsWith(AF)) {
-			stationName = AFTERNOON;
-		} else if (route.id == 31l) {
+			stationName = PM_HEADSIGN;
+		} else if (mRoute.id == 31l) {
 			if (directionId == 0) {
 				stationName = AURORA_NORTH;
 			} else {
 				System.out.println("Unexpected trip head sign for " + mTrip + " !");
 				System.exit(-1);
 			}
-		} else if (route.id == 40l) {
+		} else if (mRoute.id == 40l) {
 			if (directionId == 0) {
 				stationName = UNIONVILLE_LOCAL;
 			} else {
 				System.out.println("Unexpected trip head sign for " + mTrip + " !");
 				System.exit(-1);
 			}
-		} else if (route.id == 42l) {
+		} else if (mRoute.id == 42l) {
 			if (directionId == 0) {
 				stationName = BERCZY;
 			} else {
 				System.out.println("Unexpected trip head sign for " + mTrip + " !");
 				System.exit(-1);
 			}
-		} else if (route.id == 45l) {
+		} else if (mRoute.id == 45l) {
 			if (directionId == 0) {
 				stationName = MINGAY;
 			} else {
 				System.out.println("Unexpected trip head sign for " + mTrip + " !");
 				System.exit(-1);
 			}
-		} else if (route.id == 84l) {
+		} else if (mRoute.id == 84l) {
 			if (directionId == 0) {
 				stationName = OAK_RIDGES;
 			} else {
 				System.out.println("Unexpected trip head sign for " + mTrip + " !");
 				System.exit(-1);
 			}
-		} else if (route.id == 204l) {
+		} else if (mRoute.id == 204l) {
 			if (directionId == 0) {
 				stationName = BERCZY_GO_SHUTTLE;
 			} else {
 				System.out.println("Unexpected trip head sign for " + mTrip + " !");
 				System.exit(-1);
 			}
-		} else if (route.id == 244l) {
+		} else if (mRoute.id == 244l) {
 			if (directionId == 0) {
 				stationName = BEAVER_CREEK_SHUTTLE;
 			} else {
 				System.out.println("Unexpected trip head sign for " + mTrip + " !");
 				System.exit(-1);
 			}
-		} else if (route.id == 589l) {
+		} else if (mRoute.id == 589l) {
 			mTrip.setHeadsignDirection(MDirectionType.NORTH);
 			return;
-		} else if (route.id == 590l) {
+		} else if (mRoute.id == 590l) {
 			mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 			return;
 		}
