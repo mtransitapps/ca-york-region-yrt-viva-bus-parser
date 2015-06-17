@@ -71,6 +71,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		return super.excludeTrip(gTrip);
 	}
 
+	private static final String TTC = "TTC ";
+
+	@Override
+	public boolean excludeRoute(GRoute gRoute) {
+		if (gRoute.route_long_name.startsWith(TTC)) {
+			return true; // skip TTC agency bus routes
+		}
+		return super.excludeRoute(gRoute);
+	}
+
 	@Override
 	public Integer getAgencyRouteType() {
 		return MAgency.ROUTE_TYPE_BUS;
@@ -141,8 +151,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		}
 	}
 
-	private static final String WONDERLAND_VAUGHAN_MILLS = "Wonderland/Vaughan Mills";
-	private static final String RSN_760 = "760";
 	private static final String YONGE = "Yonge";
 	private static final String BAYVIEW = "Bayview";
 	private static final String BATHURST = "Bathurst";
@@ -152,6 +160,31 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String RLN_ORANGE = "Orange";
 	private static final String RLN_GREEN = "Green";
 	private static final String RLN_BLUE = "Blue";
+
+	private static final String RSN_461 = "461";
+	private static final String RSN_462 = "462";
+	private static final String RSN_463 = "463";
+	private static final String RSN_464 = "464";
+	private static final String RSN_465 = "465";
+	private static final String RSN_520 = "520";
+	private static final String RSN_521 = "521";
+	private static final String RSN_522 = "522";
+	private static final String RSN_589 = "589";
+	private static final String RSN_590 = "590";
+	private static final String RSN_760 = "760";
+
+	private static final String SCHOOL_SPECIAL = "SS";
+	private static final String EMILY_CARR_SECONDARY_SS = "Emily Carr Secondary " + SCHOOL_SPECIAL;
+	private static final String MAPPLE_HIGH_SS = "Mapple High " + SCHOOL_SPECIAL;
+	private static final String VELLORE_SS = "Vellore " + SCHOOL_SPECIAL;
+	private static final String ST_JOAN_OF_ARC_SS = "St Joan Of Arc " + SCHOOL_SPECIAL;
+	private static final String ST_JOAN_OF_ARC_SS_VIA_AMERICA = ST_JOAN_OF_ARC_SS + " Via America";
+	private static final String ST_JOAN_OF_ARC_SS_VIA_MELVILLE = ST_JOAN_OF_ARC_SS + " Via Melville";
+	private static final String COMMUNITY_BUS = "Community Bus";
+	private static final String NEWMARKET_COMMUNITY_BUS = "Newmarket " + COMMUNITY_BUS;
+	private static final String MARKHAM_COMMUNITY_BUS = "Markham " + COMMUNITY_BUS;
+	private static final String RICHMOND_HILL_COMMUNITY_BUS = "Richmond Hill " + COMMUNITY_BUS;
+	private static final String WONDERLAND_VAUGHAN_MILLS = "Wonderland/Vaughan Mills";
 
 	@Override
 	public String getRouteLongName(GRoute gRoute) {
@@ -182,8 +215,28 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			return YONGE;
 		}
 		if (StringUtils.isEmpty(gRoute.route_long_name)) {
-			if (RSN_760.equals(routeShortNameLC)) {
-				return WONDERLAND_VAUGHAN_MILLS; // service will begin on May 3, 2015
+			if (RSN_461.equals(routeShortNameLC)) {
+				return EMILY_CARR_SECONDARY_SS;
+			} else if (RSN_462.equals(routeShortNameLC)) {
+				return MAPPLE_HIGH_SS;
+			} else if (RSN_463.equals(routeShortNameLC)) {
+				return VELLORE_SS;
+			} else if (RSN_464.equals(routeShortNameLC)) {
+				return ST_JOAN_OF_ARC_SS_VIA_AMERICA;
+			} else if (RSN_465.equals(routeShortNameLC)) {
+				return ST_JOAN_OF_ARC_SS_VIA_MELVILLE;
+			} else if (RSN_520.equals(routeShortNameLC)) {
+				return NEWMARKET_COMMUNITY_BUS;
+			} else if (RSN_521.equals(routeShortNameLC)) {
+				return NEWMARKET_COMMUNITY_BUS;
+			} else if (RSN_522.equals(routeShortNameLC)) {
+				return MARKHAM_COMMUNITY_BUS;
+			} else if (RSN_589.equals(routeShortNameLC)) {
+				return RICHMOND_HILL_COMMUNITY_BUS;
+			} else if (RSN_590.equals(routeShortNameLC)) {
+				return RICHMOND_HILL_COMMUNITY_BUS;
+			} else if (RSN_760.equals(routeShortNameLC)) {
+				return WONDERLAND_VAUGHAN_MILLS;
 			}
 			System.out.println("Unexpected route long name for " + gRoute);
 			System.exit(-1);
