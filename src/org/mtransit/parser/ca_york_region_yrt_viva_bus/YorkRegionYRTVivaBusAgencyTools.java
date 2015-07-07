@@ -365,6 +365,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern STOP_CODE = Pattern.compile("( stop[\\W]*#[\\W]*[0-9]{1,4})", Pattern.CASE_INSENSITIVE);
 	private static final String STOP_CODE_REPLACEMENT = "";
 
+	private static final Pattern PLATFORM = Pattern.compile("( platform )", Pattern.CASE_INSENSITIVE);
+	private static final String PLATFORM_REPLACEMENT = " P";
+
 	@Override
 	public String cleanStopName(String gStopName) {
 		gStopName = gStopName.toLowerCase(Locale.ENGLISH);
