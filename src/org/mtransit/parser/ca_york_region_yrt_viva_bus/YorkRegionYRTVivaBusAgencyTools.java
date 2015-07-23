@@ -75,7 +75,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public boolean excludeRoute(GRoute gRoute) {
-		if (gRoute.route_long_name.startsWith(TTC)) {
+		if (gRoute.getRouteLongName().startsWith(TTC)) {
 			return true; // skip TTC agency bus routes
 		}
 		return super.excludeRoute(gRoute);
@@ -97,7 +97,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public long getRouteId(GRoute gRoute) {
-		String routeShortName = gRoute.route_short_name;
+		String routeShortName = gRoute.getRouteShortName();
 		if (routeShortName != null && routeShortName.length() > 0 && Utils.isDigitsOnly(routeShortName)) {
 			return Integer.valueOf(routeShortName); // using route short name as route ID
 		}
@@ -131,7 +131,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteShortName(GRoute gRoute) {
-		String routeShortName = gRoute.route_short_name;
+		String routeShortName = gRoute.getRouteShortName();
 		if (routeShortName != null && routeShortName.length() > 0 && Utils.isDigitsOnly(routeShortName)) {
 			return routeShortName;
 		}
@@ -188,7 +188,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteLongName(GRoute gRoute) {
-		String routeShortNameLC = gRoute.route_short_name.toLowerCase(Locale.ENGLISH);
+		String routeShortNameLC = gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH);
 		if (routeShortNameLC.contains(VIVA)) {
 			if (routeShortNameLC.contains(BLUE)) {
 				return RLN_BLUE;
@@ -202,7 +202,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				return RLN_PURPLE;
 			}
 		}
-		Matcher matcher = DIGITS.matcher(gRoute.route_short_name);
+		Matcher matcher = DIGITS.matcher(gRoute.getRouteShortName());
 		matcher.find();
 		int rsn = Integer.parseInt(matcher.group());
 		if (rsn == 85) {
@@ -214,7 +214,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		} else if (rsn == 98) {
 			return YONGE;
 		}
-		if (StringUtils.isEmpty(gRoute.route_long_name)) {
+		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
 			if (RSN_461.equals(routeShortNameLC)) {
 				return EMILY_CARR_SECONDARY_SS;
 			} else if (RSN_462.equals(routeShortNameLC)) {
@@ -242,7 +242,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			System.exit(-1);
 			return null;
 		}
-		return CleanUtils.cleanLabel(gRoute.route_long_name.toLowerCase(Locale.ENGLISH));
+		return CleanUtils.cleanLabel(gRoute.getRouteLongName().toLowerCase(Locale.ENGLISH));
 	}
 
 	private static final String AGENCY_COLOR = "0079C2"; // BLUE (Android App Icon)
@@ -272,7 +272,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip, GSpec gtfs) {
-		String gTripHeadsignLC = gTrip.trip_headsign.toLowerCase(Locale.ENGLISH);
+		String gTripHeadsignLC = gTrip.getTripHeadsign().toLowerCase(Locale.ENGLISH);
 		if (gTripHeadsignLC.endsWith(NB)) {
 			mTrip.setHeadsignDirection(MDirectionType.NORTH);
 			return;
@@ -286,8 +286,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignDirection(MDirectionType.WEST);
 			return;
 		}
-		int directionId = gTrip.direction_id;
-		String stationName = cleanTripHeadsign(gTrip.trip_headsign);
+		int directionId = gTrip.getDirectionId();
+		String stationName = cleanTripHeadsign(gTrip.getTripHeadsign());
 		if (gTripHeadsignLC.endsWith(MO)) {
 			stationName = AM_HEADSIGN;
 		} else if (gTripHeadsignLC.endsWith(AF)) {
