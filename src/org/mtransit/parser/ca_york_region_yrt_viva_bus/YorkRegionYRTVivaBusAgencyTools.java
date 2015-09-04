@@ -173,7 +173,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String RSN_590 = "590";
 	private static final String RSN_760 = "760";
 
-	private static final String SCHOOL_SPECIAL = "SS";
+	private static final String SCHOOL_SPECIAL = "School Special";
 	private static final String EMILY_CARR_SECONDARY_SS = "Emily Carr Secondary " + SCHOOL_SPECIAL;
 	private static final String MAPPLE_HIGH_SS = "Mapple High " + SCHOOL_SPECIAL;
 	private static final String VELLORE_SS = "Vellore " + SCHOOL_SPECIAL;
@@ -185,6 +185,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String MARKHAM_COMMUNITY_BUS = "Markham " + COMMUNITY_BUS;
 	private static final String RICHMOND_HILL_COMMUNITY_BUS = "Richmond Hill " + COMMUNITY_BUS;
 	private static final String WONDERLAND_VAUGHAN_MILLS = "Wonderland/Vaughan Mills";
+
+	private static final Pattern SS = Pattern.compile("((^|\\W){1}(ss)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String SS_REPLACEMENT = "$2" + SCHOOL_SPECIAL + "$4";
 
 	@Override
 	public String getRouteLongName(GRoute gRoute) {
@@ -238,11 +241,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			} else if (RSN_760.equals(routeShortNameLC)) {
 				return WONDERLAND_VAUGHAN_MILLS;
 			}
-			System.out.println("Unexpected route long name for " + gRoute);
+			System.out.printf("\nUnexpected route long name for %s!\n", gRoute);
 			System.exit(-1);
 			return null;
 		}
-		return CleanUtils.cleanLabel(gRoute.getRouteLongName().toLowerCase(Locale.ENGLISH));
+		String routeLongName = gRoute.getRouteLongName();
+		routeLongName = routeLongName.toLowerCase(Locale.ENGLISH);
+		routeLongName = SS.matcher(routeLongName).replaceAll(SS_REPLACEMENT);
+		return CleanUtils.cleanLabel(routeLongName);
 	}
 
 	private static final String AGENCY_COLOR = "0079C2"; // BLUE (Android App Icon)
@@ -286,59 +292,67 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignDirection(MDirectionType.WEST);
 			return;
 		}
-		int directionId = gTrip.getDirectionId();
-		String stationName = cleanTripHeadsign(gTrip.getTripHeadsign());
 		if (gTripHeadsignLC.endsWith(MO)) {
-			stationName = AM_HEADSIGN;
+			mTrip.setHeadsignString(AM_HEADSIGN, gTrip.getDirectionId());
+			return;
 		} else if (gTripHeadsignLC.endsWith(AF)) {
-			stationName = PM_HEADSIGN;
-		} else if (mRoute.id == 31l) {
-			if (directionId == 0) {
-				stationName = AURORA_NORTH;
+			mTrip.setHeadsignString(PM_HEADSIGN, gTrip.getDirectionId());
+			return;
+		}
+		if (mRoute.id == 31l) {
+			if (gTrip.getDirectionId() == 0) {
+				mTrip.setHeadsignString(AURORA_NORTH, gTrip.getDirectionId());
+				return;
 			} else {
-				System.out.println("Unexpected trip head sign for " + mTrip + " !");
+				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
 		} else if (mRoute.id == 40l) {
-			if (directionId == 0) {
-				stationName = UNIONVILLE_LOCAL;
+			if (gTrip.getDirectionId() == 0) {
+				mTrip.setHeadsignString(UNIONVILLE_LOCAL, gTrip.getDirectionId());
+				return;
 			} else {
-				System.out.println("Unexpected trip head sign for " + mTrip + " !");
+				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
 		} else if (mRoute.id == 42l) {
-			if (directionId == 0) {
-				stationName = BERCZY;
+			if (gTrip.getDirectionId() == 0) {
+				mTrip.setHeadsignString(BERCZY, gTrip.getDirectionId());
+				return;
 			} else {
-				System.out.println("Unexpected trip head sign for " + mTrip + " !");
+				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
 		} else if (mRoute.id == 45l) {
-			if (directionId == 0) {
-				stationName = MINGAY;
+			if (gTrip.getDirectionId() == 0) {
+				mTrip.setHeadsignString(MINGAY, gTrip.getDirectionId());
+				return;
 			} else {
-				System.out.println("Unexpected trip head sign for " + mTrip + " !");
+				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
 		} else if (mRoute.id == 84l) {
-			if (directionId == 0) {
-				stationName = OAK_RIDGES;
+			if (gTrip.getDirectionId() == 0) {
+				mTrip.setHeadsignString(OAK_RIDGES, gTrip.getDirectionId());
+				return;
 			} else {
-				System.out.println("Unexpected trip head sign for " + mTrip + " !");
+				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
 		} else if (mRoute.id == 204l) {
-			if (directionId == 0) {
-				stationName = BERCZY_GO_SHUTTLE;
+			if (gTrip.getDirectionId() == 0) {
+				mTrip.setHeadsignString(BERCZY_GO_SHUTTLE, gTrip.getDirectionId());
+				return;
 			} else {
-				System.out.println("Unexpected trip head sign for " + mTrip + " !");
+				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
 		} else if (mRoute.id == 244l) {
-			if (directionId == 0) {
-				stationName = BEAVER_CREEK_SHUTTLE;
+			if (gTrip.getDirectionId() == 0) {
+				mTrip.setHeadsignString(BEAVER_CREEK_SHUTTLE, gTrip.getDirectionId());
+				return;
 			} else {
-				System.out.println("Unexpected trip head sign for " + mTrip + " !");
+				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
 		} else if (mRoute.id == 589l) {
@@ -348,11 +362,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 			return;
 		}
-		mTrip.setHeadsignString(stationName, directionId);
+		mTrip.setHeadsignString(cleanTripHeadsign(gTrip.getTripHeadsign()), gTrip.getDirectionId());
 	}
+
+	private static final Pattern STARTS_WITH_NUMBER = Pattern.compile("(^[\\d]+[\\S]*)", Pattern.CASE_INSENSITIVE);
 
 	@Override
 	public String cleanTripHeadsign(String tripHeadsign) {
+		tripHeadsign = STARTS_WITH_NUMBER.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
+		tripHeadsign = CleanUtils.removePoints(tripHeadsign);
+		tripHeadsign = CleanUtils.cleanStreetTypes(tripHeadsign);
 		return CleanUtils.cleanLabel(tripHeadsign);
 	}
 
