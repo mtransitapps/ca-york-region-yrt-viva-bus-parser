@@ -248,6 +248,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		String routeLongName = gRoute.getRouteLongName();
 		routeLongName = routeLongName.toLowerCase(Locale.ENGLISH);
 		routeLongName = SS.matcher(routeLongName).replaceAll(SS_REPLACEMENT);
+		routeLongName = CleanUtils.cleanSlashes(routeLongName);
 		return CleanUtils.cleanLabel(routeLongName);
 	}
 
