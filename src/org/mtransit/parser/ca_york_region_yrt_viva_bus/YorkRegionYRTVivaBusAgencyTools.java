@@ -300,7 +300,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignString(PM_HEADSIGN, gTrip.getDirectionId());
 			return;
 		}
-		if (mRoute.id == 31l) {
+		if (mRoute.getId() == 31l) {
 			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignString(AURORA_NORTH, gTrip.getDirectionId());
 				return;
@@ -308,7 +308,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
-		} else if (mRoute.id == 40l) {
+		} else if (mRoute.getId() == 40l) {
 			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignString(UNIONVILLE_LOCAL, gTrip.getDirectionId());
 				return;
@@ -316,7 +316,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
-		} else if (mRoute.id == 42l) {
+		} else if (mRoute.getId() == 42l) {
 			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignString(BERCZY, gTrip.getDirectionId());
 				return;
@@ -324,7 +324,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
-		} else if (mRoute.id == 45l) {
+		} else if (mRoute.getId() == 45l) {
 			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignString(MINGAY, gTrip.getDirectionId());
 				return;
@@ -332,7 +332,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
-		} else if (mRoute.id == 84l) {
+		} else if (mRoute.getId() == 84l) {
 			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignString(OAK_RIDGES, gTrip.getDirectionId());
 				return;
@@ -340,7 +340,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
-		} else if (mRoute.id == 204l) {
+		} else if (mRoute.getId() == 204l) {
 			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignString(BERCZY_GO_SHUTTLE, gTrip.getDirectionId());
 				return;
@@ -348,7 +348,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
-		} else if (mRoute.id == 244l) {
+		} else if (mRoute.getId() == 244l) {
 			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignString(BEAVER_CREEK_SHUTTLE, gTrip.getDirectionId());
 				return;
@@ -356,10 +356,10 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
 				System.exit(-1);
 			}
-		} else if (mRoute.id == 589l) {
+		} else if (mRoute.getId() == 589l) {
 			mTrip.setHeadsignDirection(MDirectionType.NORTH);
 			return;
-		} else if (mRoute.id == 590l) {
+		} else if (mRoute.getId() == 590l) {
 			mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 			return;
 		}
@@ -376,11 +376,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		return CleanUtils.cleanLabel(tripHeadsign);
 	}
 
-	private static final Pattern AT = Pattern.compile("( at )", Pattern.CASE_INSENSITIVE);
-	private static final String AT_REPLACEMENT = " / ";
-
-	private static final Pattern AND = Pattern.compile("( and )", Pattern.CASE_INSENSITIVE);
-	private static final String AND_REPLACEMENT = " & ";
 
 	private static final Pattern STOP_CODE = Pattern.compile("( stop[\\W]*#[\\W]*[0-9]{1,4})", Pattern.CASE_INSENSITIVE);
 	private static final String STOP_CODE_REPLACEMENT = "";
@@ -392,8 +387,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	public String cleanStopName(String gStopName) {
 		gStopName = gStopName.toLowerCase(Locale.ENGLISH);
 		gStopName = STOP_CODE.matcher(gStopName).replaceAll(STOP_CODE_REPLACEMENT);
-		gStopName = AND.matcher(gStopName).replaceAll(AND_REPLACEMENT);
-		gStopName = AT.matcher(gStopName).replaceAll(AT_REPLACEMENT);
+		gStopName = CleanUtils.CLEAN_AT.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AT_REPLACEMENT);
+		gStopName = CleanUtils.CLEAN_AND.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AND_REPLACEMENT);
 		gStopName = PLATFORM.matcher(gStopName).replaceAll(PLATFORM_REPLACEMENT);
 		gStopName = CleanUtils.cleanStreetTypes(gStopName);
 		gStopName = CleanUtils.cleanNumbers(gStopName);
