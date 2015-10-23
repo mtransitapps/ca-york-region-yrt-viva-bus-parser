@@ -117,14 +117,18 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		}
 		try {
 			Matcher matcher = DIGITS.matcher(routeShortName);
-			matcher.find();
-			return Long.valueOf(matcher.group());
+			if (matcher.find()) {
+				return Long.parseLong(matcher.group());
+			}
 		} catch (Exception e) {
-			System.out.println("Error while extracting route short name for route " + gRoute + "!");
+			System.out.printf("\nError while extracting route ID for %s!\n", gRoute);
 			e.printStackTrace();
 			System.exit(-1);
 			return -1l;
 		}
+		System.out.printf("\nUnexpected route ID for %s!\n", gRoute);
+		System.exit(-1);
+		return -1l;
 	}
 
 	private static final String RSN_VIVA = "Viva";
@@ -141,14 +145,18 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		}
 		try {
 			Matcher matcher = DIGITS.matcher(routeShortName);
-			matcher.find();
-			return String.valueOf(Integer.valueOf(matcher.group()));
+			if (matcher.find()) {
+				return String.valueOf(Integer.valueOf(matcher.group())); // remove leading 0s
+			}
 		} catch (Exception e) {
-			System.out.println("Error while extracting route short name for route " + gRoute + "!");
+			System.out.printf("\nError while extracting route short name for %s!\n", gRoute);
 			e.printStackTrace();
 			System.exit(-1);
 			return null;
 		}
+		System.out.printf("\nUnexpected route short name for %s!\n", gRoute);
+		System.exit(-1);
+		return null;
 	}
 
 	private static final String YONGE = "Yonge";
@@ -206,16 +214,18 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			}
 		}
 		Matcher matcher = DIGITS.matcher(gRoute.getRouteShortName());
-		matcher.find();
-		int rsn = Integer.parseInt(matcher.group());
-		if (rsn == 85) {
-			return RUTHERFORD;
-		} else if (rsn == 88) {
-			return BATHURST;
-		} else if (rsn == 91) {
-			return BAYVIEW;
-		} else if (rsn == 98) {
-			return YONGE;
+		if (matcher.find()) {
+			int rsn = Integer.parseInt(matcher.group());
+			switch (rsn) {
+			case 85:
+				return RUTHERFORD;
+			case 88:
+				return BATHURST;
+			case 91:
+				return BAYVIEW;
+			case 98:
+				return YONGE;
+			}
 		}
 		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
 			if (RSN_461.equals(routeShortNameLC)) {
@@ -397,6 +407,12 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public int getStopId(GStop gStop) {
+		if (!Utils.isDigitsOnly(gStop.getStopId())) {
+			Matcher matcher = DIGITS.matcher(gStop.getStopId());
+			if (matcher.find()) {
+				return Integer.parseInt(matcher.group());
+			}
+		}
 		return super.getStopId(gStop); // original stop ID used by real-time API
 	}
 }
