@@ -95,6 +95,19 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String BLUE = "blue";
 	private static final String VIVA = "viva";
 
+	private static final long _98_99_RID = 980099l;
+	private static final String RSN_98_99 = "98/99";
+
+	private static final long RID_ENDS_WITH_A = 10000l;
+	private static final long RID_ENDS_WITH_B = 20000l;
+	private static final long RID_ENDS_WITH_C = 30000l;
+	private static final long RID_ENDS_WITH_E = 50000l;
+
+	private static final String A = "a";
+	private static final String B = "b";
+	private static final String C = "c";
+	private static final String E = "e";
+
 	@Override
 	public long getRouteId(GRoute gRoute) {
 		String routeShortName = gRoute.getRouteShortName();
@@ -115,10 +128,22 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				return 220005l;
 			}
 		}
+		if (RSN_98_99.equals(routeShortNameLC)) {
+			return _98_99_RID;
+		}
 		try {
 			Matcher matcher = DIGITS.matcher(routeShortName);
 			if (matcher.find()) {
-				return Long.parseLong(matcher.group());
+				long digits = Long.parseLong(matcher.group());
+				if (routeShortNameLC.endsWith(A)) {
+					return RID_ENDS_WITH_A + digits;
+				} else if (routeShortNameLC.endsWith(B)) {
+					return RID_ENDS_WITH_B + digits;
+				} else if (routeShortNameLC.endsWith(C)) {
+					return RID_ENDS_WITH_C + digits;
+				} else if (routeShortNameLC.endsWith(E)) {
+					return RID_ENDS_WITH_E + digits;
+				}
 			}
 		} catch (Exception e) {
 			System.out.printf("\nError while extracting route ID for %s!\n", gRoute);
@@ -143,59 +168,23 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		if (routeShortNameLC.contains(VIVA)) {
 			return RSN_VIVA;
 		}
-		try {
-			Matcher matcher = DIGITS.matcher(routeShortName);
-			if (matcher.find()) {
-				return String.valueOf(Integer.valueOf(matcher.group())); // remove leading 0s
-			}
-		} catch (Exception e) {
-			System.out.printf("\nError while extracting route short name for %s!\n", gRoute);
-			e.printStackTrace();
-			System.exit(-1);
-			return null;
-		}
-		System.out.printf("\nUnexpected route short name for %s!\n", gRoute);
-		System.exit(-1);
-		return null;
+		return super.getRouteShortName(gRoute);
 	}
 
-	private static final String YONGE = "Yonge";
-	private static final String BAYVIEW = "Bayview";
-	private static final String BATHURST = "Bathurst";
-	private static final String RUTHERFORD = "Rutherford";
 	private static final String RLN_PURPLE = "Purple";
 	private static final String RLN_PINK = "Pink";
 	private static final String RLN_ORANGE = "Orange";
 	private static final String RLN_GREEN = "Green";
 	private static final String RLN_BLUE = "Blue";
 
-	private static final String RSN_461 = "461";
-	private static final String RSN_462 = "462";
-	private static final String RSN_463 = "463";
-	private static final String RSN_464 = "464";
-	private static final String RSN_465 = "465";
-	private static final String RSN_520 = "520";
-	private static final String RSN_521 = "521";
-	private static final String RSN_522 = "522";
-	private static final String RSN_589 = "589";
-	private static final String RSN_590 = "590";
-	private static final String RSN_760 = "760";
+	private static final Pattern SS = Pattern.compile("((^|\\W){1}(school special|ss)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String SS_REPLACEMENT = "$2SS$4";
 
-	private static final String SCHOOL_SPECIAL = "School Special";
-	private static final String EMILY_CARR_SECONDARY_SS = "Emily Carr Secondary " + SCHOOL_SPECIAL;
-	private static final String MAPPLE_HIGH_SS = "Mapple High " + SCHOOL_SPECIAL;
-	private static final String VELLORE_SS = "Vellore " + SCHOOL_SPECIAL;
-	private static final String ST_JOAN_OF_ARC_SS = "St Joan Of Arc " + SCHOOL_SPECIAL;
-	private static final String ST_JOAN_OF_ARC_SS_VIA_AMERICA = ST_JOAN_OF_ARC_SS + " Via America";
-	private static final String ST_JOAN_OF_ARC_SS_VIA_MELVILLE = ST_JOAN_OF_ARC_SS + " Via Melville";
-	private static final String COMMUNITY_BUS = "Community Bus";
-	private static final String NEWMARKET_COMMUNITY_BUS = "Newmarket " + COMMUNITY_BUS;
-	private static final String MARKHAM_COMMUNITY_BUS = "Markham " + COMMUNITY_BUS;
-	private static final String RICHMOND_HILL_COMMUNITY_BUS = "Richmond Hill " + COMMUNITY_BUS;
-	private static final String WONDERLAND_VAUGHAN_MILLS = "Wonderland/Vaughan Mills";
+	private static final Pattern GW = Pattern.compile("((^|\\W){1}(g[\\.]?w[\\.]?)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String GW_REPLACEMENT = "$2GW$4";
 
-	private static final Pattern SS = Pattern.compile("((^|\\W){1}(ss)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
-	private static final String SS_REPLACEMENT = "$2" + SCHOOL_SPECIAL + "$4";
+	private static final Pattern GO = Pattern.compile("((^|\\W){1}(go)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String GO_REPLACEMENT = "$2GO$4";
 
 	@Override
 	public String getRouteLongName(GRoute gRoute) {
@@ -213,44 +202,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				return RLN_PURPLE;
 			}
 		}
-		Matcher matcher = DIGITS.matcher(gRoute.getRouteShortName());
-		if (matcher.find()) {
-			int rsn = Integer.parseInt(matcher.group());
-			switch (rsn) {
-			case 85:
-				return RUTHERFORD;
-			case 88:
-				return BATHURST;
-			case 91:
-				return BAYVIEW;
-			case 98:
-				return YONGE;
-			}
-		}
 		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
-			if (RSN_461.equals(routeShortNameLC)) {
-				return EMILY_CARR_SECONDARY_SS;
-			} else if (RSN_462.equals(routeShortNameLC)) {
-				return MAPPLE_HIGH_SS;
-			} else if (RSN_463.equals(routeShortNameLC)) {
-				return VELLORE_SS;
-			} else if (RSN_464.equals(routeShortNameLC)) {
-				return ST_JOAN_OF_ARC_SS_VIA_AMERICA;
-			} else if (RSN_465.equals(routeShortNameLC)) {
-				return ST_JOAN_OF_ARC_SS_VIA_MELVILLE;
-			} else if (RSN_520.equals(routeShortNameLC)) {
-				return NEWMARKET_COMMUNITY_BUS;
-			} else if (RSN_521.equals(routeShortNameLC)) {
-				return NEWMARKET_COMMUNITY_BUS;
-			} else if (RSN_522.equals(routeShortNameLC)) {
-				return MARKHAM_COMMUNITY_BUS;
-			} else if (RSN_589.equals(routeShortNameLC)) {
-				return RICHMOND_HILL_COMMUNITY_BUS;
-			} else if (RSN_590.equals(routeShortNameLC)) {
-				return RICHMOND_HILL_COMMUNITY_BUS;
-			} else if (RSN_760.equals(routeShortNameLC)) {
-				return WONDERLAND_VAUGHAN_MILLS;
-			}
 			System.out.printf("\nUnexpected route long name for %s!\n", gRoute);
 			System.exit(-1);
 			return null;
@@ -258,7 +210,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		String routeLongName = gRoute.getRouteLongName();
 		routeLongName = routeLongName.toLowerCase(Locale.ENGLISH);
 		routeLongName = SS.matcher(routeLongName).replaceAll(SS_REPLACEMENT);
+		routeLongName = GW.matcher(routeLongName).replaceAll(GW_REPLACEMENT);
+		routeLongName = GO.matcher(routeLongName).replaceAll(GO_REPLACEMENT);
 		routeLongName = CleanUtils.cleanSlashes(routeLongName);
+		routeLongName = CleanUtils.removePoints(routeLongName);
+		routeLongName = CleanUtils.cleanStreetTypes(routeLongName);
 		return CleanUtils.cleanLabel(routeLongName);
 	}
 
@@ -381,11 +337,12 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public String cleanTripHeadsign(String tripHeadsign) {
 		tripHeadsign = STARTS_WITH_NUMBER.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
+		tripHeadsign = GO.matcher(tripHeadsign).replaceAll(GO_REPLACEMENT);
+		tripHeadsign = CleanUtils.cleanSlashes(tripHeadsign);
 		tripHeadsign = CleanUtils.removePoints(tripHeadsign);
 		tripHeadsign = CleanUtils.cleanStreetTypes(tripHeadsign);
 		return CleanUtils.cleanLabel(tripHeadsign);
 	}
-
 
 	private static final Pattern STOP_CODE = Pattern.compile("( stop[\\W]*#[\\W]*[0-9]{1,4})", Pattern.CASE_INSENSITIVE);
 	private static final String STOP_CODE_REPLACEMENT = "";
@@ -396,6 +353,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public String cleanStopName(String gStopName) {
 		gStopName = gStopName.toLowerCase(Locale.ENGLISH);
+		gStopName = GO.matcher(gStopName).replaceAll(GO_REPLACEMENT);
 		gStopName = STOP_CODE.matcher(gStopName).replaceAll(STOP_CODE_REPLACEMENT);
 		gStopName = CleanUtils.CLEAN_AT.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AT_REPLACEMENT);
 		gStopName = CleanUtils.CLEAN_AND.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AND_REPLACEMENT);
