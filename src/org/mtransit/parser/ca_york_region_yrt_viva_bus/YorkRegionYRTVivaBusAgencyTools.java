@@ -236,7 +236,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String MO = " - mo";
 	private static final String AF = " - af";
 
-	private static final String AURORA_NORTH = "Aurora North";
 	private static final String AM_HEADSIGN = "AM";
 	private static final String PM_HEADSIGN = "PM";
 
@@ -291,22 +290,29 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { "111", "38", "122", "20" })) //
 				.compileBothTripSort());
-		map2.put(31l, new RouteTripSpec(31l, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, AURORA_NORTH, // Aurora North
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "") //
+		map2.put(26l, new RouteTripSpec(26l, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "6003", "5936", "3329", //
-								"3903", "4021", //
-								"3893", //
-								"3892", "335", //
+						Arrays.asList(new String[] { "4357", "1139", "466" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "466", "6238", "4357" })) //
+				.compileBothTripSort());
+		map2.put(31l, new RouteTripSpec(31l, //
+				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.EAST.getId(), //
+				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.WEST.getId()) //
+				.addTripSort(MDirectionType.EAST.intValue(), //
+						Arrays.asList(new String[] { "3336", "335", //
 								"336", //
 								"3564", //
 								"4053", //
 								"5994", //
-								"4058", "6003" //
-						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { /* no stops */})) //
+								"4058", "6003" })) //
+				.addTripSort(MDirectionType.WEST.intValue(), //
+						Arrays.asList(new String[] { "6003", "5936", "3329", //
+								"3903", "4021", //
+								"3893", //
+								"3892", "3336" })) //
 				.compileBothTripSort());
 		map2.put(40l, new RouteTripSpec(40l, //
 				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.EAST.getId(), // Markville Mall
@@ -315,6 +321,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { "6074", "1911", "2152" })) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { "2152", "1990", "6074" })) //
+				.compileBothTripSort());
+		map2.put(41l, new RouteTripSpec(41l, //
+				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.EAST.getId(), //
+				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.WEST.getId()) //
+				.addTripSort(MDirectionType.EAST.intValue(), //
+						Arrays.asList(new String[] { "2152", "2145", "2169" })) //
+				.addTripSort(MDirectionType.WEST.intValue(), //
+						Arrays.asList(new String[] { "2169", "2184", "2152" })) //
 				.compileBothTripSort());
 		map2.put(42l, new RouteTripSpec(42l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
@@ -439,7 +453,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignString(PM_HEADSIGN, gTrip.getDirectionId());
 			return;
 		}
-		mTrip.setHeadsignString(cleanTripHeadsign(gTrip.getTripHeadsign()), gTrip.getDirectionId());
+		System.out.printf("\nUnexpected trip head sign for %s !\n", mTrip);
+		System.exit(-1);
 	}
 
 	private static final Pattern STARTS_WITH_NUMBER = Pattern.compile("(^[\\d]+[\\S]*)", Pattern.CASE_INSENSITIVE);
