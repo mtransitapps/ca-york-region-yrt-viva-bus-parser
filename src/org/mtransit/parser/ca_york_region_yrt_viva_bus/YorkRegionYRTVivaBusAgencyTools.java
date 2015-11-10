@@ -102,6 +102,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String ORANGE = "orange";
 	private static final String GREEN = "green";
 	private static final String BLUE = "blue";
+	private static final String BLUE_A = " blue a";
 	private static final String VIVA = "viva";
 
 	private static final long _98_99_RID = 980099l;
@@ -117,6 +118,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String C = "c";
 	private static final String E = "e";
 
+	private static final long VIVA_BLUE_RID = 220001l;
+	private static final long VIVA_BLUE_A_RID = 220011l;
+	private static final long VIVA_GREEN_RID = 220002l;
+	private static final long VIVA_ORANGE_RID = 220003l;
+	private static final long VIVA_PINK_RID = 220004l;
+	private static final long VIVA_PURPLE_RID = 220005l;
+
 	@Override
 	public long getRouteId(GRoute gRoute) {
 		String routeShortName = gRoute.getRouteShortName();
@@ -125,16 +133,18 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		}
 		String routeShortNameLC = routeShortName.toLowerCase(Locale.ENGLISH);
 		if (routeShortNameLC.contains(VIVA)) {
-			if (routeShortNameLC.contains(BLUE)) {
-				return 220001l;
-			} else if (routeShortNameLC.contains(GREEN)) {
-				return 220002l;
-			} else if (routeShortNameLC.contains(ORANGE)) {
-				return 220003l;
-			} else if (routeShortNameLC.contains(PINK)) {
-				return 220004l;
-			} else if (routeShortNameLC.contains(PURPLE)) {
-				return 220005l;
+			if (routeShortNameLC.endsWith(BLUE)) {
+				return VIVA_BLUE_RID;
+			} else if (routeShortNameLC.endsWith(BLUE_A)) {
+				return VIVA_BLUE_A_RID;
+			} else if (routeShortNameLC.endsWith(GREEN)) {
+				return VIVA_GREEN_RID;
+			} else if (routeShortNameLC.endsWith(ORANGE)) {
+				return VIVA_ORANGE_RID;
+			} else if (routeShortNameLC.endsWith(PINK)) {
+				return VIVA_PINK_RID;
+			} else if (routeShortNameLC.endsWith(PURPLE)) {
+				return VIVA_PURPLE_RID;
 			}
 		}
 		if (RSN_98_99.equals(routeShortNameLC)) {
@@ -165,8 +175,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		return -1l;
 	}
 
-	private static final String RSN_VIVA = "Viva";
-
 	@Override
 	public String getRouteShortName(GRoute gRoute) {
 		String routeShortName = gRoute.getRouteShortName();
@@ -174,17 +182,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			return routeShortName;
 		}
 		String routeShortNameLC = routeShortName.toLowerCase(Locale.ENGLISH);
-		if (routeShortNameLC.contains(VIVA)) {
-			return RSN_VIVA;
+		if (routeShortNameLC.startsWith(VIVA)) {
+			return CleanUtils.cleanLabel(routeShortNameLC.substring(VIVA.length()));
 		}
 		return super.getRouteShortName(gRoute);
 	}
-
-	private static final String RLN_PURPLE = "Purple";
-	private static final String RLN_PINK = "Pink";
-	private static final String RLN_ORANGE = "Orange";
-	private static final String RLN_GREEN = "Green";
-	private static final String RLN_BLUE = "Blue";
 
 	private static final Pattern SS = Pattern.compile("((^|\\W){1}(school special|ss)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
 	private static final String SS_REPLACEMENT = "$2SS$4";
@@ -195,21 +197,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern GO = Pattern.compile("((^|\\W){1}(go)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
 	private static final String GO_REPLACEMENT = "$2GO$4";
 
+	private static final String RLN_VIVA = "Viva";
+
 	@Override
 	public String getRouteLongName(GRoute gRoute) {
 		String routeShortNameLC = gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH);
-		if (routeShortNameLC.contains(VIVA)) {
-			if (routeShortNameLC.contains(BLUE)) {
-				return RLN_BLUE;
-			} else if (routeShortNameLC.contains(GREEN)) {
-				return RLN_GREEN;
-			} else if (routeShortNameLC.contains(ORANGE)) {
-				return RLN_ORANGE;
-			} else if (routeShortNameLC.contains(PINK)) {
-				return RLN_PINK;
-			} else if (routeShortNameLC.contains(PURPLE)) {
-				return RLN_PURPLE;
-			}
+		if (routeShortNameLC.startsWith(VIVA)) {
+			return RLN_VIVA;
 		}
 		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
 			System.out.printf("\nUnexpected route long name for %s!\n", gRoute);
@@ -242,12 +236,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String MO = " - mo";
 	private static final String AF = " - af";
 
-	private static final String MINGAY = "Mingay";
-	private static final String BERCZY = "Berczy";
-	private static final String UNIONVILLE_LOCAL = "Unionville Local";
-	private static final String BEAVER_CREEK_SHUTTLE = "Beaver Creek Shuttle";
-	private static final String BERCZY_GO_SHUTTLE = "Berczy GO Shuttle";
-	private static final String OAK_RIDGES = "Oak Rdgs";
 	private static final String AURORA_NORTH = "Aurora North";
 	private static final String AM_HEADSIGN = "AM";
 	private static final String PM_HEADSIGN = "PM";
@@ -255,6 +243,103 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static HashMap<Long, RouteTripSpec> ALL_ROUTE_TRIPS2;
 	static {
 		HashMap<Long, RouteTripSpec> map2 = new HashMap<Long, RouteTripSpec>();
+		map2.put(VIVA_BLUE_RID, new RouteTripSpec(VIVA_BLUE_RID, // Viva Blue
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "70", "80", "88", "90", "91", "110" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "110", "94", "90", "92", "70" })) //
+				.compileBothTripSort());
+		map2.put(VIVA_BLUE_A_RID, new RouteTripSpec(VIVA_BLUE_A_RID, // Viva Blue A
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "70", "88", "110" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "110", "92", "70" })) //
+				.compileBothTripSort());
+		map2.put(VIVA_GREEN_RID, new RouteTripSpec(VIVA_GREEN_RID, // Viva Green
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "68", "47", "56" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "57", "62", "117" })) //
+				.compileBothTripSort());
+		map2.put(VIVA_ORANGE_RID, new RouteTripSpec(VIVA_ORANGE_RID, // Viva Orange
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "60", "123", "13", "10", "11", "744" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "5", "10", "19", "123", "20", "60" })) //
+				.compileBothTripSort());
+		map2.put(VIVA_PINK_RID, new RouteTripSpec(VIVA_PINK_RID, // Viva Pink
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "5943", "39", "51" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "51", "38", "5943" })) //
+				.compileBothTripSort());
+		map2.put(VIVA_PURPLE_RID, new RouteTripSpec(VIVA_PURPLE_RID, // Viva Purple
+				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.EAST.getId(), //
+				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.WEST.getId()) //
+				.addTripSort(MDirectionType.EAST.intValue(), //
+						Arrays.asList(new String[] { "20", "26", "122", "121", "39", "111" })) //
+				.addTripSort(MDirectionType.WEST.intValue(), //
+						Arrays.asList(new String[] { "111", "38", "122", "20" })) //
+				.compileBothTripSort());
+		map2.put(31l, new RouteTripSpec(31l, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, AURORA_NORTH, // Aurora North
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "") //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "6003", "5936", "3329", //
+								"3903", "4021", //
+								"3893", //
+								"3892", "335", //
+								"336", //
+								"3564", //
+								"4053", //
+								"5994", //
+								"4058", "6003" //
+						})) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { /* no stops */})) //
+				.compileBothTripSort());
+		map2.put(40l, new RouteTripSpec(40l, //
+				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.EAST.getId(), // Markville Mall
+				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.WEST.getId()) // Woodbine Ave
+				.addTripSort(MDirectionType.EAST.intValue(), //
+						Arrays.asList(new String[] { "6074", "1911", "2152" })) //
+				.addTripSort(MDirectionType.WEST.intValue(), //
+						Arrays.asList(new String[] { "2152", "1990", "6074" })) //
+				.compileBothTripSort());
+		map2.put(42l, new RouteTripSpec(42l, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "5150", "50", "2750", "499" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "499", "2150", "2750", "49", "5593" })) //
+				.compileBothTripSort());
+		map2.put(45l, new RouteTripSpec(45l, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "2152", "1874", "1234" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "1234", "5619", "2152" })) //
+				.compileBothTripSort());
+		map2.put(84l, new RouteTripSpec(84l, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "3923", "3723", "349" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "349", "2380", "3923" })) //
+				.compileBothTripSort());
 		map2.put(90l + RID_ENDS_WITH_B, new RouteTripSpec(90l + RID_ENDS_WITH_B, // 90B
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), // Don Mills Station
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) // Highway 7
@@ -262,6 +347,22 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { "68", "2543" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { "2543", "2540", "1604", "2776" })) //
+				.compileBothTripSort());
+		map2.put(204l, new RouteTripSpec(204l, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "2750", "1953", "499" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "499", "5368", "1882", "6289", "2750" })) //
+				.compileBothTripSort());
+		map2.put(244l, new RouteTripSpec(244l, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "6075", "2665", "6276" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "6276", "2657", "6075" })) //
 				.compileBothTripSort());
 		map2.put(589l, new RouteTripSpec(589l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), // Bernard / Dunlop St
@@ -338,63 +439,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignString(PM_HEADSIGN, gTrip.getDirectionId());
 			return;
 		}
-		if (mRoute.getId() == 31l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignString(AURORA_NORTH, gTrip.getDirectionId());
-				return;
-			} else {
-				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
-				System.exit(-1);
-			}
-		} else if (mRoute.getId() == 40l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignString(UNIONVILLE_LOCAL, gTrip.getDirectionId());
-				return;
-			} else {
-				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
-				System.exit(-1);
-			}
-		} else if (mRoute.getId() == 42l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignString(BERCZY, gTrip.getDirectionId());
-				return;
-			} else {
-				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
-				System.exit(-1);
-			}
-		} else if (mRoute.getId() == 45l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignString(MINGAY, gTrip.getDirectionId());
-				return;
-			} else {
-				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
-				System.exit(-1);
-			}
-		} else if (mRoute.getId() == 84l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignString(OAK_RIDGES, gTrip.getDirectionId());
-				return;
-			} else {
-				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
-				System.exit(-1);
-			}
-		} else if (mRoute.getId() == 204l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignString(BERCZY_GO_SHUTTLE, gTrip.getDirectionId());
-				return;
-			} else {
-				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
-				System.exit(-1);
-			}
-		} else if (mRoute.getId() == 244l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignString(BEAVER_CREEK_SHUTTLE, gTrip.getDirectionId());
-				return;
-			} else {
-				System.out.printf("\nUnexpected trip head sign for %s !", mTrip);
-				System.exit(-1);
-			}
-		}
 		mTrip.setHeadsignString(cleanTripHeadsign(gTrip.getTripHeadsign()), gTrip.getDirectionId());
 	}
 
@@ -416,6 +460,12 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern PLATFORM = Pattern.compile("( platform )", Pattern.CASE_INSENSITIVE);
 	private static final String PLATFORM_REPLACEMENT = " P";
 
+	private static final Pattern COMMUNITY_CENTRE = Pattern.compile("((^|\\W){1}(c\\.c\\.|cc|community centre)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String COMMUNITY_CENTRE_REPLACEMENT = "$2CC$4";
+
+	private static final Pattern HIGH_SCHOOL = Pattern.compile("((^|\\W){1}(h\\.s\\.|hs|high school)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String HIGH_SCHOOL_REPLACEMENT = "$2HS$4";
+
 	@Override
 	public String cleanStopName(String gStopName) {
 		gStopName = gStopName.toLowerCase(Locale.ENGLISH);
@@ -424,6 +474,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		gStopName = CleanUtils.CLEAN_AT.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AT_REPLACEMENT);
 		gStopName = CleanUtils.CLEAN_AND.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AND_REPLACEMENT);
 		gStopName = PLATFORM.matcher(gStopName).replaceAll(PLATFORM_REPLACEMENT);
+		gStopName = COMMUNITY_CENTRE.matcher(gStopName).replaceAll(COMMUNITY_CENTRE_REPLACEMENT);
+		gStopName = HIGH_SCHOOL.matcher(gStopName).replaceAll(HIGH_SCHOOL_REPLACEMENT);
+		gStopName = CleanUtils.removePoints(gStopName);
 		gStopName = CleanUtils.cleanStreetTypes(gStopName);
 		gStopName = CleanUtils.cleanNumbers(gStopName);
 		return CleanUtils.cleanLabel(gStopName);
