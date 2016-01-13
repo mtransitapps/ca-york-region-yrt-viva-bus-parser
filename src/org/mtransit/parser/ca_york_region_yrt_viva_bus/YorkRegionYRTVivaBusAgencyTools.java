@@ -97,13 +97,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	private static final Pattern DIGITS = Pattern.compile("[\\d]+");
 
-	private static final String PURPLE = "purple";
-	private static final String PINK = "pink";
-	private static final String ORANGE = "orange";
-	private static final String GREEN = "green";
+	private static final String VIVA = "viva";
 	private static final String BLUE = "blue";
 	private static final String BLUE_A = " blue a";
-	private static final String VIVA = "viva";
+	private static final String GREEN = "green";
+	private static final String ORANGE = "orange";
+	private static final String PINK = "pink";
+	private static final String PURPLE = "purple";
+	private static final String YELLOW = "yellow";
 
 	private static final long _98_99_RID = 980099l;
 	private static final String RSN_98_99 = "98/99";
@@ -124,6 +125,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final long VIVA_ORANGE_RID = 220003l;
 	private static final long VIVA_PINK_RID = 220004l;
 	private static final long VIVA_PURPLE_RID = 220005l;
+	private static final long VIVA_YELLOW_RID = 220006l;
 
 	@Override
 	public long getRouteId(GRoute gRoute) {
@@ -145,6 +147,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				return VIVA_PINK_RID;
 			} else if (routeShortNameLC.endsWith(PURPLE)) {
 				return VIVA_PURPLE_RID;
+			} else if (routeShortNameLC.endsWith(YELLOW)) {
+				return VIVA_YELLOW_RID;
 			}
 		}
 		if (RSN_98_99.equals(routeShortNameLC)) {
@@ -173,6 +177,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		System.out.printf("\nUnexpected route ID for %s!\n", gRoute);
 		System.exit(-1);
 		return -1l;
+	}
+
+	@Override
+	public String getRouteColor(GRoute gRoute) {
+		if (getRouteId(gRoute) == VIVA_YELLOW_RID) {
+			if ("BAD405".equalsIgnoreCase(gRoute.getRouteColor())) {
+				return "FFCC00";
+			}
+		}
+		return super.getRouteColor(gRoute);
 	}
 
 	@Override
@@ -296,6 +310,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { "20", "26", "122", "121", "39", "111" })) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { "111", "38", "122", "20" })) //
+				.compileBothTripSort());
+		map2.put(VIVA_YELLOW_RID, new RouteTripSpec(VIVA_YELLOW_RID, // Viva Yellow
+				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.EAST.getId(), //
+				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.WEST.getId()) //
+				.addTripSort(MDirectionType.EAST.intValue(), //
+						Arrays.asList(new String[] { "6005", "6508", "6564" })) //
+				.addTripSort(MDirectionType.WEST.intValue(), //
+						Arrays.asList(new String[] { "6564", "6509", "6005" })) //
 				.compileBothTripSort());
 		map2.put(26l, new RouteTripSpec(26l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
