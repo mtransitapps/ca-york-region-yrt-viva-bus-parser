@@ -189,6 +189,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		return super.getRouteColor(gRoute);
 	}
 
+	private static final Pattern REMOVE_LEADING_ZEROS = Pattern.compile("(^0+)", Pattern.CASE_INSENSITIVE);
+
 	@Override
 	public String getRouteShortName(GRoute gRoute) {
 		String routeShortName = gRoute.getRouteShortName();
@@ -199,7 +201,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		if (routeShortNameLC.startsWith(VIVA)) {
 			return CleanUtils.cleanLabel(routeShortNameLC.substring(VIVA.length()));
 		}
-		return super.getRouteShortName(gRoute);
+		routeShortName = REMOVE_LEADING_ZEROS.matcher(routeShortName).replaceAll(StringUtils.EMPTY);
+		return routeShortName;
 	}
 
 	private static final Pattern SS = Pattern.compile("((^|\\W){1}(school special|ss)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
