@@ -99,7 +99,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	private static final String VIVA = "viva";
 	private static final String BLUE = "blue";
-	private static final String BLUE_A = " blue a";
+	private static final String BLUE_A = "blue a";
 	private static final String GREEN = "green";
 	private static final String ORANGE = "orange";
 	private static final String PINK = "pink";
@@ -119,13 +119,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String C = "c";
 	private static final String E = "e";
 
-	private static final long VIVA_BLUE_RID = 220001l;
-	private static final long VIVA_BLUE_A_RID = 220011l;
-	private static final long VIVA_GREEN_RID = 220002l;
-	private static final long VIVA_ORANGE_RID = 220003l;
-	private static final long VIVA_PINK_RID = 220004l;
-	private static final long VIVA_PURPLE_RID = 220005l;
-	private static final long VIVA_YELLOW_RID = 220006l;
+	private static final long VIVA_BLUE_RID = 601l;
+	private static final long VIVA_BLUE_A_RID = 602l;
+	private static final long VIVA_GREEN_RID = 606l;
+	private static final long VIVA_ORANGE_RID = 605l;
+	private static final long VIVA_PINK_RID = 604l;
+	private static final long VIVA_PURPLE_RID = 603l;
+	private static final long VIVA_YELLOW_RID = 607l;
 
 	@Override
 	public long getRouteId(GRoute gRoute) {
@@ -193,16 +193,15 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteShortName(GRoute gRoute) {
+		String routeLongNameLC = gRoute.getRouteLongName().toLowerCase(Locale.ENGLISH);
+		if (routeLongNameLC.startsWith(VIVA)) {
+			return CleanUtils.cleanLabel(routeLongNameLC.substring(VIVA.length()));
+		}
 		String routeShortName = gRoute.getRouteShortName();
 		if (routeShortName != null && routeShortName.length() > 0 && Utils.isDigitsOnly(routeShortName)) {
 			return routeShortName;
 		}
-		String routeShortNameLC = routeShortName.toLowerCase(Locale.ENGLISH);
-		if (routeShortNameLC.startsWith(VIVA)) {
-			return CleanUtils.cleanLabel(routeShortNameLC.substring(VIVA.length()));
-		}
-		routeShortName = REMOVE_LEADING_ZEROS.matcher(routeShortName).replaceAll(StringUtils.EMPTY);
-		return routeShortName;
+		return REMOVE_LEADING_ZEROS.matcher(routeShortName).replaceAll(StringUtils.EMPTY);
 	}
 
 	private static final Pattern SS = Pattern.compile("((^|\\W){1}(school special|ss)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
@@ -218,8 +217,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteLongName(GRoute gRoute) {
-		String routeShortNameLC = gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH);
-		if (routeShortNameLC.startsWith(VIVA)) {
+		if (gRoute.getRouteLongName().toLowerCase(Locale.ENGLISH).startsWith(VIVA)) {
 			return RLN_VIVA;
 		}
 		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
@@ -318,9 +316,12 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.EAST.getId(), //
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.WEST.getId()) //
 				.addTripSort(MDirectionType.EAST.intValue(), //
-						Arrays.asList(new String[] { "6005", "6508", "6564" })) //
+						Arrays.asList(new String[] { "6005", "6508", //
+								"6564", "6564_merged_3495513" })) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
-						Arrays.asList(new String[] { "6564", "6509", "6005" })) //
+						Arrays.asList(new String[] { "6564", "6564_merged_349551", //
+								"6513", "6511", //
+								"6509", "6005" })) //
 				.compileBothTripSort());
 		map2.put(26l, new RouteTripSpec(26l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
