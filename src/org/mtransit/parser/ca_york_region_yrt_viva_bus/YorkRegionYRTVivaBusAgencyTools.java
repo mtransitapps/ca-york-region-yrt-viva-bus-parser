@@ -262,10 +262,12 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { "70", "80", "88", "90", "91", //
-								"110", "110_merged_3481041", "110_merged_3482320" })) //
+								"110", "110_merged_3481041", "110_merged_3482320" //
+						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "110", "110_merged_3481041", "110_merged_3482320", //
-								"94", "90", "92", "70" })) //
+						Arrays.asList(new String[] { //
+						"110", "110_merged_3481041", "110_merged_3482320", //
+								"100", "94", "90", "92", "70" })) //
 				.compileBothTripSort());
 		map2.put(VIVA_BLUE_A_RID, new RouteTripSpec(VIVA_BLUE_A_RID, // Viva Blue A
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
@@ -316,12 +318,18 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.EAST.getId(), //
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.WEST.getId()) //
 				.addTripSort(MDirectionType.EAST.intValue(), //
-						Arrays.asList(new String[] { "6005", "6508", //
-								"6564", "6564_merged_3495513" })) //
+						Arrays.asList(new String[] { //
+						"6005", //
+								"6508", //
+								"6564", "6564_merged_3495513", "6564_merged_3495524" //
+						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
-						Arrays.asList(new String[] { "6564", "6564_merged_349551", //
+						Arrays.asList(new String[] { //
+						"6564", "6564_merged_349551", "6564_merged_3495524", //
 								"6513", "6511", //
-								"6509", "6005" })) //
+								"6509", //
+								"6005" //
+						})) //
 				.compileBothTripSort());
 		map2.put(26l, new RouteTripSpec(26l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
