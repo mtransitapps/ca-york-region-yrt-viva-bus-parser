@@ -296,6 +296,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								"123", "13", "10", "11", "744" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { "5", "10", "19", "123", "20", //
+								"5420", //
 								"60", "60_merged_3480281", "60_merged_3481560" })) //
 				.compileBothTripSort());
 		map2.put(VIVA_PINK_RID, new RouteTripSpec(VIVA_PINK_RID, // Viva Pink
@@ -385,6 +386,17 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { "499", "2150", "2750", "49", "5593" })) //
 				.compileBothTripSort());
+		map2.put(44l, new RouteTripSpec(44l, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "1204", //
+								"3379", // !=
+								"5093", // ==
+								"4122", "1195" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "1195", "4086", "1204" })) //
+				.compileBothTripSort());
 		map2.put(45l, new RouteTripSpec(45l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
@@ -413,6 +425,30 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { "2543", "2540", "1604", //
 								"2776", "2776_merged_3480385", "2776_merged_3481664" })) //
+				.compileBothTripSort());
+		map2.put(98l, new RouteTripSpec(98l, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "3787", //
+								"1195" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "1195", //
+								"341", "262", // !=
+								"1204", // ==
+								"343", "265", // !=
+								"108", // ==
+								"345", // ==
+								"5270", "130", // !=
+								"104", // ==
+								"1197", "236", // !=
+								"100", // ==
+								"1199", "5574", // !=
+								"98", // ==
+								"349", "354", // !=
+								"96", // ==
+								"355", "1210", // !=
+								"3787" })) //
 				.compileBothTripSort());
 		map2.put(204l, new RouteTripSpec(204l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
@@ -505,7 +541,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignString(PM_HEADSIGN, gTrip.getDirectionId());
 			return;
 		}
-		System.out.printf("\nUnexpected trip head sign for %s !\n", mTrip);
+		System.out.printf("\nUnexpected trip head sign for %s !\n", gTrip);
 		System.exit(-1);
 	}
 
