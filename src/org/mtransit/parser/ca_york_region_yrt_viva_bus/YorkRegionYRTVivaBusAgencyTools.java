@@ -10,11 +10,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.Pair;
 import org.mtransit.parser.SplitUtils;
-import org.mtransit.parser.Utils;
 import org.mtransit.parser.SplitUtils.RouteTripSpec;
+import org.mtransit.parser.Utils;
 import org.mtransit.parser.gtfs.data.GCalendar;
 import org.mtransit.parser.gtfs.data.GCalendarDate;
 import org.mtransit.parser.gtfs.data.GRoute;
@@ -25,11 +26,12 @@ import org.mtransit.parser.gtfs.data.GTripStop;
 import org.mtransit.parser.mt.data.MAgency;
 import org.mtransit.parser.mt.data.MDirectionType;
 import org.mtransit.parser.mt.data.MRoute;
-import org.mtransit.parser.mt.data.MTripStop;
-import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.mt.data.MTrip;
+import org.mtransit.parser.mt.data.MTripStop;
 
-// http://www.yorkregiontransit.com/en/aboutus/gtfsdownload.asp
+// https://www.yrt.ca/en/about-us/developer-centre.aspx
+// https://www.yrt.ca/en/about-us/google-transit-feed-specification--gtfs-.aspx
+// https://www.yrt.ca/google/google_transit.zip
 // http://www.yrt.ca/en/aboutus/developer.asp
 // http://www.yrt.ca/en/aboutus/GTFS.asp
 // http://www.yrt.ca/google/google_transit.zip
@@ -108,6 +110,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	private static final long _98_99_RID = 980099l;
 	private static final String RSN_98_99 = "98/99";
+	private static final String RSN_098_099 = "098/099";
 
 	private static final long RID_ENDS_WITH_A = 10000l;
 	private static final long RID_ENDS_WITH_B = 20000l;
@@ -151,7 +154,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				return VIVA_YELLOW_RID;
 			}
 		}
-		if (RSN_98_99.equals(routeShortNameLC)) {
+		if (RSN_98_99.equals(routeShortNameLC) || RSN_098_099.equals(routeShortNameLC)) {
 			return _98_99_RID;
 		}
 		try {
@@ -543,6 +546,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		}
 		System.out.printf("\nUnexpected trip head sign for %s !\n", gTrip);
 		System.exit(-1);
+	}
+
+	@Override
+	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
+		return super.mergeHeadsign(mTrip, mTripToMerge);
 	}
 
 	private static final Pattern STARTS_WITH_NUMBER = Pattern.compile("(^[\\d]+[\\S]*)", Pattern.CASE_INSENSITIVE);
