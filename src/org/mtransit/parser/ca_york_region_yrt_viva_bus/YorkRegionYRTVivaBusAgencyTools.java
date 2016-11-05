@@ -35,6 +35,7 @@ import org.mtransit.parser.mt.data.MTripStop;
 // http://www.yrt.ca/en/aboutus/developer.asp
 // http://www.yrt.ca/en/aboutus/GTFS.asp
 // http://www.yrt.ca/google/google_transit.zip
+// https://www.yrt.ca/google/google_transit.zip
 public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	public static void main(String[] args) {
@@ -115,11 +116,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final long RID_ENDS_WITH_A = 10000l;
 	private static final long RID_ENDS_WITH_B = 20000l;
 	private static final long RID_ENDS_WITH_C = 30000l;
+	private static final long RID_ENDS_WITH_D = 40000l;
 	private static final long RID_ENDS_WITH_E = 50000l;
 
 	private static final String A = "a";
 	private static final String B = "b";
 	private static final String C = "c";
+	private static final String D = "d";
 	private static final String E = "e";
 
 	private static final long VIVA_BLUE_RID = 601l;
@@ -167,6 +170,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					return RID_ENDS_WITH_B + digits;
 				} else if (routeShortNameLC.endsWith(C)) {
 					return RID_ENDS_WITH_C + digits;
+				} else if (routeShortNameLC.endsWith(D)) {
+					return RID_ENDS_WITH_D + digits;
 				} else if (routeShortNameLC.endsWith(E)) {
 					return RID_ENDS_WITH_E + digits;
 				}
@@ -201,10 +206,22 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			return CleanUtils.cleanLabel(routeLongNameLC.substring(VIVA.length()));
 		}
 		String routeShortName = gRoute.getRouteShortName();
+		String routeShortNameLC = routeShortName.toLowerCase(Locale.ENGLISH);
+		if (routeShortNameLC.startsWith(VIVA)) {
+			return CleanUtils.cleanLabel(routeShortNameLC.substring(VIVA.length()));
+		}
 		if (routeShortName != null && routeShortName.length() > 0 && Utils.isDigitsOnly(routeShortName)) {
 			return routeShortName;
 		}
-		return REMOVE_LEADING_ZEROS.matcher(routeShortName).replaceAll(StringUtils.EMPTY);
+		StringBuilder sb = new StringBuilder();
+		String[] rsns = routeShortName.split("/");
+		for (String rsn : rsns) {
+			if (sb.length() > 0) {
+				sb.append("/");
+			}
+			sb.append(REMOVE_LEADING_ZEROS.matcher(rsn).replaceAll(StringUtils.EMPTY));
+		}
+		return sb.toString();
 	}
 
 	private static final Pattern SS = Pattern.compile("((^|\\W){1}(school special|ss)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
@@ -220,7 +237,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteLongName(GRoute gRoute) {
-		if (gRoute.getRouteLongName().toLowerCase(Locale.ENGLISH).startsWith(VIVA)) {
+		if (gRoute.getRouteLongName().toLowerCase(Locale.ENGLISH).startsWith(VIVA) //
+				|| gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH).startsWith(VIVA)) {
 			return RLN_VIVA;
 		}
 		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
@@ -473,10 +491,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), // Bernard / Dunlop St
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "272", "1366", "490", //
+						Arrays.asList(new String[] { "6796", "1366", "490", //
 								"491", "493", //
 								"1207", "1368", "1207", //
-								"494", "372", "5885" })) //
+								"494", //
+								"372", "5885" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { /* no stops */})) //
 				.compileBothTripSort());
@@ -486,10 +505,12 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { /* no stops */})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "5885", "1182", "215", //
+						Arrays.asList(new String[] { "5885", "1182", //
+								"215", //
 								"1287", //
 								"1207", "1368", //
-								"5382", "272" })) //
+								"5382", //
+								"6796" })) //
 				.compileBothTripSort());
 		ALL_ROUTE_TRIPS2 = map2;
 	}
