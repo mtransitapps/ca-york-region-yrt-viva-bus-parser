@@ -313,19 +313,35 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "60", "60_merged_3480281", "60_merged_3481560", //
-								"123", "13", "10", "11", "744" })) //
+						Arrays.asList(new String[] { //
+						"60", // DOWNSVIEW STATION
+								"5408", "5408_merged_3503547", // !=
+								"123", // == YORK UNIVERSITY
+								"18", // !=
+								"13", // ==
+								"10", // != HWY 7 / PINE VALLEY
+								"11", // !=
+								"7", //
+								"744" // MARTIN GROVE RD / HIGHWAY 7
+						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "5", "10", "19", "123", "20", //
-								"5420", //
-								"60", "60_merged_3480281", "60_merged_3481560" })) //
+						Arrays.asList(new String[] { //
+						"5", // HWY 7 / MARTIN GROVE
+								"8", // !=
+								"10", // == HWY 7 / PINE VALLEY
+								"12", // !=
+								"19", // ==
+								"123", // == YORK UNIVERSITY
+								"20", // !=
+								"7877" // DOWNSVIEW STATION STOP # 9830
+						})) //
 				.compileBothTripSort());
 		map2.put(VIVA_PINK_RID, new RouteTripSpec(VIVA_PINK_RID, // Viva Pink
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"5943", "5943_merged_3502884", // FINCH GO BUS TERMINAL PLATFORM 1
+						"7747", // FINCH GO BUS TERMINAL PLATFORM 1
 								"39", // HWY 7 / ALLSTATE
 								"51" // UNIONVILLE STATION PLATFORM 1
 						})) //
@@ -333,7 +349,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { //
 						"51", // UNIONVILLE STATION PLATFORM 1
 								"38", // HWY 7 / ALLSTATE
-								"5943", "5943_merged_3502884" // FINCH GO BUS TERMINAL PLATFORM 1
+								"7747" // FINCH GO BUS TERMINAL PLATFORM 1
 						})) //
 				.compileBothTripSort());
 		map2.put(VIVA_PURPLE_RID, new RouteTripSpec(VIVA_PURPLE_RID, // Viva Purple
@@ -349,15 +365,15 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.WEST.getId()) //
 				.addTripSort(MDirectionType.EAST.intValue(), //
 						Arrays.asList(new String[] { //
-						"6005", "6005_merged_3503114", // NEWMARKET GO TRML PLAT 10
-								"6508", "6508_merged_3502850", //
-								"6564", "6564_merged_3503106" // DAVIS DR / HIGHWAY 404
+						"7828", // NEWMARKET GO TRML PLAT 10
+								"6907", //
+								"6574", "6574_merged_3503194"// DAVIS DR / HIGHWAY 404
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
-						"6564", "6564_merged_3503106", // DAVIS DR / HIGHWAY 404
-								"6511", "6511_merged_3503136", //
-								"6005", "6005_merged_3503114" // NEWMARKET GO TRML PLAT 10
+						"6574", "6574_merged_3503194", // DAVIS DR / HIGHWAY 404
+								"7112", //
+								"7828" // NEWMARKET GO TRML PLAT 10
 						})) //
 				.compileBothTripSort());
 		map2.put(26l, new RouteTripSpec(26l, //
@@ -386,14 +402,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								"336", // != YONGE ST / ST. JOHN'S SDRD
 								"3564", // !=
 								"4053", // !=
-								"5994", "5994_merged_3503152", // != WELLINGTON ST STOP # 6093
+								"7809", // != WELLINGTON ST STOP # 6093
 								"4058", // ==
-								"6003", "6003_merged_3503115" // AURORA GO STATION PLATFORM #2
+								"7661", // AURORA GO STATION PLATFORM #2
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
-						"6003", "6003_merged_3503115", // AURORA GO STATION PLATFORM #2
-								"5936", "5936_merged_3502896", // WELLINGTON ST / TEMPERANCE ST
+						"7661", // AURORA GO STATION PLATFORM #2
+								"5897", "5897_merged_3503555", // WELLINGTON ST / TEMPERANCE ST
 								"3329", // ==
 								"3903", // !=
 								"4021", // !=
@@ -407,7 +423,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.WEST.getId()) // Woodbine Ave
 				.addTripSort(MDirectionType.EAST.intValue(), //
 						Arrays.asList(new String[] { //
-						"6074", "6074_merged_3502779", // RODICK RD / WOODBINE AV
+						"7841", // RODICK RD / WOODBINE AV
 								"1911", // TOWN CENTRE BLVD / HIGHWAY 7
 								"2152" // MARKVILLE MALL STOP #1827
 						})) //
@@ -415,7 +431,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { //
 						"2152", // MARKVILLE MALL STOP #1827
 								"1990", // ++
-								"6074", "6074_merged_3502779" // RODICK RD / WOODBINE AV
+								"7841" // RODICK RD / WOODBINE AV
 						})) //
 				.compileBothTripSort());
 		map2.put(41l, new RouteTripSpec(41l, //
@@ -431,7 +447,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"5150", "5150_merged_3503051", // MAIN ST UNIONVILLE / ENTERPRISE BLV
+						"7803", // MAIN ST UNIONVILLE / ENTERPRISE BLV
 								"50", //
 								"2750", // UNIONVILLE GO STATION PLATFORM 2
 								"499" // MAJOR MACKENZIE DR / RIDGECREST RD
@@ -442,7 +458,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								"2150", // CARLTON RD / MCCOWAN RD
 								"2750", // UNIONVILLE GO STATION PLATFORM 2
 								"49", //
-								"5593", "5593_merged_3503017" // ENTERPRISE DR / MAIN STREET
+								"7628" // ENTERPRISE DR / MAIN STREET
 						})) //
 				.compileBothTripSort());
 		map2.put(44l, new RouteTripSpec(44l, //
@@ -521,9 +537,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
 						"499", // MAJOR MACKENZIE DR / RIDGECREST RD
-								"5368", // ==
+								"5258", // ==
 								"1882", // != BUR OAK AV / THE BRIDLE WALK
-								"6289", "6289_merged_3502706", // !=
+								"6077", "6077_merged_3503430", // !=
 								"2750" // UNIONVILLE GO STATION PLATFORM 2
 						})) //
 				.compileBothTripSort());
@@ -547,11 +563,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), // Bernard / Dunlop St
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "6796", "1366", "490", //
+						Arrays.asList(new String[] { //
+						"6525", // HILLCREST MALL
+								"1366", // OBSERVATORY TOWERS STOP # 5319
+								"490", //
 								"491", "493", //
 								"1207", "1368", "1207", //
 								"494", //
-								"372", "5885" })) //
+								"372", // DUNLOP ST STOP # 2750
+								"7612", // UPPER YONGE PLACE
+						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { /* no stops */})) //
 				.compileBothTripSort());
@@ -561,12 +582,15 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { /* no stops */})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "5885", "1182", //
+						Arrays.asList(new String[] { //
+						"7612", // UPPER YONGE PLACE
+								"1182", // RICHMOND HEIGHTS NO FRILLS STOP # 4
 								"215", //
 								"1287", //
 								"1207", "1368", //
 								"5382", //
-								"6796" })) //
+								"6525" // HILLCREST MALL
+						})) //
 				.compileBothTripSort());
 		ALL_ROUTE_TRIPS2 = map2;
 	}
