@@ -210,6 +210,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		if (routeShortNameLC.startsWith(VIVA)) {
 			return CleanUtils.cleanLabel(routeShortNameLC.substring(VIVA.length()));
 		}
+		if (routeLongNameLC.equalsIgnoreCase("yellow")) {
+			return CleanUtils.cleanLabel(routeLongNameLC);
+		}
 		if (routeShortName != null && routeShortName.length() > 0 && Utils.isDigitsOnly(routeShortName)) {
 			return routeShortName;
 		}
@@ -239,6 +242,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	public String getRouteLongName(GRoute gRoute) {
 		if (gRoute.getRouteLongName().toLowerCase(Locale.ENGLISH).startsWith(VIVA) //
 				|| gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH).startsWith(VIVA)) {
+			return RLN_VIVA;
+		}
+		if (gRoute.getRouteLongName().toLowerCase(Locale.ENGLISH).equalsIgnoreCase("yellow")) {
 			return RLN_VIVA;
 		}
 		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
