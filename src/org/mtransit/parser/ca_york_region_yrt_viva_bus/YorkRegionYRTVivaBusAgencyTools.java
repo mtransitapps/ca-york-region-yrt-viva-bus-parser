@@ -773,6 +773,21 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (matcher.find()) {
 				return Integer.parseInt(matcher.group());
 			}
+			if ("VNYNBASB".equalsIgnoreCase(gStop.getStopId())) {
+				return 10000;
+			} else if ("VNBRYNSB".equalsIgnoreCase(gStop.getStopId())) {
+				return 100001;
+			} else if ("VNYNRONB".equalsIgnoreCase(gStop.getStopId())) {
+				return 100002;
+			} else if ("VNYNWDSB".equalsIgnoreCase(gStop.getStopId())) {
+				return 100003;
+			} else if ("VNYNCLNB".equalsIgnoreCase(gStop.getStopId())) {
+				return 100004;
+			} else if ("VNYN16SB".equalsIgnoreCase(gStop.getStopId())) {
+				return 100005;
+			} else if ("VNYNCTNB".equalsIgnoreCase(gStop.getStopId())) {
+				return 100006;
+			}
 			System.out.printf("\nUnexpected stop ID for %s !\n", gStop);
 			System.exit(-1);
 			return -1;
