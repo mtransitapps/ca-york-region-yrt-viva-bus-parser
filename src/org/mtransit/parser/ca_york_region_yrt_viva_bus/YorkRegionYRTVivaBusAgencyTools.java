@@ -102,7 +102,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	private static final String VIVA = "viva";
 	private static final String BLUE = "blue";
-	private static final String BLUE_A = "blue a";
+	private static final String BLUE_A = "blue-a";
 	private static final String GREEN = "green";
 	private static final String ORANGE = "orange";
 	private static final String PINK = "pink";
@@ -135,25 +135,27 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public long getRouteId(GRoute gRoute) {
+		String routeLongName = gRoute.getRouteLongName();
 		String routeShortName = gRoute.getRouteShortName();
 		if (routeShortName != null && routeShortName.length() > 0 && Utils.isDigitsOnly(routeShortName)) {
 			return Integer.valueOf(routeShortName); // using route short name as route ID
 		}
 		String routeShortNameLC = routeShortName.toLowerCase(Locale.ENGLISH);
-		if (routeShortNameLC.contains(VIVA)) {
-			if (routeShortNameLC.endsWith(BLUE)) {
+		String routeLongNameLC = routeLongName.toLowerCase(Locale.ENGLISH);
+		if (routeLongNameLC.contains(VIVA)) {
+			if (routeLongNameLC.endsWith(BLUE)) {
 				return VIVA_BLUE_RID;
-			} else if (routeShortNameLC.endsWith(BLUE_A)) {
+			} else if (routeLongNameLC.endsWith(BLUE_A)) {
 				return VIVA_BLUE_A_RID;
-			} else if (routeShortNameLC.endsWith(GREEN)) {
+			} else if (routeLongNameLC.endsWith(GREEN)) {
 				return VIVA_GREEN_RID;
-			} else if (routeShortNameLC.endsWith(ORANGE)) {
+			} else if (routeLongNameLC.endsWith(ORANGE)) {
 				return VIVA_ORANGE_RID;
-			} else if (routeShortNameLC.endsWith(PINK)) {
+			} else if (routeLongNameLC.endsWith(PINK)) {
 				return VIVA_PINK_RID;
-			} else if (routeShortNameLC.endsWith(PURPLE)) {
+			} else if (routeLongNameLC.endsWith(PURPLE)) {
 				return VIVA_PURPLE_RID;
-			} else if (routeShortNameLC.endsWith(YELLOW)) {
+			} else if (routeLongNameLC.endsWith(YELLOW)) {
 				return VIVA_YELLOW_RID;
 			}
 		}
