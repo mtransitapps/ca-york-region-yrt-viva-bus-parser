@@ -345,12 +345,12 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"9759", // DOWNSVIEW STATION
+						"9759", "9759_merged_3505506", // DOWNSVIEW STATION
 								"9828", // != MURRAY ROSS STOP #9828
-								"9822", // == YORK UNIVERSITY
+								"9822", // <> YORK UNIVERSITY
 								"9713", // != INTERCHANGE / JANE,INTERCHANGE WAY & JANE ST
 								"9708", // == HWY 7 / ANSLEY GROVE
-								"9705", // != HWY 7 / PINE VALLEY
+								"9705", // <> HWY 7 / PINE VALLEY => SOUTH
 								"9706", // != HWY 7 / PINE VALLEY
 								"9702", // HWY 7 / KIPLING
 								"3525" // MARTIN GROVE RD / HIGHWAY 7
@@ -359,12 +359,12 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { //
 						"9700", // HWY 7 / MARTIN GROVE
 								"9703", // != HWY 7 / ISLINGTON
-								"9705", // == HWY 7 / PINE VALLEY
+								"9705", // <> HWY 7 / PINE VALLEY
 								"9707", // != HWY 7 / ANSLEY GROVE
 								"9714", // == INTERCHANGE / JANE
-								"9822", // == YORK UNIVERSITY
+								"9822", // <> YORK UNIVERSITY
 								"9715", // != YORK UNIVERSITY
-								"9830" // DOWNSVIEW STATION STOP # 9830
+								"9830", "9830_merged_3505505", // DOWNSVIEW STATION STOP # 9830
 						})) //
 				.compileBothTripSort());
 		map2.put(VIVA_PINK_RID, new RouteTripSpec(VIVA_PINK_RID, // Viva Pink
