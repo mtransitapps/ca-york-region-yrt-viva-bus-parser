@@ -277,6 +277,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String SB = " - sb";
 	private static final String NB = " - nb";
 
+	private static final String NORTHBOUND = " - northbound";
+	private static final String SOUTHBOUND = " - southbound";
+	private static final String EASTBOUND = " - eastbound";
+	private static final String WESTBOUND = " - westbound";
+
 	private static final String MO = " - mo";
 	private static final String AF = " - af";
 
@@ -296,12 +301,12 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								"9787", // YONGE / ELGIN MILLS,YONGE ST & ELGIN MILLS RD
 								"9789", // BERNARD TERMINAL PLATFORM 2
 								"9790", // YONGE / BERNARD,YONGE ST & BERNARD AV
-								"9809", // NEWMARKET GO TERMINAL PLATFORM 9
+								"9809", "9809_merged_3507261", // NEWMARKET GO TERMINAL PLATFORM 9
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"9809", // NEWMARKET GO TERMINAL PLATFORM 9
-								"9799", // YONGE / HENDERSON,YONGE ST & HENDERSON DR
+						"9809", "9809_merged_3507261", // NEWMARKET GO TERMINAL PLATFORM 9
+								"9799", "9799_merged_3507806", // YONGE / HENDERSON,YONGE ST & HENDERSON DR
 								"9793", // YONGE / 19TH-GAMBLE,YONGE ST & GAMBLE RD
 								"9789", // BERNARD TERMINAL PLATFORM 2
 								"9791", // YONGE / BERNARD,YONGE ST & BERNARD AV
@@ -315,11 +320,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { //
 						"9769", // FINCH GO BUS TERMINAL PLATFORM 2
 								"9787", // YONGE / ELGIN MILLS,YONGE ST & ELGIN MILLS RD
-								"9809", // NEWMARKET GO TERMINAL PLATFORM 9
+								"9809", "9809_merged_3507261", // NEWMARKET GO TERMINAL PLATFORM 9
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"9809", // NEWMARKET GO TERMINAL PLATFORM 9
+						"9809", "9809_merged_3507261", // NEWMARKET GO TERMINAL PLATFORM 9
 								"9791", // YONGE / BERNARD,YONGE ST & BERNARD AV,
 								"9769", // FINCH GO BUS TERMINAL PLATFORM 2
 						})) //
@@ -413,15 +418,15 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.WEST.getId()) //
 				.addTripSort(MDirectionType.EAST.intValue(), //
 						Arrays.asList(new String[] { //
-						"6426", // NEWMARKET GO TRML PLAT 10
-								"9847", // SOUTH LAKE HOSPITAL
-								"9856"// DAVIS DR / HIGHWAY 404
+						"6426", "6426_merged_3506906", // NEWMARKET GO TRML PLAT 10
+								"9847", "9847_merged_3507436", // SOUTH LAKE HOSPITAL
+								"9856", "9856_merged_3506939", // DAVIS DR / HIGHWAY 404
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
-						"9856", // DAVIS DR / HIGHWAY 404
-								"9848", // SOUTH LAKE HOSPITAL
-								"6426" // NEWMARKET GO TRML PLAT 10
+						"9856", "9856_merged_3506939", // DAVIS DR / HIGHWAY 404
+								"9848", "9848_merged_3507238", // SOUTH LAKE HOSPITAL
+								"6426", "6426_merged_3506906", // NEWMARKET GO TRML PLAT 10
 						})) //
 				.compileBothTripSort());
 		map2.put(26l, new RouteTripSpec(26l, //
@@ -445,24 +450,24 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.WEST.getId()) //
 				.addTripSort(MDirectionType.EAST.intValue(), //
 						Arrays.asList(new String[] { //
-						"1210", // AURORA HEIGHTS DR / WHISPERING PINE
-								"2512", // == YONGE ST STOP # 2512
-								"2410", // == ST. JOHN'S SDRD / OLD YONGE ST
-								"5245", // == INDUSTRIAL PKWY / WELLINGTON ST
-								"6093", // != WELLINGTON ST STOP # 6093
-								"5253", // == INDUSTRIAL PKWY STOP # 5253
-								"6424", // AURORA GO STATION PLATFORM #2
+						"1210", "1210_merged_3507150", // AURORA HEIGHTS DR / WHISPERING PINE
+								"2512", "2512_merged_3506869", // // == YONGE ST STOP # 2512
+								"2410", "2410_merged_3507606", // // == ST. JOHN'S SDRD / OLD YONGE ST
+								"5245", "5245_merged_3507143", // // == INDUSTRIAL PKWY / WELLINGTON ST
+								"6093", "6093_merged_3507284", // // != WELLINGTON ST STOP # 6093
+								"5253", "5253_merged_3507842", // // == INDUSTRIAL PKWY STOP # 5253
+								"6424", "6424_merged_3506904", // // AURORA GO STATION PLATFORM #2
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
-						"6424", // AURORA GO STATION PLATFORM #2
-								"6391", // WELLINGTON ST / TEMPERANCE ST
-								"1191", // == WELLINGTON ST / HAIDA DR
-								"4748", // != WELLINGTON ST / MCDONALD DR
-								"5079", // != MCDONALD DR / HAIDA DR
-								"4737", // != HAIDA DR / MCDONALD ST
-								"4736", // == HAIDA DR / AURORA HEIGHTS DR
-								"1210" // AURORA HEIGHTS DR / WHISPERING PINE
+						"6424", "6424_merged_3506904", // AURORA GO STATION PLATFORM #2
+								"6391", "6391_merged_3507194", // WELLINGTON ST / TEMPERANCE ST
+								"1191", "1191_merged_3506878", // == WELLINGTON ST / HAIDA DR
+								"4748", "4748_merged_3506914", // != WELLINGTON ST / MCDONALD DR
+								"5079", "5079_merged_3507036", // != MCDONALD DR / HAIDA DR
+								"4737", "4737_merged_3506761", // != HAIDA DR / MCDONALD ST
+								"4736", "4736_merged_3506687", // == HAIDA DR / AURORA HEIGHTS DR
+								"1210", "1210_merged_3507150", // AURORA HEIGHTS DR / WHISPERING PINE
 						})) //
 				.compileBothTripSort());
 		map2.put(40l, new RouteTripSpec(40l, //
@@ -521,17 +526,17 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"4691", // NEWMARKET GO TERMINAL PLATFORM 6
-								"1971", // != UPPER CANADA MALL STOP # 1971
-								"5944", // == DAVIS DR / FORD WILSON DR
-								"5698", // WOODSPRING AV / ALFRED SMITH WAY
-								"4680", // GREEN LANE / YONGE ST
+						"4691", "4691_merged_3507544", // NEWMARKET GO TERMINAL PLATFORM 6
+								"1971", "1971_merged_3506912", // != UPPER CANADA MALL STOP # 1971
+								"5944", "5944_merged_3507230", // == DAVIS DR / FORD WILSON DR
+								"5698", "5698_merged_3507342", // WOODSPRING AV / ALFRED SMITH WAY
+								"4680", "4680_merged_3506688", // GREEN LANE / YONGE ST
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"4680", // GREEN LANE / YONGE ST
-								"5421", // LONDON RD / YORKSHIRE DR
-								"4691", // NEWMARKET GO TERMINAL PLATFORM 6
+						"4680", "4680_merged_3506688", // GREEN LANE / YONGE ST
+								"5421", "5421_merged_3507345", // LONDON RD / YORKSHIRE DR
+								"4691", "4691_merged_3507544", // NEWMARKET GO TERMINAL PLATFORM 6
 						})) //
 				.compileBothTripSort());
 		map2.put(45l, new RouteTripSpec(45l, //
@@ -555,15 +560,15 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"4839", // KING RD / YONGE ST
-								"2658", // HUMBERLAND DR / WOODHAVEN CRES
-								"2659", // YONGE ST / COON'S RD
+						"4839", "4839_merged_3506858", // KING RD / YONGE ST
+								"2658", "2658_merged_3507610", // HUMBERLAND DR / WOODHAVEN CRES
+								"2659", "2659_merged_3507609", // YONGE ST / COON'S RD
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"2659", // YONGE ST / COON'S RD
-								"2359", // NORTH LAKE RD / OLDE BAYVIEW AV,
-								"4839", // KING RD / YONGE ST
+						"2659", "2659_merged_3507609", // YONGE ST / COON'S RD
+								"2359", "2359_merged_3507538", // NORTH LAKE RD / OLDE BAYVIEW AV,
+								"4839", "4839_merged_3506858", // KING RD / YONGE ST
 						})) //
 				.compileBothTripSort());
 		map2.put(90l + RID_ENDS_WITH_B, new RouteTripSpec(90l + RID_ENDS_WITH_B, // 90B
@@ -587,11 +592,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
 						"4197", // BERNARD TERMINAL PLATFORM 5
-								"4680", // GREEN LANE / YONGE ST
+								"4680", "4680_merged_3506688", // GREEN LANE / YONGE ST
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"4680", // GREEN LANE / YONGE ST
+						"4680", "4680_merged_3506688", // GREEN LANE / YONGE ST
 								"4197", // BERNARD TERMINAL PLATFORM 5
 						})) //
 				.compileBothTripSort());
@@ -699,16 +704,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			return; // split
 		}
 		String gTripHeadsignLC = gTrip.getTripHeadsign().toLowerCase(Locale.ENGLISH);
-		if (gTripHeadsignLC.endsWith(NB)) {
+		if (gTripHeadsignLC.endsWith(NB) || gTripHeadsignLC.endsWith(NORTHBOUND)) {
 			mTrip.setHeadsignDirection(MDirectionType.NORTH);
 			return;
-		} else if (gTripHeadsignLC.endsWith(SB)) {
+		} else if (gTripHeadsignLC.endsWith(SB) || gTripHeadsignLC.endsWith(SOUTHBOUND)) {
 			mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 			return;
-		} else if (gTripHeadsignLC.endsWith(EB)) {
+		} else if (gTripHeadsignLC.endsWith(EB) || gTripHeadsignLC.endsWith(EASTBOUND)) {
 			mTrip.setHeadsignDirection(MDirectionType.EAST);
 			return;
-		} else if (gTripHeadsignLC.endsWith(WB)) {
+		} else if (gTripHeadsignLC.endsWith(WB) || gTripHeadsignLC.endsWith(WESTBOUND)) {
 			mTrip.setHeadsignDirection(MDirectionType.WEST);
 			return;
 		}
@@ -719,21 +724,353 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignString(PM_HEADSIGN, gTrip.getDirectionId());
 			return;
 		}
+		if (isGoodEnoughAccepted()) {
+			if (mRoute.getId() == 21L) {
+				if (gTrip.getDirectionId() == 0 && "RT 21 Vellore Local".equals(gTrip.getTripHeadsign())) {
+					mTrip.setHeadsignString("AM", gTrip.getDirectionId());
+					return;
+				} else if (gTrip.getDirectionId() == 1 && "RT 21 Vellore Local".equals(gTrip.getTripHeadsign())) {
+					mTrip.setHeadsignString("PM", gTrip.getDirectionId());
+					return;
+				}
+			}
+			if (mRoute.getId() >= 400L && mRoute.getId() <= 499L) {
+				mTrip.setHeadsignString(cleanTripHeadsign(gTrip.getTripHeadsign()) + " " + gTrip.getDirectionId(), gTrip.getDirectionId());
+				return;
+			}
+			mTrip.setHeadsignString(cleanTripHeadsign(gTrip.getTripHeadsign()), gTrip.getDirectionId() == null ? 0 : gTrip.getDirectionId());
+			return;
+		}
 		System.out.printf("\nUnexpected trip head sign for %s !\n", gTrip);
 		System.exit(-1);
+		return;
 	}
 
 	@Override
 	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
-		return super.mergeHeadsign(mTrip, mTripToMerge);
+		List<String> headsignsValues = Arrays.asList(mTrip.getHeadsignValue(), mTripToMerge.getHeadsignValue());
+		if (mTrip.getRouteId() == 2L) {
+			if (Arrays.asList( //
+					"Markham Rd", //
+					"Copper Crk Dr" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Markham Rd", mTrip.getHeadsignId());
+				return true;
+			} else if (Arrays.asList( //
+					"Finch Terminal", //
+					"Middlefield" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Finch Terminal", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 3L) {
+			if (Arrays.asList( //
+					"Yonge", //
+					"York U" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("York U", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 4L) {
+			if (Arrays.asList( //
+					"Bayview", //
+					"Woodbine" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Woodbine", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 5L) {
+			if (Arrays.asList( //
+					"Drop Off Only", //
+					"Finch Terminal" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Finch Terminal", mTrip.getHeadsignId());
+				return true;
+			} else if (Arrays.asList( //
+					"Drop Off Only", //
+					"Gln Shields" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Gln Shields", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 7L) {
+			if (Arrays.asList( //
+					"Steeles", //
+					"Woodbine Ctr" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Woodbine Ctr", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 8L) {
+			if (Arrays.asList( //
+					"Clayton / Harvest Moon", //
+					"Steeles Ave" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Steeles Ave", mTrip.getHeadsignId()); // Clayton / Harvest Moon
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 12L) {
+			if (Arrays.asList( //
+					"Steeles", //
+					"Steeles AV" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Steeles AV", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 13L) {
+			if (Arrays.asList( //
+					"Napa Vly", //
+					"Kleinburg", //
+					"Napa Vly / Kleinburg" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Napa Vly / Kleinburg", mTrip.getHeadsignId());
+				return true;
+			} else if (Arrays.asList( //
+					"Rutherford", //
+					"Steeles AV" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Steeles AV", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 15L) {
+			if (Arrays.asList( //
+					"Main St", //
+					"Yonge St" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Yonge St", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 22L) {
+			if (Arrays.asList( //
+					"Seneca College King Campus", //
+					"Seneca King", //
+					"Villanova HS" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Villanova HS", mTrip.getHeadsignId());
+				return true;
+			} else if (Arrays.asList( //
+					"Maple GO", //
+					"Maple GO Stn" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Maple GO", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 23L) {
+			if (Arrays.asList( //
+					"Promenade Terminal", //
+					"Finch Terminal" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Finch Terminal", mTrip.getHeadsignId());
+				return true;
+			} else if (Arrays.asList( //
+					"Lebovic Campus Dr", //
+					"Teston Rd" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Teston Rd", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 24L) {
+			if (Arrays.asList( //
+					"Don MIlls Sta", //
+					"Don Mills Sta" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Don Mills Sta", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 32L) {
+			if (Arrays.asList( //
+					"Henderson", //
+					"Stone Rd" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Stone Rd", mTrip.getHeadsignId());
+				return true;
+			} else if (Arrays.asList( //
+					"Aurora GO Sta", //
+					"Bathurst", //
+					"Seneca", //
+					"Seneca College King Campus", //
+					"Stone Rd" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Seneca", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 33L) {
+			if (Arrays.asList( //
+					"State Farm", //
+					"404 " + PARK_AND_RIDE_SHORT //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("404 " + PARK_AND_RIDE_SHORT, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 33L + RID_ENDS_WITH_A) { // 33A
+			if (Arrays.asList( //
+					"Yonge St", //
+					"Murray" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Murray", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 50L) {
+			if (Arrays.asList( //
+					"Pefferlaw", //
+					"Sutton" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Sutton", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 51L) {
+			if (Arrays.asList( //
+					"Simcoe Lndg", //
+					"Ferncroft" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Ferncroft", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 56L) {
+			if (Arrays.asList( //
+					"404 Town Ctr", //
+					"Newmarket Terminal" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Newmarket Terminal", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 82L) {
+			if (Arrays.asList( //
+					"St Robert", //
+					"Commerce Vly Dr" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Commerce Vly Dr", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 83L) {
+			if (Arrays.asList( //
+					"Richmond Hl H.S", //
+					"Bernard Terminal" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Bernard Terminal", mTrip.getHeadsignId()); // Richmond Hl H.S
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 85L) {
+			if (Arrays.asList( //
+					"Drop Off Only", //
+					"Napa Vly" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Napa Vly", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 86L) {
+			if (Arrays.asList( //
+					"Richmond Hl Ctr", //
+					"Richmond Hl Ctr Terminal" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Richmond Hl Ctr", mTrip.getHeadsignId()); // Richmond Hl Ctr Terminal
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 223L) {
+			if (Arrays.asList( //
+					"Ford Wilson", //
+					"Sawmill Vly", //
+					"Ford Wilson / Sawmill Vly" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Ford Wilson / Sawmill Vly", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 320L) {
+			if (Arrays.asList( //
+					"West Beaver Crk", //
+					"East Beaver Crk" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("East Beaver Crk", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 444L) {
+			if (Arrays.asList( //
+					"Commerce Vly 0", //
+					"Hwy 7 0" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Commerce Vly 0", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 760L) {
+			if (Arrays.asList( //
+					"Vaughan Mills", //
+					"Canada's Wonderland" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Canada's Wonderland", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == _98_99_RID) {
+			if (Arrays.asList( //
+					"Newmarket Terminal", //
+					"Grn Ln" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Grn Ln", mTrip.getHeadsignId());
+				return true;
+			}
+		}
+		if (isGoodEnoughAccepted()) {
+			return super.mergeHeadsign(mTrip, mTripToMerge);
+		}
+		System.out.printf("\nUnexpected trips to merge: %s & %s!\n", mTrip, mTripToMerge);
+		System.exit(-1);
+		return false;
 	}
 
-	private static final Pattern STARTS_WITH_NUMBER = Pattern.compile("(^[\\d]+[\\S]*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern TO = Pattern.compile("((^|\\W){1}(to)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final Pattern VIA = Pattern.compile("((^|\\W){1}(via)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+
+	private static final Pattern STARTS_WITH_ROUTE_NUMBER = Pattern.compile("(^rt [\\d]+ )", Pattern.CASE_INSENSITIVE);
+
+	private static final Pattern STARTS_WITH_DASH = Pattern.compile("(^\\- )", Pattern.CASE_INSENSITIVE);
+
+	private static final String PARK_AND_RIDE_SHORT = "P&R";
+	private static final Pattern PARK_AND_RIDE = Pattern.compile("((^|\\W){1}(park and ride|park & ride|P\\+R)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String PARK_AND_RIDE_REPLACEMENT = "$2" + PARK_AND_RIDE_SHORT + "$4";
+
+	private static final Pattern SECONDARY_SCHOOL_ = Pattern.compile("((^|\\W){1}(" //
+			+ "secondary school special" //
+			+ "|" //
+			+ "secondary school" //
+			+ ")(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String SECONDARY_SCHOOL_REPLACEMENT_ = "$2" + "SS" + "$4";
+
+	private static final Pattern HIGH_SCHOOL_ = Pattern.compile("((^|\\W){1}(" //
+			+ "high school special" //
+			+ "|" //
+			+ "high school" //
+			+ ")(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+
+	private static final String HIGH_SCHOOL_REPLACEMENT_ = "$2" + "HS" + "$4";
+
+	private static final Pattern SCHOOL_ = Pattern.compile("((^|\\W){1}(" //
+			+ "school special" //
+			+ "|" //
+			+ "school" //
+			+ ")(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String SCHOOL_REPLACEMENT_ = "$2" + "S" + "$4";
 
 	@Override
 	public String cleanTripHeadsign(String tripHeadsign) {
-		tripHeadsign = STARTS_WITH_NUMBER.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
+		if (Utils.isUppercaseOnly(tripHeadsign, true, true)) {
+			tripHeadsign = tripHeadsign.toLowerCase(Locale.ENGLISH);
+		}
+		tripHeadsign = STARTS_WITH_ROUTE_NUMBER.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
+		tripHeadsign = STARTS_WITH_DASH.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
+		Matcher matcherTO = TO.matcher(tripHeadsign);
+		if (matcherTO.find()) {
+			String gTripHeadsignAfterTO = tripHeadsign.substring(matcherTO.end());
+			tripHeadsign = gTripHeadsignAfterTO;
+		}
+		Matcher matcherVIA = VIA.matcher(tripHeadsign);
+		if (matcherVIA.find()) {
+			String gTripHeadsignBeforeVIA = tripHeadsign.substring(0, matcherVIA.start());
+			tripHeadsign = gTripHeadsignBeforeVIA;
+		}
+		tripHeadsign = SECONDARY_SCHOOL_.matcher(tripHeadsign).replaceAll(SECONDARY_SCHOOL_REPLACEMENT_);
+		tripHeadsign = HIGH_SCHOOL_.matcher(tripHeadsign).replaceAll(HIGH_SCHOOL_REPLACEMENT_);
+		tripHeadsign = SCHOOL_.matcher(tripHeadsign).replaceAll(SCHOOL_REPLACEMENT_);
 		tripHeadsign = GO.matcher(tripHeadsign).replaceAll(GO_REPLACEMENT);
+		tripHeadsign = PARK_AND_RIDE.matcher(tripHeadsign).replaceAll(PARK_AND_RIDE_REPLACEMENT);
 		tripHeadsign = CleanUtils.cleanSlashes(tripHeadsign);
 		tripHeadsign = CleanUtils.removePoints(tripHeadsign);
 		tripHeadsign = CleanUtils.cleanStreetTypes(tripHeadsign);
