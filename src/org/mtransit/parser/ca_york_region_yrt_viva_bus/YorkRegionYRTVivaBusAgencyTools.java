@@ -272,8 +272,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		return AGENCY_COLOR;
 	}
 
-
 	private static final String PARK_AND_RIDE_SHORT = "P&R";
+
 	private static final String HIGHWAY_404 = "Hwy 404";
 	private static final String HIGHWAY_404_PARK_AND_RIDE = HIGHWAY_404 + " " + PARK_AND_RIDE_SHORT;
 	private static final String DON_MILLS_STATION = "Don Mills Sta";
@@ -1028,6 +1028,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					"Hwy 7 0" //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString("Commerce Vly 0", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 501L + RID_ENDS_WITH_A) { // 501A
+			if (Arrays.asList( //
+					"Bramalea City Ctr", //
+					"Downtown Brampton Terminal" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Downtown Brampton Terminal", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 760L) {
