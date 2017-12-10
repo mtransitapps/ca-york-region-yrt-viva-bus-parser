@@ -665,13 +665,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								"4197", // BERNARD TERMINAL PLATFORM 5
 						})) //
 				.compileBothTripSort());
-		map2.put(204l, new RouteTripSpec(204l, //
+		map2.put(204L, new RouteTripSpec(204L, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, BERCZY, //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, UNIONVILLE_GO_STATION) //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
 						"4171", // UNIONVILLE GO STATION PLATFORM 2
-								"1505", "1505_merged_3507067",// CARLTON RD / MANSFIELD LANE
+								"1505", "1505_merged_3507068",// CARLTON RD / MANSFIELD LANE
 								"2971", // MAJOR MACKENZIE DR / RIDGECREST RD
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
@@ -683,19 +683,19 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								"4171" // UNIONVILLE GO STATION PLATFORM 2
 						})) //
 				.compileBothTripSort());
-		map2.put(522l, new RouteTripSpec(522l, //
+		map2.put(522L, new RouteTripSpec(522L, //
 				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "East", //
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "West") //
 				.addTripSort(MDirectionType.EAST.intValue(), //
 						Arrays.asList(new String[] { //
-						"5246", "5246_merged_3507064", // HAGGERMANS CORNER STOP #5246
+						"5246", "5246_merged_3507065", // HAGGERMANS CORNER STOP #5246
 								"5986", // CORNELL PARK AV / WALKERVILLE RD
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
 						"5986", // CORNELL PARK AV / WALKERVILLE RD
 								"6305", // TONY WONG PLACE / KENNEDY RD
-								"5246", "5246_merged_3507064", // HAGGERMANS CORNER STOP #5246
+								"5246", "5246_merged_3507065", // HAGGERMANS CORNER STOP #5246
 						})) //
 				.compileBothTripSort());
 		map2.put(589l, new RouteTripSpec(589l, //
@@ -703,7 +703,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"7106", "7106_merged_3507065", // HILLCREST MALL
+						"7106", "7106_merged_3507066", // HILLCREST MALL
 								"5319", // OBSERVATORY TOWERS STOP # 5319
 								"2961", // MAJOR MACKENZIE DR / HARDING BLVD
 								"2962", // MAJOR MACKENZIE DR / ARNOLD CRES
@@ -718,7 +718,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { /* no stops */})) //
 				.compileBothTripSort());
-		map2.put(590l, new RouteTripSpec(590l, //
+		map2.put(590L, new RouteTripSpec(590L, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Hillcrest Mall") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
@@ -732,7 +732,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								"4694", // YONGE ST / ARNOLD CRES
 								"5322", // MCCONAGHY CENTRE STOP # 5322
 								"6125", // HARDING BLVD / KERSEY CRES
-								"7106", "7106_merged_3507065", // HILLCREST MALL
+								"7106", "7106_merged_3507066", // HILLCREST MALL
 						})) //
 				.compileBothTripSort());
 		ALL_ROUTE_TRIPS2 = map2;
