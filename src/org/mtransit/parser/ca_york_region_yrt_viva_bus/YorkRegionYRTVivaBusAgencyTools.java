@@ -1079,7 +1079,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					"West Beaver Crk", //
 					"East Beaver Crk" //
 			).containsAll(headsignsValues)) {
-				mTrip.setHea dsignString("East Beaver Crk", mTrip.getHeadsignId());
+				mTrip.setHeadsignString("East Beaver Crk", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 444L) {
