@@ -112,6 +112,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final long _98_99_RID = 980099l;
 	private static final String RSN_98_99 = "98/99";
 	private static final String RSN_098_099 = "098/099";
+	private static final String RSN_098_099_ = "098|099";
 
 	private static final long RID_ENDS_WITH_A = 10000l;
 	private static final long RID_ENDS_WITH_B = 20000l;
@@ -159,7 +160,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				return VIVA_YELLOW_RID;
 			}
 		}
-		if (RSN_98_99.equals(routeShortNameLC) || RSN_098_099.equals(routeShortNameLC)) {
+		if (RSN_98_99.equals(routeShortNameLC) //
+				|| RSN_098_099.equals(routeShortNameLC) //
+				|| RSN_098_099_.equals(routeShortNameLC)) {
 			return _98_99_RID;
 		}
 		try {
