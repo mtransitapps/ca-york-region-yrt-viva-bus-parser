@@ -114,11 +114,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String RSN_098_099 = "098/099";
 	private static final String RSN_098_099_ = "098|099";
 
-	private static final long RID_ENDS_WITH_A = 10000l;
-	private static final long RID_ENDS_WITH_B = 20000l;
-	private static final long RID_ENDS_WITH_C = 30000l;
-	private static final long RID_ENDS_WITH_D = 40000l;
-	private static final long RID_ENDS_WITH_E = 50000l;
+	private static final long RID_ENDS_WITH_A = 10_000L;
+	private static final long RID_ENDS_WITH_B = 20_000L;
+	private static final long RID_ENDS_WITH_C = 30_000L;
+	private static final long RID_ENDS_WITH_D = 40_000L;
+	private static final long RID_ENDS_WITH_E = 50_000L;
 
 	private static final String A = "a";
 	private static final String B = "b";
@@ -126,13 +126,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String D = "d";
 	private static final String E = "e";
 
-	private static final long VIVA_BLUE_RID = 601l;
-	private static final long VIVA_BLUE_A_RID = 602l;
-	private static final long VIVA_GREEN_RID = 606l;
-	private static final long VIVA_ORANGE_RID = 605l;
-	private static final long VIVA_PINK_RID = 604l;
-	private static final long VIVA_PURPLE_RID = 603l;
-	private static final long VIVA_YELLOW_RID = 607l;
+	private static final long VIVA_BLUE_RID = 601L;
+	private static final long VIVA_BLUE_A_RID = 602L;
+	private static final long VIVA_GREEN_RID = 606L;
+	private static final long VIVA_ORANGE_RID = 605L;
+	private static final long VIVA_PINK_RID = 604L;
+	private static final long VIVA_PURPLE_RID = 603L;
+	private static final long VIVA_YELLOW_RID = 607L;
 
 	@Override
 	public long getRouteId(GRoute gRoute) {
@@ -728,9 +728,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								"4651", // "5246", // HAGGERMANS CORNER STOP #5246
 						})) //
 				.compileBothTripSort());
-		map2.put(589l, new RouteTripSpec(589l, //
+		map2.put(589L, new RouteTripSpec(589L, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Bernard / Dunlop St", //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "") //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY) //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
 						"6525", // "7106", // HILLCREST MALL
@@ -752,6 +752,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								"207", // "1693", // ==
 								"372", // "2750", // DUNLOP ST STOP #
 								"7612", // "6321", // UPPER YONGE PLACE
+								"8042", // "7228", // MON SHEONG COURT STOP # 7228
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { /* no stops */})) //
@@ -763,7 +764,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { /* no stops */})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"7612", // "6321", // UPPER YONGE PLACE
+						"8042", // "7228", // MON SHEONG COURT STOP # 7228
+								"7612", // "6321", // UPPER YONGE PLACE
 								"1182", // "4628", // RICHMOND HEIGHTS NO FRILLS STOP # 4
 								"215", // "1707", // MAJOR MACKENZIE DR / BAKER AV
 								"1287", // "4950", // MAJOR MACKENZIE DR / YONGE ST
@@ -893,9 +895,10 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		} else if (mTrip.getRouteId() == 12L) {
 			if (Arrays.asList( //
 					STEELES, //
+					"Steeles Ave", //
 					"Steeles AV" //
 			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Steeles AV", mTrip.getHeadsignId());
+				mTrip.setHeadsignString("Steeles Ave", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 13L) {
@@ -908,9 +911,10 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				return true;
 			} else if (Arrays.asList( //
 					RUTHERFORD, //
+					"Steeles Ave", //
 					"Steeles AV" //
 			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Steeles AV", mTrip.getHeadsignId());
+				mTrip.setHeadsignString("Steeles Ave", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 15L) {
@@ -1071,6 +1075,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					MAJOR_MACKENZIE //
 					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(MAJOR_MACKENZIE, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 107L) {
+			if (Arrays.asList( //
+					PIONEER_VLG_TERMINAL, //
+					"Drummond Dr" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString(PIONEER_VLG_TERMINAL, mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 165L) {
