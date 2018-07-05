@@ -458,8 +458,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { //
 						"111", // "9810", // MARKHAM STOUFFVILLE HOSPITAL
 								"55", // "9750", // == HWY 7 / BULLOCK
-								"8039", // "VN603WB6", // != 7 HWY & HIGHWAY 7
-								"2916", // "4716", // != HWY 7 / KENNEDY RD
+								"8026", // "9862" // != HIGHWAY 7 / KENNEDY RD
 								"7983", // "9866", // != HWY 7 / WARDEN AV
 								"53", // "9748", // != KENNEDY RD / HWY 7
 								"6229", // "9841", // != CEDARLAND DR / WARDEN AV
@@ -1075,6 +1074,12 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					MAJOR_MACKENZIE //
 					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(MAJOR_MACKENZIE, mTrip.getHeadsignId());
+				return true;
+			} else if (Arrays.asList( //
+					"Confederation Pkwy", //
+					"Sheppard West Sta" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Sheppard West Sta", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 107L) {
