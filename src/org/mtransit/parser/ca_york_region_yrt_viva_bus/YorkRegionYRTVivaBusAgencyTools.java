@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.mtransit.commons.OneBusAwayCommons;
 import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.Pair;
@@ -25,7 +26,6 @@ import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.gtfs.data.GTrip;
 import org.mtransit.parser.gtfs.data.GTripStop;
 import org.mtransit.parser.mt.data.MAgency;
-import org.mtransit.parser.mt.data.MDirectionType;
 import org.mtransit.parser.mt.data.MRoute;
 import org.mtransit.parser.mt.data.MTrip;
 import org.mtransit.parser.mt.data.MTripStop;
@@ -121,8 +121,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String PURPLE = "purple";
 	private static final String YELLOW = "yellow";
 
-	private static final long _98_99_RID = 980099l;
+	private static final long _98_99_RID = 9899L;
 	private static final String RSN_98_99 = "98/99";
+	private static final String RSN_98_99_ = "98|99";
 	private static final String RSN_098_099 = "098/099";
 	private static final String RSN_098_099_ = "098|099";
 
@@ -140,10 +141,10 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	private static final long VIVA_BLUE_RID = 601L;
 	private static final long VIVA_BLUE_A_RID = 602L;
-	private static final long VIVA_GREEN_RID = 606L;
-	private static final long VIVA_ORANGE_RID = 605L;
-	private static final long VIVA_PINK_RID = 604L;
 	private static final long VIVA_PURPLE_RID = 603L;
+	private static final long VIVA_PINK_RID = 604L;
+	private static final long VIVA_ORANGE_RID = 605L;
+	private static final long VIVA_GREEN_RID = 606L;
 	private static final long VIVA_YELLOW_RID = 607L;
 
 	@Override
@@ -173,6 +174,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			}
 		}
 		if (RSN_98_99.equals(routeShortNameLC) //
+				|| RSN_98_99_.equals(routeShortNameLC) //
 				|| RSN_098_099.equals(routeShortNameLC) //
 				|| RSN_098_099_.equals(routeShortNameLC)) {
 			return _98_99_RID;
@@ -234,10 +236,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			return routeShortName;
 		}
 		StringBuilder sb = new StringBuilder();
-		String[] rsns = routeShortName.split("/");
+		routeShortName = routeShortName.replaceAll("\\/", "|");
+		String[] rsns = routeShortName.split("\\|");
 		for (String rsn : rsns) {
 			if (sb.length() > 0) {
-				sb.append("/");
+				sb.append("|");
 			}
 			sb.append(REMOVE_LEADING_ZEROS.matcher(rsn).replaceAll(StringUtils.EMPTY));
 		}
@@ -293,13 +296,10 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String _AND_ = " & ";
 
 	private static final String HIGHWAY_400 = "Hwy 400";
-	private static final String HIGHWAY_404 = "Hwy 404";
-	private static final String HIGHWAY_404_PARK_AND_RIDE = HIGHWAY_404 + " " + PARK_AND_RIDE_SHORT;
+	private static final String HIGHWAY_7 = "Hwy 7";
 	private static final String DON_MILLS_STATION = "Don Mills Sta";
-	private static final String MC_COWAN_ROAD = "McCowan Rd";
 	private static final String MARTIN_GROVE = "Martin Grv";
 	private static final String FINCH_TERMINAL = "Finch Terminal";
-	private static final String MARKHAM_STOUFFVILLE_HOSPITAL = "Markham Stouffville Hosp";
 	private static final String YORK_UNIVERSITY = "York " + UNIVERSITY_SHORT;
 	private static final String VAUGHAN_MILLS = "Vaughan Mills";
 	private static final String VAUGHAN_MILLS_MALL = VAUGHAN_MILLS + " Mall";
@@ -345,164 +345,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String PIONEER_VLG_TERMINAL = PIONEER_VLG + " Terminal";
 	private static final String MAJOR_MACKENZIE = "Major Mackenzie";
 	private static final String CANADA_DRIVE = "Canada Dr";
+	private static final String SMART_CENTRES_PLACE = "SmartCentres Pl";
 
 
 	private static HashMap<Long, RouteTripSpec> ALL_ROUTE_TRIPS2;
 	static {
 		HashMap<Long, RouteTripSpec> map2 = new HashMap<Long, RouteTripSpec>();
-		// * SWITCH STOP CODE <> STOP ID *
-		// [\t"(\w+)", // "(\w+)", // ]
-		// [\t"$2", // "$1", // ]
-		map2.put(VIVA_BLUE_RID, new RouteTripSpec(VIVA_BLUE_RID, // Viva Blue
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, NEWMARKET_TERMINAL, //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, FINCH_TERMINAL) //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9769"), // "70", // "9769" // FINCH GO BUS TERMINAL PLATFORM 2
-								Stops.ALL_STOPS.get("9779"), // "80", // "9779" // YONGE / 16TH-CARRVILLE,YONGE ST & 16TH AV
-								Stops.ALL_STOPS.get("9787"), // "88", // "9787" // != YONGE / ELGIN MILLS,YONGE ST & ELGIN MILLS RD
-								Stops.ALL_STOPS.get("9789"), // "90", // "9789" // <> BERNARD TERMINAL PLATFORM 2
-								Stops.ALL_STOPS.get("9790"), // "91", // "9790" // != YONGE / BERNARD,YONGE ST & BERNARD AV
-								Stops.ALL_STOPS.get("9809"), // "110", // "9809" // NEWMARKET GO TERMINAL PLATFORM 9
-						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9809"), // "110", // "9809" // NEWMARKET GO TERMINAL PLATFORM 9
-								Stops.ALL_STOPS.get("9799"), // "100", // "9799" // YONGE / HENDERSON,YONGE ST & HENDERSON DR
-								Stops.ALL_STOPS.get("9793"), // "94", // "9793" // != YONGE / 19TH-GAMBLE,YONGE ST & GAMBLE RD
-								Stops.ALL_STOPS.get("9789"), // "90", // "9789" // <> BERNARD TERMINAL PLATFORM 2
-								Stops.ALL_STOPS.get("9791"), // "92", // "9791" // != YONGE / BERNARD,YONGE ST & BERNARD AV
-								Stops.ALL_STOPS.get("9769"), // "70", // "9769" // FINCH GO BUS TERMINAL PLATFORM 2
-						})) //
-				.compileBothTripSort());
-		map2.put(VIVA_BLUE_A_RID, new RouteTripSpec(VIVA_BLUE_A_RID, // Viva Blue A
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, NEWMARKET_TERMINAL, //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, FINCH_TERMINAL) //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9769"), // "70", // "9769" // FINCH GO BUS TERMINAL PLATFORM 2
-								Stops.ALL_STOPS.get("9787"), // "88", // "9787" // YONGE / ELGIN MILLS,YONGE ST & ELGIN MILLS RD
-								Stops.ALL_STOPS.get("9809"), // "110", // "9809" // NEWMARKET GO TERMINAL PLATFORM 9
-						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9809"), // "110", // "9809" // NEWMARKET GO TERMINAL PLATFORM 9
-								Stops.ALL_STOPS.get("9791"), // "92", // "9791" // YONGE / BERNARD,YONGE ST & BERNARD AV,
-								Stops.ALL_STOPS.get("9769"), // "70", // "9769" // FINCH GO BUS TERMINAL PLATFORM 2
-						})) //
-				.compileBothTripSort());
-		map2.put(VIVA_GREEN_RID, new RouteTripSpec(VIVA_GREEN_RID, // Viva Green
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, MC_COWAN_ROAD, //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, DON_MILLS_STATION) //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9767"), // "68", // "9767" // DON MILLS STATION
-								Stops.ALL_STOPS.get("9742"), // "47", // "9742" // ENTERPRISE / WARDEN,ENTERPRISE BLVD & WARDEN AV
-								Stops.ALL_STOPS.get("9751"), // "56", // "9751" // HWY 7 / MCCOWAN,HIGHWAY 7 & MCCOWAN RD
-						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9752"), // "57", // "9752" // HWY 7 / MCCOWAN,HIGHWAY 7 & MCCOWAN RD
-								Stops.ALL_STOPS.get("9761"), // "62", // "9761" // WARDEN AV / 14TH AV
-								Stops.ALL_STOPS.get("9816"), // "117", // "9816" // SHEPPARD / DON MILLS
-						})) //
-				.compileBothTripSort());
-		map2.put(VIVA_ORANGE_RID, new RouteTripSpec(VIVA_ORANGE_RID, // Viva Orange
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, MARTIN_GROVE, //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, RICHMOND_HL_CTR) // SHEPPARD_WEST
-				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9821"), // "122", // "9821" // RICHMOND HILL CENTRE PLATFORM 2
-								Stops.ALL_STOPS.get("9708"), // "13", // "9708" // == HWY 7 / ANSLEY GROVE
-								Stops.ALL_STOPS.get("9705"), // "10", // "9705" // <> HWY 7 / PINE VALLEY => SOUTH
-								Stops.ALL_STOPS.get("9706"), // "11", // "9706" // != HWY 7 / PINE VALLEY
-								Stops.ALL_STOPS.get("9702"), // "7", // "9702" // HWY 7 / KIPLING
-								Stops.ALL_STOPS.get("3525"), // "744", // "3525" // MARTIN GROVE RD / HIGHWAY 7
-						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9700"), // "5", // "9700" // HWY 7 / MARTIN GROVE
-								Stops.ALL_STOPS.get("9703"), // "8", // "9703" // != HWY 7 / ISLINGTON
-								Stops.ALL_STOPS.get("9705"), // "10", // "9705" // <> HWY 7 / PINE VALLEY
-								Stops.ALL_STOPS.get("9707"), // "12", // "9707" // != HWY 7 / ANSLEY GROVE
-								Stops.ALL_STOPS.get("9821"), // "122", // "9821" // RICHMOND HILL CENTRE PLATFORM 2
-						})) //
-				.compileBothTripSort());
-		map2.put(VIVA_PINK_RID, new RouteTripSpec(VIVA_PINK_RID, // Viva Pink
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, UNIONVILLE_GO_STATION, //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, FINCH_TERMINAL) //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9836"), // "7747", // "9836" // FINCH GO BUS TERMINAL PLATFORM 1
-								Stops.ALL_STOPS.get("9734"), // "39", // "9734" // HWY 7 / ALLSTATE
-								Stops.ALL_STOPS.get("9746"), // "51", // "9746" // UNIONVILLE STATION PLATFORM 1
-						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9746"), // "51", // "9746" // UNIONVILLE STATION PLATFORM 1
-								Stops.ALL_STOPS.get("9733"), // "38", // "9733" // HWY 7 / EAST BEAVER CREEK
-								Stops.ALL_STOPS.get("9836"), // "7747", // "9836" // FINCH GO BUS TERMINAL PLATFORM 1
-						})) //
-				.compileBothTripSort());
-		map2.put(VIVA_PURPLE_RID, new RouteTripSpec(VIVA_PURPLE_RID, // Viva Purple
-				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, MARKHAM_STOUFFVILLE_HOSPITAL, //
-				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, PIONEER_VLG) // YORK_UNIVERSITY) //
-				.addTripSort(MDirectionType.EAST.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("7195"), // "7959", // "7195" // PIONEER VILLAGE STATION PLATFORM 1
-								Stops.ALL_STOPS.get("9715"), // "20", // "9715" // == YORK UNIVERSITY
-								Stops.ALL_STOPS.get("9854"), // "6911", // "9854" // != HIGHWAY 7 / KEELE ST
-								Stops.ALL_STOPS.get("9718"), // "23", // "9718" // == CENTRE / DUFFERIN
-								Stops.ALL_STOPS.get("9721"), // "26", // "9721" // == BATHURST / ATKINSON
-								Stops.ALL_STOPS.get("9820"), // "121", // "9820" // <> RICHMOND HILL CENTRE PLATFORM 1 CONTINUE
-								Stops.ALL_STOPS.get("9724"), // "29", // "9724" // !=
-								Stops.ALL_STOPS.get("9734"), // "39", // "9734" // HWY 7 / ALLSTATE
-								Stops.ALL_STOPS.get("9740"), // "45", // "9740" // == HWY 7 / TOWN CENTRE
-								Stops.ALL_STOPS.get("9865"), // "7982", // "9865" // != HWY 7 / WARDEN AV
-								Stops.ALL_STOPS.get("9861"), // "2753", // "9861" // != HWY 7 / KENNEDY RD
-								Stops.ALL_STOPS.get("9842"), // "6230", // "9842" // != CEDARLAND DR / WARDEN AV
-								Stops.ALL_STOPS.get("9747"), // "52", // "9747" // != KENNEDY RD / HWY 7
-								Stops.ALL_STOPS.get("9749"), // "54", // "9749" // == HWY 7 / BULLOCK
-								Stops.ALL_STOPS.get("9810"), // "111", // "9810" // MARKHAM STOUFFVILLE HOSPITAL
-						})) //
-				.addTripSort(MDirectionType.WEST.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9810"), // "111", // "9810" // MARKHAM STOUFFVILLE HOSPITAL
-								Stops.ALL_STOPS.get("9750"), // "55", // "9750" // == HWY 7 / BULLOCK
-								Stops.ALL_STOPS.get("9862"), // "8026", // "9862", // != HIGHWAY 7 / KENNEDY RD
-								Stops.ALL_STOPS.get("9866"), // "7983", // "9866" // != HWY 7 / WARDEN AV
-								Stops.ALL_STOPS.get("9748"), // "53", // "9748" // != KENNEDY RD / HWY 7
-								Stops.ALL_STOPS.get("9841"), // "6229", // "9841" // != CEDARLAND DR / WARDEN AV
-								Stops.ALL_STOPS.get("9741"), // "46", // "9741" // == HWY 7 / TOWN CENTRE
-								Stops.ALL_STOPS.get("9733"), // "38", // "9733" // HWY 7 / EAST BEAVER CREEK
-								Stops.ALL_STOPS.get("9725"), // "30", // "9725" // == HWY 7 & BAYVIEW AV
-								Stops.ALL_STOPS.get("9820"), // "121", // "9820" // <> RICHMOND HILL CENTRE PLATFORM 1 => END
-								Stops.ALL_STOPS.get("9821"), // "122", // "9821" // != RICHMOND HILL CENTRE PLATFORM 2 CONTINUE
-								Stops.ALL_STOPS.get("9722"), // "27", // "9722" // != BATHURST ST & ATKINSON AV
-								Stops.ALL_STOPS.get("9822"), // "123", // "9822" // YORK UNIVERSITY
-								Stops.ALL_STOPS.get("7195"), // "7959", // "7195" // PIONEER VILLAGE STATION PLATFORM 1
-						})) //
-				.compileBothTripSort());
-		map2.put(VIVA_YELLOW_RID, new RouteTripSpec(VIVA_YELLOW_RID, // Viva Yellow
-				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, HIGHWAY_404_PARK_AND_RIDE, //
-				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, NEWMARKET_TERMINAL) //
-				.addTripSort(MDirectionType.EAST.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("6426"), // "7828", // "6426" // NEWMARKET GO TRML PLAT 10
-								Stops.ALL_STOPS.get("9847"), // "6907", // "9847" // SOUTH LAKE HOSPITAL
-								Stops.ALL_STOPS.get("9856"), // "6574", // "9856" // DAVIS DR / HIGHWAY 404
-						})) //
-				.addTripSort(MDirectionType.WEST.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9856"), // "6574", // "9856" // DAVIS DR / HIGHWAY 404
-								Stops.ALL_STOPS.get("9848"), // "7112", // "9848" // SOUTH LAKE HOSPITAL
-								Stops.ALL_STOPS.get("6426"), // "7828", // "6426" // NEWMARKET GO TRML PLAT 10
-						})) //
-				.compileBothTripSort());
 		map2.put(21L, new RouteTripSpec(21L, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Vellore", //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, VAUGHAN_MILLS_TERMINAL) //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
+				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Vellore", //
+				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, VAUGHAN_MILLS_TERMINAL) //
+				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("6273"), // "5479", // "6273", // VAUGHAN MILLS TERMINAL PLATFORM 5
 								Stops.ALL_STOPS.get("4295"), // "1074", // "4295", // ++
@@ -514,7 +366,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.ALL_STOPS.get("6920"), // "6351", // "6920", // != #PM CITYVIEW BLVD / VENICE GT
 								Stops.ALL_STOPS.get("6919"), // "6350", // "6919", // != #PM CANADA DR / SUMMIT DR =>
 						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
+				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("6919"), // "6350", // "6919", // != #PM CANADA DR / SUMMIT DR <=
 								Stops.ALL_STOPS.get("6898"), // "6336", // "6898", // != #PM POETRY DR / MAJOR MACKENZIE DR
@@ -526,35 +378,10 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.ALL_STOPS.get("6273"), // "5479", // "6273", // VAUGHAN MILLS TERMINAL PLATFORM 5
 						})) //
 				.compileBothTripSort());
-		map2.put(26L, new RouteTripSpec(26L, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Brandon Gt", // MAPLE
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "SmartCentres Pl") // VAUGHAN_MILLS_TERMINAL
-				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("7221"), // SMARTCENTRES PLACE BUS TERMINAL
-								Stops.ALL_STOPS.get("7207"), // "7971", // "7207", // SMARTCENTRES PLACE BUS TERMINAL
-								Stops.ALL_STOPS.get("4308"), // "1079", // "4308", // != VAUGHAN MILLS MALL STOP # 4308
-								Stops.ALL_STOPS.get("3319"), // "568", // "3319", // <> VAUGHAN MILLS TERMINAL PLATFORM 6
-								Stops.ALL_STOPS.get("6768"), // "6198", // "6768", // != CALDARI RD / GRANITERIDGE RD
-								Stops.ALL_STOPS.get("4499"), // "1139", // "4499", // ++ MELVILLE AV / EDDINGTON PL
-								Stops.ALL_STOPS.get("2930"), // "466", // "2930", // MELVILLE AV / MAPLE MEADOWS LANE
-								Stops.ALL_STOPS.get("4501"), // "1141", // "4501", // BRANDON GATE DR / JANE ST
-						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("4501"), // "1141", // "4501", // BRANDON GATE DR / JANE ST
-								Stops.ALL_STOPS.get("6646"), // "5341", // "6646", // ++ MELVILLE AV / KELSO CR
-								Stops.ALL_STOPS.get("6767"), // "6197", // "6767", // != CALDARI RD / GRANITERIDGE RD
-								Stops.ALL_STOPS.get("3319"), // "568", // "3319", // <> VAUGHAN MILLS TERMINAL PLATFORM 6
-								Stops.ALL_STOPS.get("4320"), // "1088", // "4320", // != VAUGHAN MILLS MALL STOP # 4320
-								Stops.ALL_STOPS.get("7207"), // "7971", // "7207", // SMARTCENTRES PLACE BUS TERMINAL
-								Stops.ALL_STOPS.get("7221"), // SMARTCENTRES PLACE BUS TERMINAL
-						})) //
-				.compileBothTripSort());
 		map2.put(31L, new RouteTripSpec(31L, //
-				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "East", // Aurora GO Sta
-				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "West") // ??
-				.addTripSort(MDirectionType.EAST.intValue(), //
+				OneBusAwayCommons.EAST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "East", // Aurora GO Sta
+				OneBusAwayCommons.WEST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "West") // ??
+				.addTripSort(OneBusAwayCommons.EAST_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("1210"), // "3336", // "1210", // AURORA HEIGHTS DR / WHISPERING PINE
 								Stops.ALL_STOPS.get("2512"), // "335", // "2512", // == YONGE ST STOP # 2512
@@ -564,7 +391,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.ALL_STOPS.get("5253"), // "4058", // "5253", // == INDUSTRIAL PKWY STOP # 5253
 								Stops.ALL_STOPS.get("6424"), // "7661", // "6424", // AURORA GO STATION PLATFORM #2
 						})) //
-				.addTripSort(MDirectionType.WEST.intValue(), //
+				.addTripSort(OneBusAwayCommons.WEST_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("6424"), // "7661", // "6424", // AURORA GO STATION PLATFORM #2
 								Stops.ALL_STOPS.get("6391"), // "5897", // "6391", // WELLINGTON ST / TEMPERANCE ST
@@ -576,49 +403,49 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.ALL_STOPS.get("1210"), // "3336", // "1210", // AURORA HEIGHTS DR / WHISPERING PINE
 						})) //
 				.compileBothTripSort());
-		map2.put(40l, new RouteTripSpec(40l, //
-				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL, //
-				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, WOODBINE_AVENUE) //
-				.addTripSort(MDirectionType.EAST.intValue(), //
+		map2.put(40L, new RouteTripSpec(40L, //
+				OneBusAwayCommons.EAST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL, //
+				OneBusAwayCommons.WEST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, WOODBINE_AVENUE) //
+				.addTripSort(OneBusAwayCommons.EAST_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("6512"), // "7841", // "6512", // RODICK RD / WOODBINE AV
 								Stops.ALL_STOPS.get("1461"), // "1911", // "1461", // ++ TOWN CENTRE BLVD / HIGHWAY 7
 								Stops.ALL_STOPS.get("1827"), // "2152", // "1827", // MARKVILLE MALL STOP #1827
 						})) //
-				.addTripSort(MDirectionType.WEST.intValue(), //
+				.addTripSort(OneBusAwayCommons.WEST_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("1827"), // "2152", // "1827", // MARKVILLE MALL STOP #1827
 								Stops.ALL_STOPS.get("1541"), // "1990", // "1541", // ++ BUCHANAN DR / SPANHOUSE CRES
 								Stops.ALL_STOPS.get("6512"), // "7841", // "6512", // RODICK RD / WOODBINE AV
 						})) //
 				.compileBothTripSort());
-		map2.put(41l, new RouteTripSpec(41l, //
-				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, MARKHAM, //
-				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL) //
-				.addTripSort(MDirectionType.EAST.intValue(), //
+		map2.put(41L, new RouteTripSpec(41L, //
+				OneBusAwayCommons.EAST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKHAM, //
+				OneBusAwayCommons.WEST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL) //
+				.addTripSort(OneBusAwayCommons.EAST_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("1827"), // "2152", // "1827", // MARKVILLE MALL STOP #1827
 								Stops.ALL_STOPS.get("1814"), // "2145", // "1814", // RAYMERVILLE DR / CARPENTER CRT
 								Stops.ALL_STOPS.get("1844"), // "2169", // "1844", // LARKIN AV / SAWYER CRES
 						})) //
-				.addTripSort(MDirectionType.WEST.intValue(), //
+				.addTripSort(OneBusAwayCommons.WEST_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("1844"), // "2169", // "1844", // LARKIN AV / SAWYER CRES
 								Stops.ALL_STOPS.get("1862"), // "2184", // "1862", // BULLOCK DR / SNIDER DR
 								Stops.ALL_STOPS.get("1827"), // "2152", // "1827", // MARKVILLE MALL STOP #1827
 						})) //
 				.compileBothTripSort());
-		map2.put(42l, new RouteTripSpec(42l, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, UNIONVILLE_GO_STATION, //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, BERCZY) //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
+		map2.put(42L, new RouteTripSpec(42L, //
+				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, UNIONVILLE_GO_STATION, //
+				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, BERCZY) //
+				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("5977"), // "7803", // "5977", // MAIN ST UNIONVILLE / ENTERPRISE BLV
 								Stops.ALL_STOPS.get("9745"), // "50", // "9745", // RIVIS RD / YMCA BLVD
 								Stops.ALL_STOPS.get("4171"), // "2750", // "4171", // UNIONVILLE GO STATION PLATFORM 2
 								Stops.ALL_STOPS.get("2971"), // "499", // "2971", // MAJOR MACKENZIE DR / RIDGECREST RD
 						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
+				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("2971"), // "499", // "2971", // MAJOR MACKENZIE DR / RIDGECREST RD
 								Stops.ALL_STOPS.get("1824"), // "2150", // "1824", // CARLTON RD / MCCOWAN RD
@@ -628,9 +455,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						})) //
 				.compileBothTripSort());
 		map2.put(44L, new RouteTripSpec(44L, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, GREEN_LANE, //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, NEWMARKET_TERMINAL) //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
+				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, GREEN_LANE, //
+				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, NEWMARKET_TERMINAL) //
+				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("4691"), // "1204", // "4691" // NEWMARKET GO TERMINAL PLATFORM 6
 								Stops.ALL_STOPS.get("1971"), // "3379", // "1971" // != UPPER CANADA MALL STOP # 1971
@@ -638,102 +465,72 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.ALL_STOPS.get("5698"), // "4122", // "5698" // WOODSPRING AV / ALFRED SMITH WAY
 								Stops.ALL_STOPS.get("4680"), // "1195", // "4680" // GREEN LANE / YONGE ST
 						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
+				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("4680"), // "1195", // "4680" // GREEN LANE / YONGE ST
 								Stops.ALL_STOPS.get("5421"), // "4086", // "5421" // LONDON RD / YORKSHIRE DR
 								Stops.ALL_STOPS.get("4691"), // "1204", // "4691" // NEWMARKET GO TERMINAL PLATFORM 6
 						})) //
 				.compileBothTripSort());
-		map2.put(45l, new RouteTripSpec(45l, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, MINGAY, //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL) //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
+		map2.put(45L, new RouteTripSpec(45L, //
+				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MINGAY, //
+				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL) //
+				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("1827"), // "2152", // "1827" // MARKVILLE MALL STOP #1827
 								Stops.ALL_STOPS.get("1383"), // "1874", // "1383" // BUR OAK AV / DOGWOOD ST
 								Stops.ALL_STOPS.get("4799"), // "1234", // "4799" // MAJOR MACKENZIE DR / MINGAY AV
 						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
+				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("4799"), // "1234", // "4799" // MAJOR MACKENZIE DR / MINGAY AV
 								Stops.ALL_STOPS.get("5541"), // "5619", // "5541" // RAYMERVILLE DR / BENDAMERE CRES
 								Stops.ALL_STOPS.get("1827"), // "2152", // "1827" // MARKVILLE MALL STOP #1827
 						})) //
 				.compileBothTripSort());
-		map2.put(84l, new RouteTripSpec(84l, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "North", //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "South") //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
+		map2.put(84L, new RouteTripSpec(84L, //
+				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "North", //
+				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "South") //
+				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("4839"), // "3923", // "4839" // KING RD / YONGE ST
 								Stops.ALL_STOPS.get("2658"), // "3723", // "2658" // HUMBERLAND DR / WOODHAVEN CRES
 								Stops.ALL_STOPS.get("2659"), // "349", // "2659" // YONGE ST / COON'S RD
 						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
+				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("2659"), // "349", // "2659" // YONGE ST / COON'S RD
 								Stops.ALL_STOPS.get("2359"), // "2380", // "2359" // NORTH LAKE RD / OLDE BAYVIEW AV,
 								Stops.ALL_STOPS.get("4839"), // "3923", // "4839" // KING RD / YONGE ST
 						})) //
 				.compileBothTripSort());
-		map2.put(90l + RID_ENDS_WITH_B, new RouteTripSpec(90l + RID_ENDS_WITH_B, // 90B
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, BEAVER_CREEK, //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, DON_MILLS_STATION) //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("9767"), // "68", // "9767" // DON MILLS STATION
-								Stops.ALL_STOPS.get("2920"), // "2543", // "2920" // EAST BEAVER CREEK RD / HIGHWAY 7
-						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("2920"), // "2543", // "2920" // EAST BEAVER CREEK RD / HIGHWAY 7
-								Stops.ALL_STOPS.get("2917"), // "2540", // "2917" // WEST BEAVER CREEK RD / WERTHEIM CRT,
-								Stops.ALL_STOPS.get("1014"), // "1604", // "1014" // COMMERCE VALLEY DR STOP # 1014
-								Stops.ALL_STOPS.get("4215"), // "2776", // "4215" // SHEPPARD AV / DON MILLS RD
-						})) //
-				.compileBothTripSort());
-		map2.put(98l, new RouteTripSpec(98l, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, GREEN_LANE, //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, BERNARD_TERMINAL) //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("4197"), // "3787", // "4197" // BERNARD TERMINAL PLATFORM 5
-								Stops.ALL_STOPS.get("4680"), // "1195", // "4680" // GREEN LANE / YONGE ST
-						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("4680"), // "1195", // "4680" // GREEN LANE / YONGE ST
-								Stops.ALL_STOPS.get("4197"), // "3787", // "4197" // BERNARD TERMINAL PLATFORM 5
-						})) //
-				.compileBothTripSort());
 		map2.put(204L, new RouteTripSpec(204L, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, BERCZY, //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, UNIONVILLE_GO_STATION) //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
+				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, BERCZY, //
+				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, UNIONVILLE_GO_STATION) //
+				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("4171"), // "2750", // "4171" // UNIONVILLE GO STATION PLATFORM 2
-								Stops.ALL_STOPS.get("1505"), // "1953", // "1505" // CARLTON RD / MANSFIELD LANE
-								Stops.ALL_STOPS.get("2971"), // "499", // "2971" // MAJOR MACKENZIE DR / RIDGECREST RD
+						Stops.ALL_STOPS.get("4171"), // UNIONVILLE GO STATION PLATFORM 2
+								Stops.ALL_STOPS.get("6127"), // MCCOWAN RD STOP # 6127
+								Stops.ALL_STOPS.get("2971"), // MAJOR MACKENZIE DR / RIDGECREST RD
 						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
+				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("2971"), // "499", // "2971" // MAJOR MACKENZIE DR / RIDGECREST RD
-								Stops.ALL_STOPS.get("6092"), // "5258", // "6092" // == BUR OAK AV STOP # 6092
-								Stops.ALL_STOPS.get("1401"), // "1882", // "1401" // != BUR OAK AV / THE BRIDLE WALK,
-								Stops.ALL_STOPS.get("6690"), // "6077", // "6690" // != THE BRIDLE WALK / HOST AV
-								Stops.ALL_STOPS.get("4171"), // "2750", // "4171" // UNIONVILLE GO STATION PLATFORM 2
+						Stops.ALL_STOPS.get("2971"), // MAJOR MACKENZIE DR / RIDGECREST RD
+								Stops.ALL_STOPS.get("6092"), // == BUR OAK AV STOP # 6092
+								Stops.ALL_STOPS.get("1401"), // != BUR OAK AV / THE BRIDLE WALK,
+								Stops.ALL_STOPS.get("6690"), // != THE BRIDLE WALK / HOST AV
+								Stops.ALL_STOPS.get("4171"), // UNIONVILLE GO STATION PLATFORM 2
 						})) //
 				.compileBothTripSort());
 		map2.put(522L, new RouteTripSpec(522L, //
-				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "East", //
-				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "West") //
-				.addTripSort(MDirectionType.EAST.intValue(), //
+				OneBusAwayCommons.EAST, MTrip.HEADSIGN_TYPE_STRING, "East", //
+				OneBusAwayCommons.WEST, MTrip.HEADSIGN_TYPE_STRING, "West") //
+				.addTripSort(OneBusAwayCommons.EAST, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("5246"), // "4651", // "5246" // HAGGERMANS CORNER STOP #5246
 								Stops.ALL_STOPS.get("5986"), // "7804", // "5986" // CORNELL PARK AV / WALKERVILLE RD
 						})) //
-				.addTripSort(MDirectionType.WEST.intValue(), //
+				.addTripSort(OneBusAwayCommons.WEST, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("5986"), // "7804", // "5986" // CORNELL PARK AV / WALKERVILLE RD
 								Stops.ALL_STOPS.get("6305"), // "7626", // "6305" // TONY WONG PLACE / KENNEDY RD
@@ -741,9 +538,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						})) //
 				.compileBothTripSort());
 		map2.put(589L, new RouteTripSpec(589L, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Bernard / Dunlop St", //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY) //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
+				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Bernard / Dunlop St", //
+				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY) //
+				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("7106"), // "6525", // "7106" // HILLCREST MALL
 								Stops.ALL_STOPS.get("5319"), // "1366", // "5319" // OBSERVATORY TOWERS STOP # 5319
@@ -766,15 +563,15 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.ALL_STOPS.get("6321"), // "7612", // "6321" // UPPER YONGE PLACE
 								Stops.ALL_STOPS.get("7228"), // "8042", // "7228" // MON SHEONG COURT STOP # 7228
 						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
+				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { /* no stops */})) //
 				.compileBothTripSort());
 		map2.put(590L, new RouteTripSpec(590L, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY, //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Hillcrest Mall") //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
+				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY, //
+				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Hillcrest Mall") //
+				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { /* no stops */})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
+				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
 						Stops.ALL_STOPS.get("7228"), // "8042", // "7228" // MON SHEONG COURT STOP # 7228
 								Stops.ALL_STOPS.get("6321"), // "7612", // "6321" // UPPER YONGE PLACE
@@ -826,16 +623,38 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			return; // split
 		}
 		String tripHeadsign = gTrip.getTripHeadsign();
+		if (tripHeadsign.startsWith(mRoute.getShortName())) {
+			tripHeadsign = tripHeadsign.substring(mRoute.getShortName().length() + 1);
+		}
 		if (isGoodEnoughAccepted()) {
-			if (tripHeadsign.startsWith(mRoute.getShortName())) {
-				tripHeadsign = tripHeadsign.substring(mRoute.getShortName().length() + 1);
-			}
 			if (mRoute.getId() >= 400L && mRoute.getId() <= 499L) {
 				mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign) + " " + gTrip.getDirectionId(), gTrip.getDirectionId());
 				return;
 			}
 		}
-		mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign), gTrip.getDirectionId() == null ? 0 : gTrip.getDirectionId());
+		String tripHeadsignLC = gTrip.getTripHeadsign().toLowerCase(Locale.ENGLISH);
+		if (tripHeadsignLC.endsWith("- nb")) {
+			mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign), OneBusAwayCommons.NORTH);
+			return;
+		} else if (tripHeadsignLC.endsWith("- sb")) {
+			mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign), OneBusAwayCommons.SOUTH);
+			return;
+		} else if (tripHeadsignLC.endsWith("- wb")) {
+			mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign), OneBusAwayCommons.WEST);
+			return;
+		} else if (tripHeadsignLC.endsWith("- eb")) {
+			mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign), OneBusAwayCommons.EAST);
+			return;
+		}
+		if (tripHeadsignLC.endsWith("- mo")) {
+			mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign), OneBusAwayCommons.MORNING);
+			return;
+		} else if (tripHeadsignLC.endsWith("- af")) {
+			mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign), OneBusAwayCommons.AFTERNOON);
+			return;
+		}
+		System.out.printf("\nUnexpected trips to set: %s!\n", gTrip);
+		System.exit(-1);
 		return;
 	}
 
@@ -983,6 +802,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignString(DON_MILLS_STATION, mTrip.getHeadsignId());
 				return true;
 			}
+		} else if (mTrip.getRouteId() == 26L) {
+			if (Arrays.asList( //
+					VAUGHAN_MILLS_MALL, //
+					SMART_CENTRES_PLACE //
+					).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString(SMART_CENTRES_PLACE, mTrip.getHeadsignId());
+				return true;
+			}
 		} else if (mTrip.getRouteId() == 32L) {
 			if (Arrays.asList( //
 					"Henderson", //
@@ -1081,6 +908,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignString(RICHMOND_HL_CTR, mTrip.getHeadsignId()); // Richmond Hl Ctr Terminal
 				return true;
 			}
+		} else if (mTrip.getRouteId() == 90L + RID_ENDS_WITH_B) { // 90B
+			if (Arrays.asList( //
+					HIGHWAY_7, //
+					BEAVER_CREEK //
+					).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString(BEAVER_CREEK, mTrip.getHeadsignId());
+				return true;
+			}
 		} else if (mTrip.getRouteId() == 105L) {
 			if (Arrays.asList( //
 					RUTHERFORD, //
@@ -1166,6 +1001,22 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignString(GREEN_LANE, mTrip.getHeadsignId());
 				return true;
 			}
+		} else if (mTrip.getRouteId() == VIVA_BLUE_RID) {
+			if (Arrays.asList( //
+					BERNARD_TERMINAL, //
+					NEWMARKET_TERMINAL //
+					).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString(NEWMARKET_TERMINAL, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == VIVA_ORANGE_RID) {
+			if (Arrays.asList( //
+					"Pine Vly", //
+					MARTIN_GROVE //
+					).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString(MARTIN_GROVE, mTrip.getHeadsignId());
+				return true;
+			}
 		}
 		System.out.printf("\nUnexpected trips to merge: %s & %s!\n", mTrip, mTripToMerge);
 		System.exit(-1);
@@ -1174,6 +1025,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	private static final Pattern TO = Pattern.compile("((^|\\W){1}(to)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
 	private static final Pattern VIA = Pattern.compile("((^|\\W){1}(via)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final Pattern BYPASSING = Pattern.compile("((^|\\W){1}(Bypassing)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
 
 	private static final Pattern STARTS_WITH_ROUTE_NUMBER = Pattern.compile("(^rt [\\d]+ )", Pattern.CASE_INSENSITIVE);
 
@@ -1229,6 +1081,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		if (matcherVIA.find()) {
 			String gTripHeadsignBeforeVIA = tripHeadsign.substring(0, matcherVIA.start());
 			tripHeadsign = gTripHeadsignBeforeVIA;
+		}
+		Matcher matcherBYPASSING = BYPASSING.matcher(tripHeadsign);
+		if (matcherBYPASSING.find()) {
+			String gTripHeadsignBeforeBYPASSING = tripHeadsign.substring(0, matcherBYPASSING.start());
+			tripHeadsign = gTripHeadsignBeforeBYPASSING;
 		}
 		tripHeadsign = SECONDARY_SCHOOL_.matcher(tripHeadsign).replaceAll(SECONDARY_SCHOOL_REPLACEMENT_);
 		tripHeadsign = HIGH_SCHOOL_.matcher(tripHeadsign).replaceAll(HIGH_SCHOOL_REPLACEMENT_);
