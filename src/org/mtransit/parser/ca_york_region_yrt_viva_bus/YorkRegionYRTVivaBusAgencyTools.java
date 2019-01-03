@@ -297,7 +297,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	private static final String HIGHWAY_400 = "Hwy 400";
 	private static final String HIGHWAY_7 = "Hwy 7";
-	private static final String DON_MILLS_STATION = "Don Mills Sta";
+	private static final String DON_MILLS = "Don Mills";
+	private static final String DON_MILLS_STATION = DON_MILLS + " Sta";
 	private static final String MARTIN_GROVE = "Martin Grv";
 	private static final String FINCH_TERMINAL = "Finch Terminal";
 	private static final String YORK_UNIVERSITY = "York " + UNIVERSITY_SHORT;
@@ -319,8 +320,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String TESTON_ROAD = "Teston Rd";
 	private static final String LEBOVIC_CAMPUS_DRIVE = "Lebovic Campus Dr";
 	private static final String PROMENADE_TERMINAL = "Promenade Terminal";
-	private static final String MAPLE_GO_STATION = "Maple GO Stn";
 	private static final String MAPLE_GO = "Maple GO";
+	private static final String MAPLE_GO_STATION = MAPLE_GO + " Sta";
 	private static final String SENECA_KING = "Seneca King";
 	private static final String MAIN_STREET = "Main St";
 	private static final String RUTHERFORD = "Rutherford";
@@ -527,14 +528,15 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.WEST, MTrip.HEADSIGN_TYPE_STRING, "West") //
 				.addTripSort(OneBusAwayCommons.EAST, //
 						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("5246"), // "4651", // "5246" // HAGGERMANS CORNER STOP #5246
-								Stops.ALL_STOPS.get("5986"), // "7804", // "5986" // CORNELL PARK AV / WALKERVILLE RD
+						Stops.ALL_STOPS.get("5246"), // HAGGERMANS CORNER
+								Stops.ALL_STOPS.get("1552"), // M-S HOSPITAL
+								Stops.ALL_STOPS.get("5986"), // CORNELL PARK AV / WALKERVILLE RD
 						})) //
 				.addTripSort(OneBusAwayCommons.WEST, //
 						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("5986"), // "7804", // "5986" // CORNELL PARK AV / WALKERVILLE RD
-								Stops.ALL_STOPS.get("6305"), // "7626", // "6305" // TONY WONG PLACE / KENNEDY RD
-								Stops.ALL_STOPS.get("5246"), // "4651", // "5246" // HAGGERMANS CORNER STOP #5246
+						Stops.ALL_STOPS.get("5986"), // CORNELL PARK AV / WALKERVILLE RD
+								Stops.ALL_STOPS.get("6305"), // TONY WONG PLACE / KENNEDY RD
+								Stops.ALL_STOPS.get("5246"), // HAGGERMANS CORNER
 						})) //
 				.compileBothTripSort());
 		map2.put(589L, new RouteTripSpec(589L, //
@@ -683,6 +685,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignString(PIONEER_VLG_TERMINAL, mTrip.getHeadsignId());
 				return true;
 			}
+			if (Arrays.asList( //
+					"P " + "Off Only", //
+					DON_MILLS //
+					).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString(DON_MILLS, mTrip.getHeadsignId());
+				return true;
+			}
 		} else if (mTrip.getRouteId() == 4L) {
 			if (Arrays.asList( //
 					"Bayview", //
@@ -767,17 +776,17 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			}
 		} else if (mTrip.getRouteId() == 22L) {
 			if (Arrays.asList( //
-					SENECA_COLLEGE_KING_CAMPUS, //
+					SENECA_COLLEGE_KING_CAMPUS, // <>
 					SENECA_KING, //
 					"Villanova HS" //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString("Villanova HS", mTrip.getHeadsignId());
 				return true;
 			} else if (Arrays.asList( //
-					MAPLE_GO, //
+					SENECA_COLLEGE_KING_CAMPUS, // <>
 					MAPLE_GO_STATION //
 					).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString(MAPLE_GO, mTrip.getHeadsignId());
+				mTrip.setHeadsignString(MAPLE_GO_STATION, mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 23L) {
