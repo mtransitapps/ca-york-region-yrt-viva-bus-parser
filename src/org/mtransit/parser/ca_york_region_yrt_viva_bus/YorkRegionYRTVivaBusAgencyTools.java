@@ -441,18 +441,20 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, BERCZY) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("5977"), // "7803", // "5977", // MAIN ST UNIONVILLE / ENTERPRISE BLV
-								Stops.ALL_STOPS.get("9745"), // "50", // "9745", // RIVIS RD / YMCA BLVD
-								Stops.ALL_STOPS.get("4171"), // "2750", // "4171", // UNIONVILLE GO STATION PLATFORM 2
-								Stops.ALL_STOPS.get("2971"), // "499", // "2971", // MAJOR MACKENZIE DR / RIDGECREST RD
+						Stops.ALL_STOPS.get("5977"), // MAIN ST UNIONVILLE / ENTERPRISE BLV
+								Stops.ALL_STOPS.get("9745"), // != RIVIS RD / YMCA BLVD
+								Stops.ALL_STOPS.get("4171"), // <> UNIONVILLE GO STATION PLATFORM 2
+								Stops.ALL_STOPS.get("4907"), // != YMCA BLVD / RIVIS RD
+								Stops.ALL_STOPS.get("2971"), // MAJOR MACKENZIE DR / RIDGECREST RD
 						})) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("2971"), // "499", // "2971", // MAJOR MACKENZIE DR / RIDGECREST RD
-								Stops.ALL_STOPS.get("1824"), // "2150", // "1824", // CARLTON RD / MCCOWAN RD
-								Stops.ALL_STOPS.get("4171"), // "2750", // "4171", // UNIONVILLE GO STATION PLATFORM 2
-								Stops.ALL_STOPS.get("9744"), // "49", // "9744", // RIVIS RD / YMCA BLVD
-								Stops.ALL_STOPS.get("6308"), // "7628", // "6308", // ENTERPRISE DR / MAIN STREET
+						Stops.ALL_STOPS.get("2971"), // MAJOR MACKENZIE DR / RIDGECREST RD
+								Stops.ALL_STOPS.get("1824"), // CARLTON RD / MCCOWAN RD
+								Stops.ALL_STOPS.get("4906"), // != YMCA BLVD / RIVIS RD
+								Stops.ALL_STOPS.get("4171"), // <> UNIONVILLE GO STATION PLATFORM 2
+								Stops.ALL_STOPS.get("9744"), // != RIVIS RD / YMCA BLVD
+								Stops.ALL_STOPS.get("6308"), // ENTERPRISE DR / MAIN STREET
 						})) //
 				.compileBothTripSort());
 		map2.put(44L, new RouteTripSpec(44L, //
@@ -755,6 +757,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					"Steeles AV" //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString("Steeles Ave", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 14L) {
+			if (Arrays.asList( //
+					"BoxGrove Bypass", //
+					"Copper Crk" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Copper Crk", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 15L) {
