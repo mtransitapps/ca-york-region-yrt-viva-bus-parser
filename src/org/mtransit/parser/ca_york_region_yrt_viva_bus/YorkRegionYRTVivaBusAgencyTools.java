@@ -26,6 +26,7 @@ import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.gtfs.data.GTrip;
 import org.mtransit.parser.gtfs.data.GTripStop;
 import org.mtransit.parser.mt.data.MAgency;
+import org.mtransit.parser.mt.data.MDirectionType;
 import org.mtransit.parser.mt.data.MRoute;
 import org.mtransit.parser.mt.data.MTrip;
 import org.mtransit.parser.mt.data.MTripStop;
@@ -357,26 +358,26 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, VAUGHAN_MILLS_TERMINAL) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("6273"), // "5479", // "6273", // VAUGHAN MILLS TERMINAL PLATFORM 5
-								Stops.ALL_STOPS.get("4295"), // "1074", // "4295", // ++
-								Stops.ALL_STOPS.get("6615"), // "6006", // "6615", // == VELLORE AV / MAJOR MACKENZIE DR
-								Stops.ALL_STOPS.get("6899"), // "6337", // "6899", // != #AM POETRY DR / FLOURISH ST
-								Stops.ALL_STOPS.get("5731"), // "4066", // "5731", // != #AM CANADA DR / SUMMIT DR
-								Stops.ALL_STOPS.get("5732"), // "4738", // "5732", // != #AM CANADA DR / CITYVIEW BLVD =>
-								Stops.ALL_STOPS.get("6849"), // "6674", // "6849", // != #PM MAJOR MACKENZIE DR / FOSSIL HILL RD
-								Stops.ALL_STOPS.get("6920"), // "6351", // "6920", // != #PM CITYVIEW BLVD / VENICE GT
-								Stops.ALL_STOPS.get("6919"), // "6350", // "6919", // != #PM CANADA DR / SUMMIT DR =>
+						Stops.ALL_STOPS.get("6273"), // VAUGHAN MILLS TERMINAL PLATFORM 5
+								Stops.ALL_STOPS.get("4295"), // ++
+								Stops.ALL_STOPS.get("6615"), // == VELLORE AV / MAJOR MACKENZIE DR
+								Stops.ALL_STOPS.get("6899"), // != #AM POETRY DR / FLOURISH ST
+								Stops.ALL_STOPS.get("5731"), // != #AM CANADA DR / SUMMIT DR
+								Stops.ALL_STOPS.get("5732"), // != #AM CANADA DR / CITYVIEW BLVD =>
+								Stops.ALL_STOPS.get("6849"), // != #PM MAJOR MACKENZIE DR / FOSSIL HILL RD
+								Stops.ALL_STOPS.get("6920"), // != #PM CITYVIEW BLVD / VENICE GT
+								Stops.ALL_STOPS.get("6919"), // != #PM CANADA DR / SUMMIT DR =>
 						})) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[] { //
-						Stops.ALL_STOPS.get("6919"), // "6350", // "6919", // != #PM CANADA DR / SUMMIT DR <=
-								Stops.ALL_STOPS.get("6898"), // "6336", // "6898", // != #PM POETRY DR / MAJOR MACKENZIE DR
-								Stops.ALL_STOPS.get("5732"), // "4738", // "5732", // != #AM CANADA DR / CITYVIEW BLVD <=
-								Stops.ALL_STOPS.get("5733"), // "4068", // "5733", // != #AM CITYVIEW BLVD STOP # 5733
-								Stops.ALL_STOPS.get("6848"), // "6673", // "6848", // != #AM MAJOR MACKENZIE DR / FOSSIL HIL RD
-								Stops.ALL_STOPS.get("6620"), // "5716", // "6620", // == VELLORE AV / EURO PLACE
-								Stops.ALL_STOPS.get("3049"), // "515", // "3049", // ++
-								Stops.ALL_STOPS.get("6273"), // "5479", // "6273", // VAUGHAN MILLS TERMINAL PLATFORM 5
+						Stops.ALL_STOPS.get("6919"), // != #PM CANADA DR / SUMMIT DR <=
+								Stops.ALL_STOPS.get("6898"), // != #PM POETRY DR / MAJOR MACKENZIE DR
+								Stops.ALL_STOPS.get("5732"), // != #AM CANADA DR / CITYVIEW BLVD <=
+								Stops.ALL_STOPS.get("5733"), // != #AM CITYVIEW BLVD STOP # 5733
+								Stops.ALL_STOPS.get("6848"), // != #AM MAJOR MACKENZIE DR / FOSSIL HIL RD
+								Stops.ALL_STOPS.get("6620"), // == VELLORE AV / EURO PLACE
+								Stops.ALL_STOPS.get("3049"), // ++
+								Stops.ALL_STOPS.get("6273"), // VAUGHAN MILLS TERMINAL PLATFORM 5
 						})) //
 				.compileBothTripSort());
 		map2.put(31L, new RouteTripSpec(31L, //
@@ -586,6 +587,40 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.ALL_STOPS.get("5322"), // "1368", // "5322" // MCCONAGHY CENTRE STOP # 5322
 								Stops.ALL_STOPS.get("6125"), // "5382", // "6125" // HARDING BLVD / KERSEY CRES
 								Stops.ALL_STOPS.get("7106"), // "6525", // "7106" // HILLCREST MALL
+						})) //
+				.compileBothTripSort());
+		map2.put(801L, new RouteTripSpec(801L, //
+				OneBusAwayCommons.NORTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				OneBusAwayCommons.SOUTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(OneBusAwayCommons.NORTH, //
+						Arrays.asList(new String[] { //
+						Stops.ALL_STOPS.get("7232"), // OPERATIONS CENTRE
+								Stops.ALL_STOPS.get("6501"), // OAK RIDGES C.C. STOP # 6501
+								Stops.ALL_STOPS.get("4934"), // ELGIN WEST C.C. STOP # 4934
+								Stops.ALL_STOPS.get("7231"), // RICHMOND HILL WAVE POOL
+						})) //
+				.addTripSort(OneBusAwayCommons.SOUTH, //
+						Arrays.asList(new String[] { //
+						Stops.ALL_STOPS.get("6501"), // OAK RIDGES C.C. STOP # 6501
+								Stops.ALL_STOPS.get("4934"), // ELGIN WEST C.C. STOP # 4934
+								Stops.ALL_STOPS.get("7231"), // RICHMOND HILL WAVE POOL
+								Stops.ALL_STOPS.get("7232"), // OPERATIONS CENTRE
+						})) //
+				.compileBothTripSort());
+		map2.put(802L, new RouteTripSpec(802L, //
+				OneBusAwayCommons.NORTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
+				OneBusAwayCommons.SOUTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
+				.addTripSort(OneBusAwayCommons.NORTH, //
+						Arrays.asList(new String[] { //
+						Stops.ALL_STOPS.get("7233"), // ELGIN BARROW ARENA
+								Stops.ALL_STOPS.get("7235"), // ROUGE WOODS COMMUNITY CENTRE
+								Stops.ALL_STOPS.get("7232"), // OPERATIONS CENTRE
+						})) //
+				.addTripSort(OneBusAwayCommons.SOUTH, //
+						Arrays.asList(new String[] { //
+						Stops.ALL_STOPS.get("7232"), // OPERATIONS CENTRE
+								Stops.ALL_STOPS.get("7233"), // ELGIN BARROW ARENA
+								Stops.ALL_STOPS.get("7235"), // ROUGE WOODS COMMUNITY CENTRE
 						})) //
 				.compileBothTripSort());
 		ALL_ROUTE_TRIPS2 = map2;
