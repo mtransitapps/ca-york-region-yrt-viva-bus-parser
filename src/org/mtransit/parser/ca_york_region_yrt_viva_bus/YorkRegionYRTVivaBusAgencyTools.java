@@ -133,12 +133,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final long RID_ENDS_WITH_C = 30_000L;
 	private static final long RID_ENDS_WITH_D = 40_000L;
 	private static final long RID_ENDS_WITH_E = 50_000L;
+	private static final long RID_ENDS_WITH_F = 60_000L;
 
 	private static final String A = "a";
 	private static final String B = "b";
 	private static final String C = "c";
 	private static final String D = "d";
 	private static final String E = "e";
+	private static final String F = "f";
 
 	private static final long VIVA_BLUE_RID = 601L;
 	private static final long VIVA_BLUE_A_RID = 602L;
@@ -194,6 +196,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					return RID_ENDS_WITH_D + digits;
 				} else if (routeShortNameLC.endsWith(E)) {
 					return RID_ENDS_WITH_E + digits;
+				} else if (routeShortNameLC.endsWith(F)) {
+					return RID_ENDS_WITH_F + digits;
 				}
 			}
 		} catch (Exception e) {
