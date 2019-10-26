@@ -833,6 +833,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				return true;
 			} else if (Arrays.asList( //
 					SENECA_COLLEGE_KING_CAMPUS, // <>
+					BATHURST + " St", //
 					MAPLE_GO_STATION //
 					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(MAPLE_GO_STATION, mTrip.getHeadsignId());
@@ -915,6 +916,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					"Ferncroft" //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString("Ferncroft", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 52L) {
+			if (Arrays.asList( //
+					"North St", //
+					"Newmarket Terminal" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Newmarket Terminal", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 56L) {
@@ -1081,9 +1090,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		return false;
 	}
 
-	private static final Pattern TO = Pattern.compile("((^|\\W){1}(to)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
-	private static final Pattern VIA = Pattern.compile("((^|\\W){1}(via)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
-	private static final Pattern BYPASSING = Pattern.compile("((^|\\W){1}(Bypassing)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final Pattern BYPASSING = Pattern.compile("((^|\\W){1}(bypassing)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
 
 	private static final Pattern STARTS_WITH_ROUTE_NUMBER = Pattern.compile("(^rt [\\d]+ )", Pattern.CASE_INSENSITIVE);
 
@@ -1121,6 +1128,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			+ ")(\\W|$){1})", Pattern.CASE_INSENSITIVE);
 	private static final String SCHOOL_REPLACEMENT_ = "$2" + "S" + "$4";
 
+	private static final Pattern ENDS_WITH_DROP_OFF_ONLY = Pattern.compile("( DROP OFF ONLY$)", Pattern.CASE_INSENSITIVE);
+
 	@Override
 	public String cleanTripHeadsign(String tripHeadsign) {
 		if (Utils.isUppercaseOnly(tripHeadsign, true, true)) {
@@ -1130,16 +1139,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		tripHeadsign = STARTS_WITH_DASH.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
 		tripHeadsign = ENDS_WITH_BOUND.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
 		tripHeadsign = ENDS_WITH_AM_PM.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
-		Matcher matcherTO = TO.matcher(tripHeadsign);
-		if (matcherTO.find()) {
-			String gTripHeadsignAfterTO = tripHeadsign.substring(matcherTO.end());
-			tripHeadsign = gTripHeadsignAfterTO;
-		}
-		Matcher matcherVIA = VIA.matcher(tripHeadsign);
-		if (matcherVIA.find()) {
-			String gTripHeadsignBeforeVIA = tripHeadsign.substring(0, matcherVIA.start());
-			tripHeadsign = gTripHeadsignBeforeVIA;
-		}
+		tripHeadsign = ENDS_WITH_DROP_OFF_ONLY.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
+		tripHeadsign = CleanUtils.keepToAndRemoveVia(tripHeadsign);
 		Matcher matcherBYPASSING = BYPASSING.matcher(tripHeadsign);
 		if (matcherBYPASSING.find()) {
 			String gTripHeadsignBeforeBYPASSING = tripHeadsign.substring(0, matcherBYPASSING.start());
