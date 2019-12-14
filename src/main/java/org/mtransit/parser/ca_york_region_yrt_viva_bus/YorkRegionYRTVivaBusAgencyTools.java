@@ -466,17 +466,17 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, NEWMARKET_TERMINAL) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[]{ //
-								Stops.getALL_STOPS().get("4691"), // "1204", // "4691" // NEWMARKET GO TERMINAL PLATFORM 6
-								Stops.getALL_STOPS().get("1971"), // "3379", // "1971" // != UPPER CANADA MALL STOP # 1971
-								Stops.getALL_STOPS().get("5944"), // "5093", // "5944" // == DAVIS DR / FORD WILSON DR
-								Stops.getALL_STOPS().get("5698"), // "4122", // "5698" // WOODSPRING AV / ALFRED SMITH WAY
-								Stops.getALL_STOPS().get("4680"), // "1195", // "4680" // GREEN LANE / YONGE ST
+								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("4691")), // NEWMARKET GO TERMINAL PLATFORM 6
+								Stops.getALL_STOPS().get("1971"), // != UPPER CANADA MALL STOP # 1971
+								Stops.getALL_STOPS().get("5944"), // == DAVIS DR / FORD WILSON DR
+								Stops.getALL_STOPS().get("5698"), // WOODSPRING AV / ALFRED SMITH WAY
+								Stops.getALL_STOPS().get("4680"), // GREEN LANE / YONGE ST
 						})) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[]{ //
-								Stops.getALL_STOPS().get("4680"), // "1195", // "4680" // GREEN LANE / YONGE ST
-								Stops.getALL_STOPS().get("5421"), // "4086", // "5421" // LONDON RD / YORKSHIRE DR
-								Stops.getALL_STOPS().get("4691"), // "1204", // "4691" // NEWMARKET GO TERMINAL PLATFORM 6
+								Stops.getALL_STOPS().get("4680"), // GREEN LANE / YONGE ST
+								Stops.getALL_STOPS().get("5421"), // LONDON RD / YORKSHIRE DR
+								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("4691")), // NEWMARKET GO TERMINAL PLATFORM 6
 						})) //
 				.compileBothTripSort());
 		map2.put(45L, new RouteTripSpec(45L, //
@@ -527,22 +527,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("1401"), // != BUR OAK AV / THE BRIDLE WALK,
 								Stops.getALL_STOPS().get("6690"), // != THE BRIDLE WALK / HOST AV
 								Stops.getALL_STOPS().get("4171"), // UNIONVILLE GO STATION PLATFORM 2
-						})) //
-				.compileBothTripSort());
-		map2.put(522L, new RouteTripSpec(522L, //
-				OneBusAwayCommons.EAST, MTrip.HEADSIGN_TYPE_STRING, "East", //
-				OneBusAwayCommons.WEST, MTrip.HEADSIGN_TYPE_STRING, "West") //
-				.addTripSort(OneBusAwayCommons.EAST, //
-						Arrays.asList(new String[]{ //
-								Stops.getALL_STOPS().get("5246"), // HAGGERMANS CORNER
-								Stops.getALL_STOPS().get("1552"), // M-S HOSPITAL
-								Stops.getALL_STOPS().get("5986"), // CORNELL PARK AV / WALKERVILLE RD
-						})) //
-				.addTripSort(OneBusAwayCommons.WEST, //
-						Arrays.asList(new String[]{ //
-								Stops.getALL_STOPS().get("5986"), // CORNELL PARK AV / WALKERVILLE RD
-								Stops.getALL_STOPS().get("6305"), // TONY WONG PLACE / KENNEDY RD
-								Stops.getALL_STOPS().get("5246"), // HAGGERMANS CORNER
 						})) //
 				.compileBothTripSort());
 		map2.put(589L, new RouteTripSpec(589L, //
