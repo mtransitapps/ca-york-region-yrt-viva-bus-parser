@@ -529,6 +529,22 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("4171"), // UNIONVILLE GO STATION PLATFORM 2
 						})) //
 				.compileBothTripSort());
+		map2.put(522L, new RouteTripSpec(522L, //
+				OneBusAwayCommons.EAST, MTrip.HEADSIGN_TYPE_STRING, "East", //
+				OneBusAwayCommons.WEST, MTrip.HEADSIGN_TYPE_STRING, "West") //
+				.addTripSort(OneBusAwayCommons.EAST, //
+						Arrays.asList(new String[]{ //
+								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("5246")), // HAGGERMANS CORNER
+								Stops.getALL_STOPS().get("1552"), // M-S HOSPITAL
+								Stops.getALL_STOPS().get("5986"), // CORNELL PARK AV / WALKERVILLE RD
+						})) //
+				.addTripSort(OneBusAwayCommons.WEST, //
+						Arrays.asList(new String[]{ //
+								Stops.getALL_STOPS().get("5986"), // CORNELL PARK AV / WALKERVILLE RD
+								Stops.getALL_STOPS().get("6305"), // TONY WONG PLACE / KENNEDY RD
+								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("5246")), // HAGGERMANS CORNER
+						})) //
+				.compileBothTripSort());
 		map2.put(589L, new RouteTripSpec(589L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Bernard / Dunlop St", //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY) //
