@@ -55,7 +55,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	public void start(String[] args) {
 		System.out.printf("\nGenerating YRT Viva bus data...");
 		long start = System.currentTimeMillis();
-		this.serviceIds = extractUsefulServiceIds(args, this);
+		this.serviceIds = extractUsefulServiceIds(args, this, true);
 		super.start(args);
 		System.out.printf("\nGenerating YRT Viva bus data... DONE in %s.\n", Utils.getPrettyDuration(System.currentTimeMillis() - start));
 	}
@@ -466,7 +466,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, NEWMARKET_TERMINAL) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(new String[]{ //
-								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("4691")), // NEWMARKET GO TERMINAL PLATFORM 6
+								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("7314")), // NEWMARKET GO TERMINAL
+								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("4691")), // NEWMARKET GO TERMINAL
 								Stops.getALL_STOPS().get("1971"), // != UPPER CANADA MALL STOP # 1971
 								Stops.getALL_STOPS().get("5944"), // == DAVIS DR / FORD WILSON DR
 								Stops.getALL_STOPS().get("5698"), // WOODSPRING AV / ALFRED SMITH WAY
@@ -476,7 +477,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[]{ //
 								Stops.getALL_STOPS().get("4680"), // GREEN LANE / YONGE ST
 								Stops.getALL_STOPS().get("5421"), // LONDON RD / YORKSHIRE DR
-								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("4691")), // NEWMARKET GO TERMINAL PLATFORM 6
+								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("4691")), // NEWMARKET GO TERMINAL
+								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("7314")), // NEWMARKET GO TERMINAL
 						})) //
 				.compileBothTripSort());
 		map2.put(45L, new RouteTripSpec(45L, //
