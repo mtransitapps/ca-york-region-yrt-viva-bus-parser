@@ -1,18 +1,10 @@
 package org.mtransit.parser.ca_york_region_yrt_viva_bus;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringUtils;
 import org.mtransit.commons.OneBusAwayCommons;
 import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.DefaultAgencyTools;
+import org.mtransit.parser.MTLog;
 import org.mtransit.parser.Pair;
 import org.mtransit.parser.SplitUtils;
 import org.mtransit.parser.SplitUtils.RouteTripSpec;
@@ -29,6 +21,16 @@ import org.mtransit.parser.mt.data.MDirectionType;
 import org.mtransit.parser.mt.data.MRoute;
 import org.mtransit.parser.mt.data.MTrip;
 import org.mtransit.parser.mt.data.MTripStop;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // https://www.yrt.ca/en/about-us/developer-centre.aspx
 // https://www.yrt.ca/en/about-us/google-transit-feed-specification--gtfs-.aspx
@@ -53,11 +55,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public void start(String[] args) {
-		System.out.printf("\nGenerating YRT Viva bus data...");
+		MTLog.log("Generating YRT Viva bus data...");
 		long start = System.currentTimeMillis();
 		this.serviceIds = extractUsefulServiceIds(args, this, true);
 		super.start(args);
-		System.out.printf("\nGenerating YRT Viva bus data... DONE in %s.\n", Utils.getPrettyDuration(System.currentTimeMillis() - start));
+		MTLog.log("Generating YRT Viva bus data... DONE in %s.", Utils.getPrettyDuration(System.currentTimeMillis() - start));
 	}
 
 	@Override
@@ -154,7 +156,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		String routeLongName = gRoute.getRouteLongName();
 		String routeShortName = gRoute.getRouteShortName();
 		if (routeShortName.length() > 0 && Utils.isDigitsOnly(routeShortName)) {
-			return Integer.valueOf(routeShortName); // using route short name as route ID
+			return Integer.parseInt(routeShortName); // using route short name as route ID
 		}
 		String routeShortNameLC = routeShortName.toLowerCase(Locale.ENGLISH);
 		String routeLongNameLC = routeLongName.toLowerCase(Locale.ENGLISH);
@@ -200,13 +202,10 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				}
 			}
 		} catch (Exception e) {
-			System.out.printf("\nError while extracting route ID for %s!\n", gRoute);
-			e.printStackTrace();
-			System.exit(-1);
+			MTLog.logFatal(e, "Error while extracting route ID for %s!", gRoute);
 			return -1L;
 		}
-		System.out.printf("\nUnexpected route ID for %s!\n", gRoute);
-		System.exit(-1);
+		MTLog.logFatal("Unexpected route ID for %s!", gRoute);
 		return -1L;
 	}
 
@@ -240,7 +239,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			return routeShortName;
 		}
 		StringBuilder sb = new StringBuilder();
-		routeShortName = routeShortName.replaceAll("\\/", "|");
+		routeShortName = routeShortName.replaceAll("/", "|");
 		String[] rsns = routeShortName.split("\\|");
 		for (String rsn : rsns) {
 			if (sb.length() > 0) {
@@ -251,14 +250,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		return sb.toString();
 	}
 
-	private static final Pattern SS = Pattern.compile("((^|\\W){1}(school special|ss)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
-	private static final String SS_REPLACEMENT = "$2SS$4";
+	private static final Pattern SS = Pattern.compile("((^|\\W)(school special|ss)(\\W|$))", Pattern.CASE_INSENSITIVE);
+	private static final String SS_REPLACEMENT = "$2" + "SS" + "$4";
 
-	private static final Pattern GW = Pattern.compile("((^|\\W){1}(g[\\.]?w[\\.]?)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
-	private static final String GW_REPLACEMENT = "$2GW$4";
+	private static final Pattern GW = Pattern.compile("((^|\\W)(g[.]?w[.]?)(\\W|$))", Pattern.CASE_INSENSITIVE);
+	private static final String GW_REPLACEMENT = "$2" + "GW" + "$4";
 
-	private static final Pattern GO = Pattern.compile("((^|\\W){1}(go)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
-	private static final String GO_REPLACEMENT = "$2GO$4";
+	private static final Pattern GO = Pattern.compile("((^|\\W)(go)(\\W|$))", Pattern.CASE_INSENSITIVE);
+	private static final String GO_REPLACEMENT = "$2" + "GO" + "$4";
 
 	private static final String RLN_VIVA = "Viva";
 
@@ -272,8 +271,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			return RLN_VIVA;
 		}
 		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
-			System.out.printf("\nUnexpected route long name for %s!\n", gRoute);
-			System.exit(-1);
+			MTLog.logFatal("Unexpected route long name for %s!", gRoute);
 			return null;
 		}
 		String routeLongName = gRoute.getRouteLongName();
@@ -355,12 +353,12 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static HashMap<Long, RouteTripSpec> ALL_ROUTE_TRIPS2;
 
 	static {
-		HashMap<Long, RouteTripSpec> map2 = new HashMap<Long, RouteTripSpec>();
+		HashMap<Long, RouteTripSpec> map2 = new HashMap<>();
 		map2.put(21L, new RouteTripSpec(21L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Vellore", //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, VAUGHAN_MILLS_TERMINAL) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("6273"), // VAUGHAN MILLS TERMINAL PLATFORM 5
 								Stops.getALL_STOPS().get("4295"), // ++
 								Stops.getALL_STOPS().get("6615"), // == VELLORE AV / MAJOR MACKENZIE DR
@@ -369,10 +367,10 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("5732"), // != #AM CANADA DR / CITYVIEW BLVD =>
 								Stops.getALL_STOPS().get("6849"), // != #PM MAJOR MACKENZIE DR / FOSSIL HILL RD
 								Stops.getALL_STOPS().get("6920"), // != #PM CITYVIEW BLVD / VENICE GT
-								Stops.getALL_STOPS().get("6919"), // != #PM CANADA DR / SUMMIT DR =>
-						})) //
+								Stops.getALL_STOPS().get("6919") // != #PM CANADA DR / SUMMIT DR =>
+						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("6919"), // != #PM CANADA DR / SUMMIT DR <=
 								Stops.getALL_STOPS().get("6898"), // != #PM POETRY DR / MAJOR MACKENZIE DR
 								Stops.getALL_STOPS().get("5732"), // != #AM CANADA DR / CITYVIEW BLVD <=
@@ -380,24 +378,24 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("6848"), // != #AM MAJOR MACKENZIE DR / FOSSIL HIL RD
 								Stops.getALL_STOPS().get("6620"), // == VELLORE AV / EURO PLACE
 								Stops.getALL_STOPS().get("3049"), // ++
-								Stops.getALL_STOPS().get("6273"), // VAUGHAN MILLS TERMINAL PLATFORM 5
-						})) //
+								Stops.getALL_STOPS().get("6273") // VAUGHAN MILLS TERMINAL PLATFORM 5
+						)) //
 				.compileBothTripSort());
 		map2.put(31L, new RouteTripSpec(31L, //
 				OneBusAwayCommons.EAST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "East", // Aurora GO Sta
 				OneBusAwayCommons.WEST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "West") // ??
 				.addTripSort(OneBusAwayCommons.EAST_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("1210"), // "3336", // "1210", // AURORA HEIGHTS DR / WHISPERING PINE
 								Stops.getALL_STOPS().get("2512"), // "335", // "2512", // == YONGE ST STOP # 2512
 								Stops.getALL_STOPS().get("2410"), // "3564", // "2410", // == ST. JOHN'S SDRD / OLD YONGE ST
 								Stops.getALL_STOPS().get("5245"), // "4053", // "5245", // == INDUSTRIAL PKWY / WELLINGTON ST
 								Stops.getALL_STOPS().get("6093"), // "7809", // "6093", // != WELLINGTON ST STOP # 6093
 								Stops.getALL_STOPS().get("5253"), // "4058", // "5253", // == INDUSTRIAL PKWY STOP # 5253
-								Stops.getALL_STOPS().get("6424"), // "7661", // "6424", // AURORA GO STATION PLATFORM #2
-						})) //
+								Stops.getALL_STOPS().get("6424") // "7661", // "6424", // AURORA GO STATION PLATFORM #2
+						)) //
 				.addTripSort(OneBusAwayCommons.WEST_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("6424"), // "7661", // "6424", // AURORA GO STATION PLATFORM #2
 								Stops.getALL_STOPS().get("6391"), // "5897", // "6391", // WELLINGTON ST / TEMPERANCE ST
 								Stops.getALL_STOPS().get("1191"), // "3329", // "1191", // == WELLINGTON ST / HAIDA DR
@@ -405,153 +403,154 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("5079"), // "4021", // "5079", // != MCDONALD DR / HAIDA DR
 								Stops.getALL_STOPS().get("4737"), // "3893", // "4737", // != HAIDA DR / MCDONALD ST
 								Stops.getALL_STOPS().get("4736"), // "3892", // "4736", // == HAIDA DR / AURORA HEIGHTS DR
-								Stops.getALL_STOPS().get("1210"), // "3336", // "1210", // AURORA HEIGHTS DR / WHISPERING PINE
-						})) //
+								Stops.getALL_STOPS().get("1210") // "3336", // "1210", // AURORA HEIGHTS DR / WHISPERING PINE
+						)) //
 				.compileBothTripSort());
 		map2.put(40L, new RouteTripSpec(40L, //
 				OneBusAwayCommons.EAST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL, //
 				OneBusAwayCommons.WEST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, WOODBINE_AVENUE) //
 				.addTripSort(OneBusAwayCommons.EAST_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("6512"), // "7841", // "6512", // RODICK RD / WOODBINE AV
 								Stops.getALL_STOPS().get("1461"), // "1911", // "1461", // ++ TOWN CENTRE BLVD / HIGHWAY 7
-								Stops.getALL_STOPS().get("1827"), // "2152", // "1827", // MARKVILLE MALL STOP #1827
-						})) //
+								Stops.getALL_STOPS().get("1827") // "2152", // "1827", // MARKVILLE MALL STOP #1827
+						)) //
 				.addTripSort(OneBusAwayCommons.WEST_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("1827"), // "2152", // "1827", // MARKVILLE MALL STOP #1827
 								Stops.getALL_STOPS().get("1541"), // "1990", // "1541", // ++ BUCHANAN DR / SPANHOUSE CRES
-								Stops.getALL_STOPS().get("6512"), // "7841", // "6512", // RODICK RD / WOODBINE AV
-						})) //
+								Stops.getALL_STOPS().get("6512") // "7841", // "6512", // RODICK RD / WOODBINE AV
+						)) //
 				.compileBothTripSort());
 		map2.put(41L, new RouteTripSpec(41L, //
 				OneBusAwayCommons.EAST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKHAM, //
 				OneBusAwayCommons.WEST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL) //
 				.addTripSort(OneBusAwayCommons.EAST_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("1827"), // "2152", // "1827", // MARKVILLE MALL STOP #1827
 								Stops.getALL_STOPS().get("1814"), // "2145", // "1814", // RAYMERVILLE DR / CARPENTER CRT
-								Stops.getALL_STOPS().get("1844"), // "2169", // "1844", // LARKIN AV / SAWYER CRES
-						})) //
+								Stops.getALL_STOPS().get("1844") // "2169", // "1844", // LARKIN AV / SAWYER CRES
+						)) //
 				.addTripSort(OneBusAwayCommons.WEST_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("1844"), // "2169", // "1844", // LARKIN AV / SAWYER CRES
 								Stops.getALL_STOPS().get("1862"), // "2184", // "1862", // BULLOCK DR / SNIDER DR
-								Stops.getALL_STOPS().get("1827"), // "2152", // "1827", // MARKVILLE MALL STOP #1827
-						})) //
+								Stops.getALL_STOPS().get("1827") // "2152", // "1827", // MARKVILLE MALL STOP #1827
+						)) //
 				.compileBothTripSort());
 		map2.put(42L, new RouteTripSpec(42L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, UNIONVILLE_GO_STATION, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, BERCZY) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("5977"), // MAIN ST UNIONVILLE / ENTERPRISE BLV
 								Stops.getALL_STOPS().get("9745"), // != RIVIS RD / YMCA BLVD
 								Stops.getALL_STOPS().get("4171"), // <> UNIONVILLE GO STATION PLATFORM 2
 								Stops.getALL_STOPS().get("4907"), // != YMCA BLVD / RIVIS RD
-								Stops.getALL_STOPS().get("2971"), // MAJOR MACKENZIE DR / RIDGECREST RD
-						})) //
+								Stops.getALL_STOPS().get("2971") // MAJOR MACKENZIE DR / RIDGECREST RD
+						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("2971"), // MAJOR MACKENZIE DR / RIDGECREST RD
 								Stops.getALL_STOPS().get("1824"), // CARLTON RD / MCCOWAN RD
 								Stops.getALL_STOPS().get("4906"), // != YMCA BLVD / RIVIS RD
 								Stops.getALL_STOPS().get("4171"), // <> UNIONVILLE GO STATION PLATFORM 2
 								Stops.getALL_STOPS().get("9744"), // != RIVIS RD / YMCA BLVD
-								Stops.getALL_STOPS().get("6308"), // ENTERPRISE DR / MAIN STREET
-						})) //
+								Stops.getALL_STOPS().get("6308") // ENTERPRISE DR / MAIN STREET
+						)) //
 				.compileBothTripSort());
 		map2.put(44L, new RouteTripSpec(44L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, GREEN_LANE, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, NEWMARKET_TERMINAL) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("7314")), // NEWMARKET GO TERMINAL
 								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("4691")), // NEWMARKET GO TERMINAL
 								Stops.getALL_STOPS().get("1971"), // != UPPER CANADA MALL STOP # 1971
 								Stops.getALL_STOPS().get("5944"), // == DAVIS DR / FORD WILSON DR
 								Stops.getALL_STOPS().get("5698"), // WOODSPRING AV / ALFRED SMITH WAY
-								Stops.getALL_STOPS().get("4680"), // GREEN LANE / YONGE ST
-						})) //
+								Stops.getALL_STOPS().get("4680") // GREEN LANE / YONGE ST
+						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("4680"), // GREEN LANE / YONGE ST
 								Stops.getALL_STOPS().get("5421"), // LONDON RD / YORKSHIRE DR
 								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("4691")), // NEWMARKET GO TERMINAL
-								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("7314")), // NEWMARKET GO TERMINAL
-						})) //
+								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("7314")) // NEWMARKET GO TERMINAL
+						)) //
 				.compileBothTripSort());
 		map2.put(45L, new RouteTripSpec(45L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MINGAY, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("1827"), // "2152", // "1827" // MARKVILLE MALL STOP #1827
 								Stops.getALL_STOPS().get("1383"), // "1874", // "1383" // BUR OAK AV / DOGWOOD ST
-								Stops.getALL_STOPS().get("4799"), // "1234", // "4799" // MAJOR MACKENZIE DR / MINGAY AV
-						})) //
+								Stops.getALL_STOPS().get("4799") // "1234", // "4799" // MAJOR MACKENZIE DR / MINGAY AV
+						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("4799"), // "1234", // "4799" // MAJOR MACKENZIE DR / MINGAY AV
 								Stops.getALL_STOPS().get("5541"), // "5619", // "5541" // RAYMERVILLE DR / BENDAMERE CRES
-								Stops.getALL_STOPS().get("1827"), // "2152", // "1827" // MARKVILLE MALL STOP #1827
-						})) //
+								Stops.getALL_STOPS().get("1827") // "2152", // "1827" // MARKVILLE MALL STOP #1827
+						)) //
 				.compileBothTripSort());
 		map2.put(84L, new RouteTripSpec(84L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "North", //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "South") //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("4839"), // "3923", // "4839" // KING RD / YONGE ST
 								Stops.getALL_STOPS().get("2658"), // "3723", // "2658" // HUMBERLAND DR / WOODHAVEN CRES
-								Stops.getALL_STOPS().get("2659"), // "349", // "2659" // YONGE ST / COON'S RD
-						})) //
+								Stops.getALL_STOPS().get("2659") // "349", // "2659" // YONGE ST / COON'S RD
+						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("2659"), // "349", // "2659" // YONGE ST / COON'S RD
 								Stops.getALL_STOPS().get("2359"), // "2380", // "2359" // NORTH LAKE RD / OLDE BAYVIEW AV,
-								Stops.getALL_STOPS().get("4839"), // "3923", // "4839" // KING RD / YONGE ST
-						})) //
+								Stops.getALL_STOPS().get("4839") // "3923", // "4839" // KING RD / YONGE ST
+						)) //
 				.compileBothTripSort());
 		map2.put(204L, new RouteTripSpec(204L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, BERCZY, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, UNIONVILLE_GO_STATION) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("4171"), // UNIONVILLE GO STATION PLATFORM 2
 								Stops.getALL_STOPS().get("6127"), // MCCOWAN RD STOP # 6127
-								Stops.getALL_STOPS().get("2971"), // MAJOR MACKENZIE DR / RIDGECREST RD
-						})) //
+								Stops.getALL_STOPS().get("2971") // MAJOR MACKENZIE DR / RIDGECREST RD
+						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("2971"), // MAJOR MACKENZIE DR / RIDGECREST RD
 								Stops.getALL_STOPS().get("6092"), // == BUR OAK AV STOP # 6092
 								Stops.getALL_STOPS().get("1401"), // != BUR OAK AV / THE BRIDLE WALK,
 								Stops.getALL_STOPS().get("6690"), // != THE BRIDLE WALK / HOST AV
-								Stops.getALL_STOPS().get("4171"), // UNIONVILLE GO STATION PLATFORM 2
-						})) //
+								Stops.getALL_STOPS().get("4171") // UNIONVILLE GO STATION PLATFORM 2
+						)) //
 				.compileBothTripSort());
 		map2.put(522L, new RouteTripSpec(522L, //
 				OneBusAwayCommons.EAST, MTrip.HEADSIGN_TYPE_STRING, "East", //
 				OneBusAwayCommons.WEST, MTrip.HEADSIGN_TYPE_STRING, "West") //
 				.addTripSort(OneBusAwayCommons.EAST, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("5246")), // HAGGERMANS CORNER
 								Stops.getALL_STOPS().get("1552"), // M-S HOSPITAL
-								Stops.getALL_STOPS().get("5986"), // CORNELL PARK AV / WALKERVILLE RD
-						})) //
+								Stops.getALL_STOPS().get("5986") // CORNELL PARK AV / WALKERVILLE RD
+						)) //
 				.addTripSort(OneBusAwayCommons.WEST, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("5986"), // CORNELL PARK AV / WALKERVILLE RD
 								Stops.getALL_STOPS().get("6305"), // TONY WONG PLACE / KENNEDY RD
-								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("5246")), // HAGGERMANS CORNER
-						})) //
+								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("5246")) // HAGGERMANS CORNER
+						)) //
 				.compileBothTripSort());
+		/* no stops */
 		map2.put(589L, new RouteTripSpec(589L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Bernard / Dunlop St", //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("7106"), // "6525", // "7106" // HILLCREST MALL
 								Stops.getALL_STOPS().get("5319"), // "1366", // "5319" // OBSERVATORY TOWERS STOP # 5319
 								Stops.getALL_STOPS().get("2961"), // "490", // "2961" // == MAJOR MACKENZIE DR / HARDING BLVD
@@ -571,18 +570,19 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("1693"), // "207", // "1693" // ==
 								Stops.getALL_STOPS().get("2750"), // "372", // "2750" // DUNLOP ST STOP #
 								Stops.getALL_STOPS().get("6321"), // "7612", // "6321" // UPPER YONGE PLACE
-								Stops.getALL_STOPS().get("7228"), // "8042", // "7228" // MON SHEONG COURT STOP # 7228
-						})) //
+								Stops.getALL_STOPS().get("7228") // "8042", // "7228" // MON SHEONG COURT STOP # 7228
+						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ /* no stops */})) //
+						Collections.emptyList()) // NO STOPS
 				.compileBothTripSort());
+		/* no stops */
 		map2.put(590L, new RouteTripSpec(590L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Hillcrest Mall") //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ /* no stops */})) //
+						Collections.emptyList()) // NO STOPS
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("7228"), // "8042", // "7228" // MON SHEONG COURT STOP # 7228
 								Stops.getALL_STOPS().get("6321"), // "7612", // "6321" // UPPER YONGE PLACE
 								Stops.getALL_STOPS().get("4628"), // "1182", // "4628" // RICHMOND HEIGHTS NO FRILLS STOP # 4
@@ -591,42 +591,42 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("4694"), // "1207", // "4694" // YONGE ST / ARNOLD CRES
 								Stops.getALL_STOPS().get("5322"), // "1368", // "5322" // MCCONAGHY CENTRE STOP # 5322
 								Stops.getALL_STOPS().get("6125"), // "5382", // "6125" // HARDING BLVD / KERSEY CRES
-								Stops.getALL_STOPS().get("7106"), // "6525", // "7106" // HILLCREST MALL
-						})) //
+								Stops.getALL_STOPS().get("7106") // "6525", // "7106" // HILLCREST MALL
+						)) //
 				.compileBothTripSort());
 		map2.put(801L, new RouteTripSpec(801L, //
 				OneBusAwayCommons.NORTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
 				OneBusAwayCommons.SOUTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(OneBusAwayCommons.NORTH, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("7232"), // OPERATIONS CENTRE
 								Stops.getALL_STOPS().get("6501"), // OAK RIDGES C.C. STOP # 6501
 								Stops.getALL_STOPS().get("4934"), // ELGIN WEST C.C. STOP # 4934
-								Stops.getALL_STOPS().get("7231"), // RICHMOND HILL WAVE POOL
-						})) //
+								Stops.getALL_STOPS().get("7231") // RICHMOND HILL WAVE POOL
+						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("6501"), // OAK RIDGES C.C. STOP # 6501
 								Stops.getALL_STOPS().get("4934"), // ELGIN WEST C.C. STOP # 4934
 								Stops.getALL_STOPS().get("7231"), // RICHMOND HILL WAVE POOL
-								Stops.getALL_STOPS().get("7232"), // OPERATIONS CENTRE
-						})) //
+								Stops.getALL_STOPS().get("7232") // OPERATIONS CENTRE
+						)) //
 				.compileBothTripSort());
 		map2.put(802L, new RouteTripSpec(802L, //
 				OneBusAwayCommons.NORTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
 				OneBusAwayCommons.SOUTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(OneBusAwayCommons.NORTH, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("7233"), // ELGIN BARROW ARENA
 								Stops.getALL_STOPS().get("7235"), // ROUGE WOODS COMMUNITY CENTRE
-								Stops.getALL_STOPS().get("7232"), // OPERATIONS CENTRE
-						})) //
+								Stops.getALL_STOPS().get("7232") // OPERATIONS CENTRE
+						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH, //
-						Arrays.asList(new String[]{ //
+						Arrays.asList(//
 								Stops.getALL_STOPS().get("7232"), // OPERATIONS CENTRE
 								Stops.getALL_STOPS().get("7233"), // ELGIN BARROW ARENA
-								Stops.getALL_STOPS().get("7235"), // ROUGE WOODS COMMUNITY CENTRE
-						})) //
+								Stops.getALL_STOPS().get("7235") // ROUGE WOODS COMMUNITY CENTRE
+						)) //
 				.compileBothTripSort());
 		ALL_ROUTE_TRIPS2 = map2;
 	}
@@ -695,8 +695,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign), OneBusAwayCommons.AFTERNOON);
 			return;
 		}
-		System.out.printf("\nUnexpected trips to set: %s!\n", gTrip);
-		System.exit(-1);
+		MTLog.logFatal("Unexpected trips to set: %s!", gTrip);
 	}
 
 	@Override
@@ -706,13 +705,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					MARKHAM_ROAD, //
 					COPPER_CREEK_DRIVE //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(MARKHAM_ROAD, mTrip.getHeadsignId());
 				return true;
 			} else if (Arrays.asList( //
 					FINCH_TERMINAL, //
 					MIDDLEFIELD //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(FINCH_TERMINAL, mTrip.getHeadsignId());
 				return true;
 			}
@@ -720,14 +719,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					YONGE, //
 					PIONEER_VLG_TERMINAL //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(PIONEER_VLG_TERMINAL, mTrip.getHeadsignId());
 				return true;
 			}
 			if (Arrays.asList( //
 					"P " + "Off Only", //
 					DON_MILLS //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(DON_MILLS, mTrip.getHeadsignId());
 				return true;
 			}
@@ -744,14 +743,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					DROP_OFF_ONLY, //
 					P_OFF_ONLY, //
 					FINCH_TERMINAL //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(FINCH_TERMINAL, mTrip.getHeadsignId());
 				return true;
 			} else if (Arrays.asList( //
 					DROP_OFF_ONLY, //
 					P_OFF_ONLY, //
 					GLEN_SHIELDS //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(GLEN_SHIELDS, mTrip.getHeadsignId());
 				return true;
 			}
@@ -759,7 +758,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					STEELES, //
 					WOODBINE_CENTER //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(WOODBINE_CENTER, mTrip.getHeadsignId());
 				return true;
 			}
@@ -767,7 +766,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					"Clayton / Harvest Moon", //
 					STEELES_AVE //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(STEELES_AVE, mTrip.getHeadsignId()); // Clayton / Harvest Moon
 				return true;
 			}
@@ -808,7 +807,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					MAIN_STREET, //
 					YONGE_STREET //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(YONGE_STREET, mTrip.getHeadsignId());
 				return true;
 			}
@@ -817,7 +816,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					YORK_UNIVERSITY, //
 					PIONEER_VLG, //
 					PIONEER_VLG_TERMINAL //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(PIONEER_VLG, mTrip.getHeadsignId());
 				return true;
 			}
@@ -833,7 +832,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					SENECA_COLLEGE_KING_CAMPUS, // <>
 					BATHURST + " St", //
 					MAPLE_GO_STATION //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(MAPLE_GO_STATION, mTrip.getHeadsignId());
 				return true;
 			}
@@ -841,13 +840,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					PROMENADE_TERMINAL, //
 					FINCH_TERMINAL //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(FINCH_TERMINAL, mTrip.getHeadsignId());
 				return true;
 			} else if (Arrays.asList( //
 					LEBOVIC_CAMPUS_DRIVE, //
 					TESTON_ROAD //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(TESTON_ROAD, mTrip.getHeadsignId());
 				return true;
 			}
@@ -855,7 +854,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					"Don MIlls Sta", //
 					DON_MILLS_STATION //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(DON_MILLS_STATION, mTrip.getHeadsignId());
 				return true;
 			}
@@ -863,7 +862,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					VAUGHAN_MILLS_MALL, //
 					SMART_CENTRES_PLACE //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(SMART_CENTRES_PLACE, mTrip.getHeadsignId());
 				return true;
 			}
@@ -871,7 +870,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					"Henderson", //
 					STONE_ROAD //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(STONE_ROAD, mTrip.getHeadsignId());
 				return true;
 			} else if (Arrays.asList( //
@@ -880,7 +879,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					"Seneca", //
 					SENECA_COLLEGE_KING_CAMPUS, //
 					STONE_ROAD //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString("Seneca", mTrip.getHeadsignId());
 				return true;
 			}
@@ -928,7 +927,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					"404 Town Ctr", //
 					NEWMARKET_TERMINAL //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(NEWMARKET_TERMINAL, mTrip.getHeadsignId());
 				return true;
 			}
@@ -944,7 +943,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					"Richmond Hl H.S", //
 					BERNARD_TERMINAL //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(BERNARD_TERMINAL, mTrip.getHeadsignId()); // Richmond Hl H.S
 				return true;
 			}
@@ -953,7 +952,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					DROP_OFF_ONLY, //
 					P_OFF_ONLY, //
 					NAPA_VALLEY //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(NAPA_VALLEY, mTrip.getHeadsignId());
 				return true;
 			}
@@ -961,7 +960,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					VAUGHAN_MILLS, //
 					VAUGHAN_MILLS_MALL //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(VAUGHAN_MILLS_MALL, mTrip.getHeadsignId());
 				return true;
 			}
@@ -977,7 +976,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					HIGHWAY_7, //
 					BEAVER_CREEK //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(BEAVER_CREEK, mTrip.getHeadsignId());
 				return true;
 			}
@@ -985,7 +984,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					RUTHERFORD, //
 					MAJOR_MACKENZIE //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(MAJOR_MACKENZIE, mTrip.getHeadsignId());
 				return true;
 			} else if (Arrays.asList( //
@@ -1007,13 +1006,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					MAJOR_MACKENZIE + _AND_ + HIGHWAY_400, //
 					CANADA_DRIVE //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CANADA_DRIVE, mTrip.getHeadsignId());
 				return true;
 			} else if (Arrays.asList( //
 					YORK_UNIVERSITY, //
 					PIONEER_VLG_TERMINAL //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(PIONEER_VLG_TERMINAL, mTrip.getHeadsignId());
 				return true;
 			}
@@ -1062,7 +1061,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					NEWMARKET_TERMINAL, //
 					GREEN_LANE //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(GREEN_LANE, mTrip.getHeadsignId());
 				return true;
 			}
@@ -1070,7 +1069,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					BERNARD_TERMINAL, //
 					NEWMARKET_TERMINAL //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(NEWMARKET_TERMINAL, mTrip.getHeadsignId());
 				return true;
 			}
@@ -1078,52 +1077,51 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					"Pine Vly", //
 					MARTIN_GROVE //
-					).containsAll(headsignsValues)) {
+			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(MARTIN_GROVE, mTrip.getHeadsignId());
 				return true;
 			}
 		}
-		System.out.printf("\nUnexpected trips to merge: %s & %s!\n", mTrip, mTripToMerge);
-		System.exit(-1);
+		MTLog.logFatal("Unexpected trips to merge: %s & %s!", mTrip, mTripToMerge);
 		return false;
 	}
 
-	private static final Pattern BYPASSING = Pattern.compile("((^|\\W){1}(bypassing)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final Pattern BYPASSING = Pattern.compile("((^|\\W)(bypassing)(\\W|$))", Pattern.CASE_INSENSITIVE);
 
 	private static final Pattern STARTS_WITH_ROUTE_NUMBER = Pattern.compile("(^rt [\\d]+ )", Pattern.CASE_INSENSITIVE);
 
-	private static final Pattern ENDS_WITH_BOUND = Pattern.compile("( \\- [sewn]b$)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern ENDS_WITH_DASH_BOUND = Pattern.compile("( - [sewn]b$)", Pattern.CASE_INSENSITIVE);
 
-	private static final Pattern ENDS_WITH_AM_PM = Pattern.compile("( \\- (af|am|mo|pm)$)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern ENDS_WITH_AM_PM = Pattern.compile("( - (af|am|mo|pm)$)", Pattern.CASE_INSENSITIVE);
 
-	private static final Pattern STARTS_WITH_DASH = Pattern.compile("(^\\- )", Pattern.CASE_INSENSITIVE);
+	private static final Pattern STARTS_WITH_DASH = Pattern.compile("(^- )", Pattern.CASE_INSENSITIVE);
 
-	private static final Pattern PARK_AND_RIDE = Pattern.compile("((^|\\W){1}(park and ride|park & ride|P\\+R)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final Pattern PARK_AND_RIDE = Pattern.compile("((^|\\W)(park and ride|park & ride|P\\+R)(\\W|$))", Pattern.CASE_INSENSITIVE);
 	private static final String PARK_AND_RIDE_REPLACEMENT = "$2" + PARK_AND_RIDE_SHORT + "$4";
 
-	private static final Pattern UNIVERSITY_ = Pattern.compile("((^|\\W){1}(university)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final Pattern UNIVERSITY_ = Pattern.compile("((^|\\W)(university)(\\W|$))", Pattern.CASE_INSENSITIVE);
 	private static final String UNIVERSITY_REPLACEMENT = "$2" + UNIVERSITY_SHORT + "$4";
 
-	private static final Pattern SECONDARY_SCHOOL_ = Pattern.compile("((^|\\W){1}(" //
+	private static final Pattern SECONDARY_SCHOOL_ = Pattern.compile("((^|\\W)(" //
 			+ "secondary school special" //
 			+ "|" //
 			+ "secondary school" //
-			+ ")(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+			+ ")(\\W|$))", Pattern.CASE_INSENSITIVE);
 	private static final String SECONDARY_SCHOOL_REPLACEMENT_ = "$2" + "SS" + "$4";
 
-	private static final Pattern HIGH_SCHOOL_ = Pattern.compile("((^|\\W){1}(" //
+	private static final Pattern HIGH_SCHOOL_ = Pattern.compile("((^|\\W)(" //
 			+ "high school special" //
 			+ "|" //
 			+ "high school" //
-			+ ")(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+			+ ")(\\W|$))", Pattern.CASE_INSENSITIVE);
 
 	private static final String HIGH_SCHOOL_REPLACEMENT_ = "$2" + "HS" + "$4";
 
-	private static final Pattern SCHOOL_ = Pattern.compile("((^|\\W){1}(" //
+	private static final Pattern SCHOOL_ = Pattern.compile("((^|\\W)(" //
 			+ "school special" //
 			+ "|" //
 			+ "school" //
-			+ ")(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+			+ ")(\\W|$))", Pattern.CASE_INSENSITIVE);
 	private static final String SCHOOL_REPLACEMENT_ = "$2" + "S" + "$4";
 
 	private static final Pattern ENDS_WITH_DROP_OFF_ONLY = Pattern.compile("( DROP OFF ONLY$)", Pattern.CASE_INSENSITIVE);
@@ -1135,14 +1133,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		}
 		tripHeadsign = STARTS_WITH_ROUTE_NUMBER.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
 		tripHeadsign = STARTS_WITH_DASH.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
-		tripHeadsign = ENDS_WITH_BOUND.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
+		tripHeadsign = ENDS_WITH_DASH_BOUND.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
 		tripHeadsign = ENDS_WITH_AM_PM.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
 		tripHeadsign = ENDS_WITH_DROP_OFF_ONLY.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
 		tripHeadsign = CleanUtils.keepToAndRemoveVia(tripHeadsign);
 		Matcher matcherBYPASSING = BYPASSING.matcher(tripHeadsign);
 		if (matcherBYPASSING.find()) {
-			String gTripHeadsignBeforeBYPASSING = tripHeadsign.substring(0, matcherBYPASSING.start());
-			tripHeadsign = gTripHeadsignBeforeBYPASSING;
+			tripHeadsign = tripHeadsign.substring(0, matcherBYPASSING.start());
 		}
 		tripHeadsign = SECONDARY_SCHOOL_.matcher(tripHeadsign).replaceAll(SECONDARY_SCHOOL_REPLACEMENT_);
 		tripHeadsign = HIGH_SCHOOL_.matcher(tripHeadsign).replaceAll(HIGH_SCHOOL_REPLACEMENT_);
@@ -1163,15 +1160,17 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern PLATFORM = Pattern.compile("( platform )", Pattern.CASE_INSENSITIVE);
 	private static final String PLATFORM_REPLACEMENT = " P";
 
-	private static final Pattern COMMUNITY_CENTRE = Pattern.compile("((^|\\W){1}(c\\.c\\.|cc|community centre)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
-	private static final String COMMUNITY_CENTRE_REPLACEMENT = "$2CC$4";
+	private static final Pattern COMMUNITY_CENTRE = Pattern.compile("((^|\\W)(c\\.c\\.|cc|community centre)(\\W|$))", Pattern.CASE_INSENSITIVE);
+	private static final String COMMUNITY_CENTRE_REPLACEMENT = "$2" + "CC" + "$4";
 
-	private static final Pattern HIGH_SCHOOL = Pattern.compile("((^|\\W){1}(h\\.s\\.|hs|high school)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
-	private static final String HIGH_SCHOOL_REPLACEMENT = "$2HS$4";
+	private static final Pattern HIGH_SCHOOL = Pattern.compile("((^|\\W)(h\\.s\\.|hs|high school)(\\W|$))", Pattern.CASE_INSENSITIVE);
+	private static final String HIGH_SCHOOL_REPLACEMENT = "$2" + "HS" + "$4";
 
 	@Override
 	public String cleanStopName(String gStopName) {
-		gStopName = gStopName.toLowerCase(Locale.ENGLISH);
+		if (Utils.isUppercaseOnly(gStopName, true, true)) {
+			gStopName = gStopName.toLowerCase(Locale.ENGLISH);
+		}
 		gStopName = GO.matcher(gStopName).replaceAll(GO_REPLACEMENT);
 		gStopName = STOP_CODE.matcher(gStopName).replaceAll(STOP_CODE_REPLACEMENT);
 		gStopName = CleanUtils.CLEAN_AT.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AT_REPLACEMENT);
@@ -1207,8 +1206,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			} else if ("VNYNCTNB".equalsIgnoreCase(gStop.getStopId())) {
 				return 100006;
 			}
-			System.out.printf("\nUnexpected stop ID for %s !\n", gStop);
-			System.exit(-1);
+			MTLog.logFatal("Unexpected stop ID for %s !", gStop);
 			return -1;
 		}
 		return super.getStopId(gStop); // original stop ID used by real-time API
