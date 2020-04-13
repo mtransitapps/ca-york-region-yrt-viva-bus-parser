@@ -32,12 +32,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// https://www.yrt.ca/en/about-us/developer-centre.aspx
-// https://www.yrt.ca/en/about-us/google-transit-feed-specification--gtfs-.aspx
-// https://www.yrt.ca/google/google_transit.zip
-// http://www.yrt.ca/en/aboutus/developer.asp
-// http://www.yrt.ca/en/aboutus/GTFS.asp
-// http://www.yrt.ca/google/google_transit.zip
+// https://www.yrt.ca/en/about-us/open-data.aspx
 // https://www.yrt.ca/google/google_transit.zip
 public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
@@ -464,8 +459,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, NEWMARKET_TERMINAL) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList(//
-								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("7314")), // NEWMARKET GO TERMINAL
-								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("4691")), // NEWMARKET GO TERMINAL
+								Stops.getALL_STOPS().get("7314"), // NEWMARKET GO TERMINAL
+								Stops.getALL_STOPS().get("4691"), // NEWMARKET GO TERMINAL
 								Stops.getALL_STOPS().get("1971"), // != UPPER CANADA MALL STOP # 1971
 								Stops.getALL_STOPS().get("5944"), // == DAVIS DR / FORD WILSON DR
 								Stops.getALL_STOPS().get("5698"), // WOODSPRING AV / ALFRED SMITH WAY
@@ -475,8 +470,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(//
 								Stops.getALL_STOPS().get("4680"), // GREEN LANE / YONGE ST
 								Stops.getALL_STOPS().get("5421"), // LONDON RD / YORKSHIRE DR
-								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("4691")), // NEWMARKET GO TERMINAL
-								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("7314")) // NEWMARKET GO TERMINAL
+								Stops.getALL_STOPS().get("4691"), // NEWMARKET GO TERMINAL
+								Stops.getALL_STOPS().get("7314") // NEWMARKET GO TERMINAL
 						)) //
 				.compileBothTripSort());
 		map2.put(45L, new RouteTripSpec(45L, //
@@ -534,7 +529,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.WEST, MTrip.HEADSIGN_TYPE_STRING, "West") //
 				.addTripSort(OneBusAwayCommons.EAST, //
 						Arrays.asList(//
-								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("5246")), // HAGGERMANS CORNER
+								Stops.getALL_STOPS().get("5246"), // HAGGERMANS CORNER
 								Stops.getALL_STOPS().get("1552"), // M-S HOSPITAL
 								Stops.getALL_STOPS().get("5986") // CORNELL PARK AV / WALKERVILLE RD
 						)) //
@@ -542,7 +537,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(//
 								Stops.getALL_STOPS().get("5986"), // CORNELL PARK AV / WALKERVILLE RD
 								Stops.getALL_STOPS().get("6305"), // TONY WONG PLACE / KENNEDY RD
-								CleanUtils.cleanMergedID(Stops.getALL_STOPS().get("5246")) // HAGGERMANS CORNER
+								Stops.getALL_STOPS().get("5246") // HAGGERMANS CORNER
 						)) //
 				.compileBothTripSort());
 		/* no stops */
