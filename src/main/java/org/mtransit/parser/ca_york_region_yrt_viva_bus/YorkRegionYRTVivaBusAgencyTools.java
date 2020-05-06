@@ -156,19 +156,36 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		String routeShortNameLC = routeShortName.toLowerCase(Locale.ENGLISH);
 		String routeLongNameLC = routeLongName.toLowerCase(Locale.ENGLISH);
 		if (routeLongNameLC.contains(VIVA)) {
-			if (routeLongNameLC.endsWith(BLUE)) {
+			if (routeLongNameLC.endsWith(BLUE)
+				|| routeShortNameLC.endsWith(BLUE)) {
 				return VIVA_BLUE_RID;
 			} else if (routeLongNameLC.endsWith(BLUE_A)) {
 				return VIVA_BLUE_A_RID;
-			} else if (routeLongNameLC.endsWith(GREEN)) {
+			} else if (routeLongNameLC.endsWith(GREEN)
+					|| routeShortNameLC.endsWith(GREEN)) {
 				return VIVA_GREEN_RID;
-			} else if (routeLongNameLC.endsWith(ORANGE)) {
+			} else if (routeLongNameLC.endsWith(ORANGE)
+					|| routeShortNameLC.endsWith(ORANGE)) {
 				return VIVA_ORANGE_RID;
 			} else if (routeLongNameLC.endsWith(PINK)) {
 				return VIVA_PINK_RID;
-			} else if (routeLongNameLC.endsWith(PURPLE)) {
+			} else if (routeLongNameLC.endsWith(PURPLE)
+					|| routeShortNameLC.endsWith(PURPLE)) {
 				return VIVA_PURPLE_RID;
-			} else if (routeLongNameLC.endsWith(YELLOW)) {
+			} else if (routeLongNameLC.endsWith(YELLOW)
+					|| routeShortNameLC.endsWith(YELLOW)) {
+				return VIVA_YELLOW_RID;
+			}
+		}  else {
+			if (routeShortNameLC.equalsIgnoreCase(BLUE)) {
+				return VIVA_BLUE_RID;
+			} else if (routeShortNameLC.equalsIgnoreCase(GREEN)) {
+				return VIVA_GREEN_RID;
+			} else if (routeShortNameLC.equalsIgnoreCase(ORANGE)) {
+				return VIVA_ORANGE_RID;
+			} else if (routeShortNameLC.equalsIgnoreCase(PURPLE)) {
+				return VIVA_PURPLE_RID;
+			} else if (routeShortNameLC.equalsIgnoreCase(YELLOW)) {
 				return VIVA_YELLOW_RID;
 			}
 		}
@@ -262,10 +279,22 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				|| gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH).startsWith(VIVA)) {
 			return RLN_VIVA;
 		}
-		if (gRoute.getRouteLongName().toLowerCase(Locale.ENGLISH).equalsIgnoreCase("yellow")) {
+		String routeShortNameLC = gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH);
+		if (routeShortNameLC.equalsIgnoreCase(BLUE)) {
+			return RLN_VIVA;
+		} else if (routeShortNameLC.equalsIgnoreCase(GREEN)) {
+			return RLN_VIVA;
+		} else if (routeShortNameLC.equalsIgnoreCase(ORANGE)) {
+			return RLN_VIVA;
+		} else if (routeShortNameLC.equalsIgnoreCase(PURPLE)) {
+			return RLN_VIVA;
+		} else if (routeShortNameLC.equalsIgnoreCase(YELLOW)) {
 			return RLN_VIVA;
 		}
 		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
+			if (true) {
+				return "Route " + gRoute.getRouteShortName();
+			}
 			MTLog.logFatal("Unexpected route long name for %s!", gRoute);
 			return null;
 		}
