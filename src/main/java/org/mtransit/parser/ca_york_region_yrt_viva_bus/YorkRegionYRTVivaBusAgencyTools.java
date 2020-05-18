@@ -1,6 +1,8 @@
 package org.mtransit.parser.ca_york_region_yrt_viva_bus;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.mtransit.commons.OneBusAwayCommons;
 import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.DefaultAgencyTools;
@@ -36,7 +38,7 @@ import java.util.regex.Pattern;
 // https://www.yrt.ca/google/google_transit.zip
 public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
-	public static void main(String[] args) {
+	public static void main(@Nullable String[] args) {
 		if (args == null || args.length == 0) {
 			args = new String[3];
 			args[0] = "input/gtfs.zip";
@@ -46,13 +48,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		new YorkRegionYRTVivaBusAgencyTools().start(args);
 	}
 
-	private HashSet<String> serviceIds;
+	@Nullable
+	private HashSet<Integer> serviceIds;
 
 	@Override
-	public void start(String[] args) {
+	public void start(@NotNull String[] args) {
 		MTLog.log("Generating YRT Viva bus data...");
 		long start = System.currentTimeMillis();
-		this.serviceIds = extractUsefulServiceIds(args, this, true);
+		this.serviceIds = extractUsefulServiceIdInts(args, this, true);
 		super.start(args);
 		MTLog.log("Generating YRT Viva bus data... DONE in %s.", Utils.getPrettyDuration(System.currentTimeMillis() - start));
 	}
@@ -63,28 +66,28 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
-	public boolean excludeCalendar(GCalendar gCalendar) {
+	public boolean excludeCalendar(@NotNull GCalendar gCalendar) {
 		if (this.serviceIds != null) {
-			return excludeUselessCalendar(gCalendar, this.serviceIds);
+			return excludeUselessCalendarInt(gCalendar, this.serviceIds);
 		}
 		return super.excludeCalendar(gCalendar);
 	}
 
 	@Override
-	public boolean excludeCalendarDate(GCalendarDate gCalendarDates) {
+	public boolean excludeCalendarDate(@NotNull GCalendarDate gCalendarDates) {
 		if (this.serviceIds != null) {
-			return excludeUselessCalendarDate(gCalendarDates, this.serviceIds);
+			return excludeUselessCalendarDateInt(gCalendarDates, this.serviceIds);
 		}
 		return super.excludeCalendarDate(gCalendarDates);
 	}
 
 	@Override
-	public boolean excludeTrip(GTrip gTrip) {
+	public boolean excludeTrip(@NotNull GTrip gTrip) {
 		if (gTrip.getTripHeadsign().startsWith("YRT Training Bus")) {
 			return true; // exclude training bus
 		}
 		if (this.serviceIds != null) {
-			return excludeUselessTrip(gTrip, this.serviceIds);
+			return excludeUselessTripInt(gTrip, this.serviceIds);
 		}
 		return super.excludeTrip(gTrip);
 	}
@@ -92,16 +95,17 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String TTC = "TTC ";
 
 	@Override
-	public boolean excludeRoute(GRoute gRoute) {
-		if (gRoute.getRouteLongName().startsWith(TTC)) {
+	public boolean excludeRoute(@NotNull GRoute gRoute) {
+		if (gRoute.getRouteLongNameOrDefault().startsWith(TTC)) {
 			return true; // skip TTC agency bus routes
 		}
-		if (gRoute.getRouteLongName().endsWith(" TRAINING BUS")) {
+		if (gRoute.getRouteLongNameOrDefault().endsWith(" TRAINING BUS")) {
 			return true; // exclude training bus
 		}
 		return super.excludeRoute(gRoute);
 	}
 
+	@NotNull
 	@Override
 	public Integer getAgencyRouteType() {
 		return MAgency.ROUTE_TYPE_BUS;
@@ -147,8 +151,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final long VIVA_YELLOW_RID = 607L;
 
 	@Override
-	public long getRouteId(GRoute gRoute) {
-		String routeLongName = gRoute.getRouteLongName();
+	public long getRouteId(@NotNull GRoute gRoute) {
+		String routeLongName = gRoute.getRouteLongNameOrDefault();
 		String routeShortName = gRoute.getRouteShortName();
 		if (routeShortName.length() > 0 && Utils.isDigitsOnly(routeShortName)) {
 			return Integer.parseInt(routeShortName); // using route short name as route ID
@@ -157,7 +161,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		String routeLongNameLC = routeLongName.toLowerCase(Locale.ENGLISH);
 		if (routeLongNameLC.contains(VIVA)) {
 			if (routeLongNameLC.endsWith(BLUE)
-				|| routeShortNameLC.endsWith(BLUE)) {
+					|| routeShortNameLC.endsWith(BLUE)) {
 				return VIVA_BLUE_RID;
 			} else if (routeLongNameLC.endsWith(BLUE_A)) {
 				return VIVA_BLUE_A_RID;
@@ -214,15 +218,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				}
 			}
 		} catch (Exception e) {
-			MTLog.logFatal(e, "Error while extracting route ID for %s!", gRoute);
-			return -1L;
+			throw new MTLog.Fatal(e, "Error while extracting route ID for %s!", gRoute);
 		}
-		MTLog.logFatal("Unexpected route ID for %s!", gRoute);
-		return -1L;
+		throw new MTLog.Fatal("Unexpected route ID for %s!", gRoute);
 	}
 
+	@Nullable
 	@Override
-	public String getRouteColor(GRoute gRoute) {
+	public String getRouteColor(@NotNull GRoute gRoute) {
 		if (getRouteId(gRoute) == VIVA_YELLOW_RID) {
 			if ("F7FE2E".equalsIgnoreCase(gRoute.getRouteColor())) {
 				return "FFCC00";
@@ -233,9 +236,10 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	private static final Pattern REMOVE_LEADING_ZEROS = Pattern.compile("(^0+)", Pattern.CASE_INSENSITIVE);
 
+	@Nullable
 	@Override
-	public String getRouteShortName(GRoute gRoute) {
-		String routeLongNameLC = gRoute.getRouteLongName().toLowerCase(Locale.ENGLISH);
+	public String getRouteShortName(@NotNull GRoute gRoute) {
+		String routeLongNameLC = gRoute.getRouteLongNameOrDefault().toLowerCase(Locale.ENGLISH);
 		if (routeLongNameLC.startsWith(VIVA)) {
 			return CleanUtils.cleanLabel(routeLongNameLC.substring(VIVA.length()));
 		}
@@ -273,13 +277,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	private static final String RLN_VIVA = "Viva";
 
+	@NotNull
 	@Override
-	public String getRouteLongName(GRoute gRoute) {
-		if (gRoute.getRouteLongName().toLowerCase(Locale.ENGLISH).startsWith(VIVA) //
-				|| gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH).startsWith(VIVA)) {
+	public String getRouteLongName(@NotNull GRoute gRoute) {
+		String routeLongName = gRoute.getRouteLongNameOrDefault();
+		final String rsn = gRoute.getRouteShortName();
+		if (routeLongName.toLowerCase(Locale.ENGLISH).startsWith(VIVA) //
+				|| rsn.toLowerCase(Locale.ENGLISH).startsWith(VIVA)) {
 			return RLN_VIVA;
 		}
-		String routeShortNameLC = gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH);
+		String routeShortNameLC = rsn.toLowerCase(Locale.ENGLISH);
 		if (routeShortNameLC.equalsIgnoreCase(BLUE)) {
 			return RLN_VIVA;
 		} else if (routeShortNameLC.equalsIgnoreCase(GREEN)) {
@@ -291,14 +298,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		} else if (routeShortNameLC.equalsIgnoreCase(YELLOW)) {
 			return RLN_VIVA;
 		}
-		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
+		if (StringUtils.isEmpty(routeLongName)) {
+			//noinspection ConstantConditions // FIXME
 			if (true) {
-				return "Route " + gRoute.getRouteShortName();
+				return "Route " + rsn;
 			}
 			MTLog.logFatal("Unexpected route long name for %s!", gRoute);
 			return null;
 		}
-		String routeLongName = gRoute.getRouteLongName();
 		routeLongName = routeLongName.toLowerCase(Locale.ENGLISH);
 		routeLongName = SS.matcher(routeLongName).replaceAll(SS_REPLACEMENT);
 		routeLongName = GW.matcher(routeLongName).replaceAll(GW_REPLACEMENT);
@@ -311,6 +318,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	private static final String AGENCY_COLOR = "0079C2"; // BLUE (Android App Icon)
 
+	@NotNull
 	@Override
 	public String getAgencyColor() {
 		return AGENCY_COLOR;
@@ -378,6 +386,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	static {
 		HashMap<Long, RouteTripSpec> map2 = new HashMap<>();
+		//noinspection deprecation
 		map2.put(21L, new RouteTripSpec(21L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Vellore", //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, VAUGHAN_MILLS_TERMINAL) //
@@ -405,6 +414,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("6273") // VAUGHAN MILLS TERMINAL PLATFORM 5
 						)) //
 				.compileBothTripSort());
+		//noinspection deprecation
 		map2.put(31L, new RouteTripSpec(31L, //
 				OneBusAwayCommons.EAST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "East", // Aurora GO Sta
 				OneBusAwayCommons.WEST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "West") // ??
@@ -430,6 +440,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("1210") // "3336", // "1210", // AURORA HEIGHTS DR / WHISPERING PINE
 						)) //
 				.compileBothTripSort());
+		//noinspection deprecation
 		map2.put(40L, new RouteTripSpec(40L, //
 				OneBusAwayCommons.EAST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL, //
 				OneBusAwayCommons.WEST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, WOODBINE_AVENUE) //
@@ -446,6 +457,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("6512") // "7841", // "6512", // RODICK RD / WOODBINE AV
 						)) //
 				.compileBothTripSort());
+		//noinspection deprecation
 		map2.put(41L, new RouteTripSpec(41L, //
 				OneBusAwayCommons.EAST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKHAM, //
 				OneBusAwayCommons.WEST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL) //
@@ -462,6 +474,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("1827") // "2152", // "1827", // MARKVILLE MALL STOP #1827
 						)) //
 				.compileBothTripSort());
+		//noinspection deprecation
 		map2.put(42L, new RouteTripSpec(42L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, UNIONVILLE_GO_STATION, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, BERCZY) //
@@ -483,6 +496,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("6308") // ENTERPRISE DR / MAIN STREET
 						)) //
 				.compileBothTripSort());
+		//noinspection deprecation
 		map2.put(44L, new RouteTripSpec(44L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, GREEN_LANE, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, NEWMARKET_TERMINAL) //
@@ -503,6 +517,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("7314") // NEWMARKET GO TERMINAL
 						)) //
 				.compileBothTripSort());
+		//noinspection deprecation
 		map2.put(45L, new RouteTripSpec(45L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MINGAY, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL) //
@@ -519,6 +534,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("1827") // "2152", // "1827" // MARKVILLE MALL STOP #1827
 						)) //
 				.compileBothTripSort());
+		//noinspection deprecation
 		map2.put(84L, new RouteTripSpec(84L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "North", //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "South") //
@@ -535,6 +551,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("4839") // "3923", // "4839" // KING RD / YONGE ST
 						)) //
 				.compileBothTripSort());
+		//noinspection deprecation
 		map2.put(204L, new RouteTripSpec(204L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, BERCZY, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, UNIONVILLE_GO_STATION) //
@@ -553,6 +570,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("4171") // UNIONVILLE GO STATION PLATFORM 2
 						)) //
 				.compileBothTripSort());
+		//noinspection deprecation
 		map2.put(522L, new RouteTripSpec(522L, //
 				OneBusAwayCommons.EAST, MTrip.HEADSIGN_TYPE_STRING, "East", //
 				OneBusAwayCommons.WEST, MTrip.HEADSIGN_TYPE_STRING, "West") //
@@ -569,7 +587,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("5246") // HAGGERMANS CORNER
 						)) //
 				.compileBothTripSort());
-		/* no stops */
+		//noinspection deprecation
 		map2.put(589L, new RouteTripSpec(589L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Bernard / Dunlop St", //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY) //
@@ -599,7 +617,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Collections.emptyList()) // NO STOPS
 				.compileBothTripSort());
-		/* no stops */
+		//noinspection deprecation
 		map2.put(590L, new RouteTripSpec(590L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Hillcrest Mall") //
@@ -618,6 +636,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("7106") // "6525", // "7106" // HILLCREST MALL
 						)) //
 				.compileBothTripSort());
+		//noinspection deprecation
 		map2.put(801L, new RouteTripSpec(801L, //
 				OneBusAwayCommons.NORTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
 				OneBusAwayCommons.SOUTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
@@ -636,6 +655,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 								Stops.getALL_STOPS().get("7232") // OPERATIONS CENTRE
 						)) //
 				.compileBothTripSort());
+		//noinspection deprecation
 		map2.put(802L, new RouteTripSpec(802L, //
 				OneBusAwayCommons.NORTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
 				OneBusAwayCommons.SOUTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
@@ -655,14 +675,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		ALL_ROUTE_TRIPS2 = map2;
 	}
 
+	@NotNull
 	@Override
-	public String cleanStopOriginalId(String gStopId) {
+	public String cleanStopOriginalId(@NotNull String gStopId) {
 		gStopId = CleanUtils.cleanMergedID(gStopId);
 		return gStopId;
 	}
 
+	@NotNull
 	@Override
-	public Pair<Long[], Integer[]> splitTripStop(MRoute mRoute, GTrip gTrip, GTripStop gTripStop, ArrayList<MTrip> splitTrips, GSpec routeGTFS) {
+	public Pair<Long[], Integer[]> splitTripStop(@NotNull MRoute mRoute, @NotNull GTrip gTrip, @NotNull GTripStop gTripStop, @NotNull ArrayList<MTrip> splitTrips, @NotNull GSpec routeGTFS) {
 		if (ALL_ROUTE_TRIPS2.containsKey(mRoute.getId())) {
 			return SplitUtils.splitTripStop(mRoute, gTrip, gTripStop, routeGTFS, ALL_ROUTE_TRIPS2.get(mRoute.getId()), this);
 		}
@@ -670,15 +692,18 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
-	public int compareEarly(long routeId, List<MTripStop> list1, List<MTripStop> list2, MTripStop ts1, MTripStop ts2, GStop ts1GStop, GStop ts2GStop) {
+	public int compareEarly(long routeId, @NotNull List<MTripStop> list1, @NotNull List<MTripStop> list2,
+							@NotNull MTripStop ts1, @NotNull MTripStop ts2,
+							@NotNull GStop ts1GStop, @NotNull GStop ts2GStop) {
 		if (ALL_ROUTE_TRIPS2.containsKey(routeId)) {
 			return ALL_ROUTE_TRIPS2.get(routeId).compare(routeId, list1, list2, ts1, ts2, ts1GStop, ts2GStop, this);
 		}
 		return super.compareEarly(routeId, list1, list2, ts1, ts2, ts1GStop, ts2GStop);
 	}
 
+	@NotNull
 	@Override
-	public ArrayList<MTrip> splitTrip(MRoute mRoute, GTrip gTrip, GSpec gtfs) {
+	public ArrayList<MTrip> splitTrip(@NotNull MRoute mRoute, @Nullable GTrip gTrip, @NotNull GSpec gtfs) {
 		if (ALL_ROUTE_TRIPS2.containsKey(mRoute.getId())) {
 			return ALL_ROUTE_TRIPS2.get(mRoute.getId()).getAllTrips();
 		}
@@ -686,16 +711,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
-	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip, GSpec gtfs) {
+	public void setTripHeadsign(@NotNull MRoute mRoute, @NotNull MTrip mTrip, @NotNull GTrip gTrip, @NotNull GSpec gtfs) {
 		if (ALL_ROUTE_TRIPS2.containsKey(mRoute.getId())) {
 			return; // split
 		}
 		String tripHeadsign = gTrip.getTripHeadsign();
-		if (tripHeadsign.startsWith(mRoute.getShortName())) {
-			tripHeadsign = tripHeadsign.substring(mRoute.getShortName().length() + 1);
+		if (tripHeadsign.startsWith(mRoute.getShortNameOrDefault())) {
+			tripHeadsign = tripHeadsign.substring(mRoute.getShortNameOrDefault().length() + 1);
 		}
 		if (mRoute.getId() >= 400L && mRoute.getId() <= 499L) {
-			mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign) + " " + gTrip.getDirectionId(), gTrip.getDirectionId());
+			mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign) + " " + gTrip.getDirectionId(), gTrip.getDirectionIdOrDefault());
 			return; // TODO better
 		}
 		String tripHeadsignLC = gTrip.getTripHeadsign().toLowerCase(Locale.ENGLISH);
@@ -723,7 +748,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
-	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
+	public boolean mergeHeadsign(@NotNull MTrip mTrip, @NotNull MTrip mTripToMerge) {
 		List<String> headsignsValues = Arrays.asList(mTrip.getHeadsignValue(), mTripToMerge.getHeadsignValue());
 		if (mTrip.getRouteId() == 2L) {
 			if (Arrays.asList( //
@@ -1150,8 +1175,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	private static final Pattern ENDS_WITH_DROP_OFF_ONLY = Pattern.compile("( DROP OFF ONLY$)", Pattern.CASE_INSENSITIVE);
 
+	@NotNull
 	@Override
-	public String cleanTripHeadsign(String tripHeadsign) {
+	public String cleanTripHeadsign(@NotNull String tripHeadsign) {
 		if (Utils.isUppercaseOnly(tripHeadsign, true, true)) {
 			tripHeadsign = tripHeadsign.toLowerCase(Locale.ENGLISH);
 		}
@@ -1190,8 +1216,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern HIGH_SCHOOL = Pattern.compile("((^|\\W)(h\\.s\\.|hs|high school)(\\W|$))", Pattern.CASE_INSENSITIVE);
 	private static final String HIGH_SCHOOL_REPLACEMENT = "$2" + "HS" + "$4";
 
+	@NotNull
 	@Override
-	public String cleanStopName(String gStopName) {
+	public String cleanStopName(@NotNull String gStopName) {
 		if (Utils.isUppercaseOnly(gStopName, true, true)) {
 			gStopName = gStopName.toLowerCase(Locale.ENGLISH);
 		}
@@ -1209,29 +1236,30 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
-	public int getStopId(GStop gStop) {
-		if (!Utils.isDigitsOnly(gStop.getStopId())) {
-			Matcher matcher = DIGITS.matcher(gStop.getStopId());
+	public int getStopId(@NotNull GStop gStop) {
+		//noinspection deprecation
+		final String stopId = gStop.getStopId();
+		if (!Utils.isDigitsOnly(stopId)) {
+			Matcher matcher = DIGITS.matcher(stopId);
 			if (matcher.find()) {
 				return Integer.parseInt(matcher.group());
 			}
-			if ("VNYNBASB".equalsIgnoreCase(gStop.getStopId())) {
+			if ("VNYNBASB".equalsIgnoreCase(stopId)) {
 				return 10000;
-			} else if ("VNBRYNSB".equalsIgnoreCase(gStop.getStopId())) {
+			} else if ("VNBRYNSB".equalsIgnoreCase(stopId)) {
 				return 100001;
-			} else if ("VNYNRONB".equalsIgnoreCase(gStop.getStopId())) {
+			} else if ("VNYNRONB".equalsIgnoreCase(stopId)) {
 				return 100002;
-			} else if ("VNYNWDSB".equalsIgnoreCase(gStop.getStopId())) {
+			} else if ("VNYNWDSB".equalsIgnoreCase(stopId)) {
 				return 100003;
-			} else if ("VNYNCLNB".equalsIgnoreCase(gStop.getStopId())) {
+			} else if ("VNYNCLNB".equalsIgnoreCase(stopId)) {
 				return 100004;
-			} else if ("VNYN16SB".equalsIgnoreCase(gStop.getStopId())) {
+			} else if ("VNYN16SB".equalsIgnoreCase(stopId)) {
 				return 100005;
-			} else if ("VNYNCTNB".equalsIgnoreCase(gStop.getStopId())) {
+			} else if ("VNYNCTNB".equalsIgnoreCase(stopId)) {
 				return 100006;
 			}
-			MTLog.logFatal("Unexpected stop ID for %s !", gStop);
-			return -1;
+			throw new MTLog.Fatal("Unexpected stop ID for %s !", gStop);
 		}
 		return super.getStopId(gStop); // original stop ID used by real-time API
 	}
