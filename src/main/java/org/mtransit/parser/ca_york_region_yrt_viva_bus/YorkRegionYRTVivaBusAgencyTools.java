@@ -391,27 +391,27 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Vellore", //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, VAUGHAN_MILLS_TERMINAL) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("6273"), // VAUGHAN MILLS TERMINAL PLATFORM 5
-								Stops.getALL_STOPS().get("4295"), // ++
-								Stops.getALL_STOPS().get("6615"), // == VELLORE AV / MAJOR MACKENZIE DR
-								Stops.getALL_STOPS().get("6899"), // != #AM POETRY DR / FLOURISH ST
-								Stops.getALL_STOPS().get("5731"), // != #AM CANADA DR / SUMMIT DR
-								Stops.getALL_STOPS().get("5732"), // != #AM CANADA DR / CITYVIEW BLVD =>
-								Stops.getALL_STOPS().get("6849"), // != #PM MAJOR MACKENZIE DR / FOSSIL HILL RD
-								Stops.getALL_STOPS().get("6920"), // != #PM CITYVIEW BLVD / VENICE GT
-								Stops.getALL_STOPS().get("6919") // != #PM CANADA DR / SUMMIT DR =>
+						Arrays.asList( //
+								"6273", // VAUGHAN MILLS TERMINAL PLATFORM 5
+								"4295", // ++
+								"6615", // == VELLORE AV / MAJOR MACKENZIE DR
+								"6899", // != #AM POETRY DR / FLOURISH ST
+								"5731", // != #AM CANADA DR / SUMMIT DR
+								"5732", // != #AM CANADA DR / CITYVIEW BLVD =>
+								"6849", // != #PM MAJOR MACKENZIE DR / FOSSIL HILL RD
+								"6920", // != #PM CITYVIEW BLVD / VENICE GT
+								"6919" // != #PM CANADA DR / SUMMIT DR =>
 						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("6919"), // != #PM CANADA DR / SUMMIT DR <=
-								Stops.getALL_STOPS().get("6898"), // != #PM POETRY DR / MAJOR MACKENZIE DR
-								Stops.getALL_STOPS().get("5732"), // != #AM CANADA DR / CITYVIEW BLVD <=
-								Stops.getALL_STOPS().get("5733"), // != #AM CITYVIEW BLVD STOP # 5733
-								Stops.getALL_STOPS().get("6848"), // != #AM MAJOR MACKENZIE DR / FOSSIL HIL RD
-								Stops.getALL_STOPS().get("6620"), // == VELLORE AV / EURO PLACE
-								Stops.getALL_STOPS().get("3049"), // ++
-								Stops.getALL_STOPS().get("6273") // VAUGHAN MILLS TERMINAL PLATFORM 5
+						Arrays.asList( //
+								"6919", // != #PM CANADA DR / SUMMIT DR <=
+								"6898", // != #PM POETRY DR / MAJOR MACKENZIE DR
+								"5732", // != #AM CANADA DR / CITYVIEW BLVD <=
+								"5733", // != #AM CITYVIEW BLVD STOP # 5733
+								"6848", // != #AM MAJOR MACKENZIE DR / FOSSIL HIL RD
+								"6620", // == VELLORE AV / EURO PLACE
+								"3049", // ++
+								"6273" // VAUGHAN MILLS TERMINAL PLATFORM 5
 						)) //
 				.compileBothTripSort());
 		//noinspection deprecation
@@ -419,25 +419,25 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.EAST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "East", // Aurora GO Sta
 				OneBusAwayCommons.WEST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "West") // ??
 				.addTripSort(OneBusAwayCommons.EAST_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("1210"), // "3336", // "1210", // AURORA HEIGHTS DR / WHISPERING PINE
-								Stops.getALL_STOPS().get("2512"), // "335", // "2512", // == YONGE ST STOP # 2512
-								Stops.getALL_STOPS().get("2410"), // "3564", // "2410", // == ST. JOHN'S SDRD / OLD YONGE ST
-								Stops.getALL_STOPS().get("5245"), // "4053", // "5245", // == INDUSTRIAL PKWY / WELLINGTON ST
-								Stops.getALL_STOPS().get("6093"), // "7809", // "6093", // != WELLINGTON ST STOP # 6093
-								Stops.getALL_STOPS().get("5253"), // "4058", // "5253", // == INDUSTRIAL PKWY STOP # 5253
-								Stops.getALL_STOPS().get("6424") // "7661", // "6424", // AURORA GO STATION PLATFORM #2
+						Arrays.asList( //
+								"1210", // AURORA HEIGHTS DR / WHISPERING PINE
+								"2512", // == YONGE ST STOP # 2512
+								"2410", // == ST. JOHN'S SDRD / OLD YONGE ST
+								"5245", // == INDUSTRIAL PKWY / WELLINGTON ST
+								"6093", // != WELLINGTON ST STOP # 6093
+								"5253", // == INDUSTRIAL PKWY STOP # 5253
+								"6424" // AURORA GO STATION PLATFORM #2
 						)) //
 				.addTripSort(OneBusAwayCommons.WEST_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("6424"), // "7661", // "6424", // AURORA GO STATION PLATFORM #2
-								Stops.getALL_STOPS().get("6391"), // "5897", // "6391", // WELLINGTON ST / TEMPERANCE ST
-								Stops.getALL_STOPS().get("1191"), // "3329", // "1191", // == WELLINGTON ST / HAIDA DR
-								Stops.getALL_STOPS().get("4748"), // "3903", // "4748", // != WELLINGTON ST / MCDONALD DR
-								Stops.getALL_STOPS().get("5079"), // "4021", // "5079", // != MCDONALD DR / HAIDA DR
-								Stops.getALL_STOPS().get("4737"), // "3893", // "4737", // != HAIDA DR / MCDONALD ST
-								Stops.getALL_STOPS().get("4736"), // "3892", // "4736", // == HAIDA DR / AURORA HEIGHTS DR
-								Stops.getALL_STOPS().get("1210") // "3336", // "1210", // AURORA HEIGHTS DR / WHISPERING PINE
+						Arrays.asList( //
+								"6424", // AURORA GO STATION PLATFORM #2
+								"6391", // WELLINGTON ST / TEMPERANCE ST
+								"1191", // == WELLINGTON ST / HAIDA DR
+								"4748", // != WELLINGTON ST / MCDONALD DR
+								"5079", // != MCDONALD DR / HAIDA DR
+								"4737", // != HAIDA DR / MCDONALD ST
+								"4736", // == HAIDA DR / AURORA HEIGHTS DR
+								"1210" // AURORA HEIGHTS DR / WHISPERING PINE
 						)) //
 				.compileBothTripSort());
 		//noinspection deprecation
@@ -445,16 +445,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.EAST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL, //
 				OneBusAwayCommons.WEST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, WOODBINE_AVENUE) //
 				.addTripSort(OneBusAwayCommons.EAST_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("6512"), // "7841", // "6512", // RODICK RD / WOODBINE AV
-								Stops.getALL_STOPS().get("1461"), // "1911", // "1461", // ++ TOWN CENTRE BLVD / HIGHWAY 7
-								Stops.getALL_STOPS().get("1827") // "2152", // "1827", // MARKVILLE MALL STOP #1827
+						Arrays.asList( //
+								"6512", // RODICK RD / WOODBINE AV
+								"1461", // ++ TOWN CENTRE BLVD / HIGHWAY 7
+								"1827" // MARKVILLE MALL STOP #1827
 						)) //
 				.addTripSort(OneBusAwayCommons.WEST_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("1827"), // "2152", // "1827", // MARKVILLE MALL STOP #1827
-								Stops.getALL_STOPS().get("1541"), // "1990", // "1541", // ++ BUCHANAN DR / SPANHOUSE CRES
-								Stops.getALL_STOPS().get("6512") // "7841", // "6512", // RODICK RD / WOODBINE AV
+						Arrays.asList( //
+								"1827", // MARKVILLE MALL STOP #1827
+								"1541", // ++ BUCHANAN DR / SPANHOUSE CRES
+								"6512" // RODICK RD / WOODBINE AV
 						)) //
 				.compileBothTripSort());
 		//noinspection deprecation
@@ -462,16 +462,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.EAST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKHAM, //
 				OneBusAwayCommons.WEST_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL) //
 				.addTripSort(OneBusAwayCommons.EAST_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("1827"), // "2152", // "1827", // MARKVILLE MALL STOP #1827
-								Stops.getALL_STOPS().get("1814"), // "2145", // "1814", // RAYMERVILLE DR / CARPENTER CRT
-								Stops.getALL_STOPS().get("1844") // "2169", // "1844", // LARKIN AV / SAWYER CRES
+						Arrays.asList( //
+								"1827", // MARKVILLE MALL STOP #1827
+								"1814", // RAYMERVILLE DR / CARPENTER CRT
+								"1844" // LARKIN AV / SAWYER CRES
 						)) //
 				.addTripSort(OneBusAwayCommons.WEST_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("1844"), // "2169", // "1844", // LARKIN AV / SAWYER CRES
-								Stops.getALL_STOPS().get("1862"), // "2184", // "1862", // BULLOCK DR / SNIDER DR
-								Stops.getALL_STOPS().get("1827") // "2152", // "1827", // MARKVILLE MALL STOP #1827
+						Arrays.asList( //
+								"1844", // LARKIN AV / SAWYER CRES
+								"1862", // BULLOCK DR / SNIDER DR
+								"1827" // MARKVILLE MALL STOP #1827
 						)) //
 				.compileBothTripSort());
 		//noinspection deprecation
@@ -479,21 +479,21 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, UNIONVILLE_GO_STATION, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, BERCZY) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("5977"), // MAIN ST UNIONVILLE / ENTERPRISE BLV
-								Stops.getALL_STOPS().get("9745"), // != RIVIS RD / YMCA BLVD
-								Stops.getALL_STOPS().get("4171"), // <> UNIONVILLE GO STATION PLATFORM 2
-								Stops.getALL_STOPS().get("4907"), // != YMCA BLVD / RIVIS RD
-								Stops.getALL_STOPS().get("2971") // MAJOR MACKENZIE DR / RIDGECREST RD
+						Arrays.asList( //
+								"5977", // MAIN ST UNIONVILLE / ENTERPRISE BLV
+								"9745", // != RIVIS RD / YMCA BLVD
+								"4171", // <> UNIONVILLE GO STATION PLATFORM 2
+								"4907", // != YMCA BLVD / RIVIS RD
+								"2971" // MAJOR MACKENZIE DR / RIDGECREST RD
 						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("2971"), // MAJOR MACKENZIE DR / RIDGECREST RD
-								Stops.getALL_STOPS().get("1824"), // CARLTON RD / MCCOWAN RD
-								Stops.getALL_STOPS().get("4906"), // != YMCA BLVD / RIVIS RD
-								Stops.getALL_STOPS().get("4171"), // <> UNIONVILLE GO STATION PLATFORM 2
-								Stops.getALL_STOPS().get("9744"), // != RIVIS RD / YMCA BLVD
-								Stops.getALL_STOPS().get("6308") // ENTERPRISE DR / MAIN STREET
+						Arrays.asList( //
+								"2971", // MAJOR MACKENZIE DR / RIDGECREST RD
+								"1824", // CARLTON RD / MCCOWAN RD
+								"4906", // != YMCA BLVD / RIVIS RD
+								"4171", // <> UNIONVILLE GO STATION PLATFORM 2
+								"9744", // != RIVIS RD / YMCA BLVD
+								"6308" // ENTERPRISE DR / MAIN STREET
 						)) //
 				.compileBothTripSort());
 		//noinspection deprecation
@@ -501,20 +501,20 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, GREEN_LANE, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, NEWMARKET_TERMINAL) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("7314"), // NEWMARKET GO TERMINAL
-								Stops.getALL_STOPS().get("4691"), // NEWMARKET GO TERMINAL
-								Stops.getALL_STOPS().get("1971"), // != UPPER CANADA MALL STOP # 1971
-								Stops.getALL_STOPS().get("5944"), // == DAVIS DR / FORD WILSON DR
-								Stops.getALL_STOPS().get("5698"), // WOODSPRING AV / ALFRED SMITH WAY
-								Stops.getALL_STOPS().get("4680") // GREEN LANE / YONGE ST
+						Arrays.asList( //
+								"7314", // NEWMARKET GO TERMINAL
+								"4691", // NEWMARKET GO TERMINAL
+								"1971", // != UPPER CANADA MALL STOP # 1971
+								"5944", // == DAVIS DR / FORD WILSON DR
+								"5698", // WOODSPRING AV / ALFRED SMITH WAY
+								"4680" // GREEN LANE / YONGE ST
 						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("4680"), // GREEN LANE / YONGE ST
-								Stops.getALL_STOPS().get("5421"), // LONDON RD / YORKSHIRE DR
-								Stops.getALL_STOPS().get("4691"), // NEWMARKET GO TERMINAL
-								Stops.getALL_STOPS().get("7314") // NEWMARKET GO TERMINAL
+						Arrays.asList( //
+								"4680", // GREEN LANE / YONGE ST
+								"5421", // LONDON RD / YORKSHIRE DR
+								"4691", // NEWMARKET GO TERMINAL
+								"7314" // NEWMARKET GO TERMINAL
 						)) //
 				.compileBothTripSort());
 		//noinspection deprecation
@@ -522,16 +522,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MINGAY, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, MARKVILLE_MALL) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("1827"), // "2152", // "1827" // MARKVILLE MALL STOP #1827
-								Stops.getALL_STOPS().get("1383"), // "1874", // "1383" // BUR OAK AV / DOGWOOD ST
-								Stops.getALL_STOPS().get("4799") // "1234", // "4799" // MAJOR MACKENZIE DR / MINGAY AV
+						Arrays.asList( //
+								"1827", // MARKVILLE MALL STOP #1827
+								"1383", // BUR OAK AV / DOGWOOD ST
+								"4799" // MAJOR MACKENZIE DR / MINGAY AV
 						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("4799"), // "1234", // "4799" // MAJOR MACKENZIE DR / MINGAY AV
-								Stops.getALL_STOPS().get("5541"), // "5619", // "5541" // RAYMERVILLE DR / BENDAMERE CRES
-								Stops.getALL_STOPS().get("1827") // "2152", // "1827" // MARKVILLE MALL STOP #1827
+						Arrays.asList( //
+								"4799", // MAJOR MACKENZIE DR / MINGAY AV
+								"5541", // RAYMERVILLE DR / BENDAMERE CRES
+								"1827" // MARKVILLE MALL STOP #1827
 						)) //
 				.compileBothTripSort());
 		//noinspection deprecation
@@ -539,16 +539,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "North", //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "South") //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("4839"), // "3923", // "4839" // KING RD / YONGE ST
-								Stops.getALL_STOPS().get("2658"), // "3723", // "2658" // HUMBERLAND DR / WOODHAVEN CRES
-								Stops.getALL_STOPS().get("2659") // "349", // "2659" // YONGE ST / COON'S RD
+						Arrays.asList( //
+								"4839", // KING RD / YONGE ST
+								"2658", // HUMBERLAND DR / WOODHAVEN CRES
+								"2659" // YONGE ST / COON'S RD
 						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("2659"), // "349", // "2659" // YONGE ST / COON'S RD
-								Stops.getALL_STOPS().get("2359"), // "2380", // "2359" // NORTH LAKE RD / OLDE BAYVIEW AV,
-								Stops.getALL_STOPS().get("4839") // "3923", // "4839" // KING RD / YONGE ST
+						Arrays.asList( //
+								"2659", // YONGE ST / COON'S RD
+								"2359", // NORTH LAKE RD / OLDE BAYVIEW AV,
+								"4839" // KING RD / YONGE ST
 						)) //
 				.compileBothTripSort());
 		//noinspection deprecation
@@ -556,18 +556,18 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, BERCZY, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, UNIONVILLE_GO_STATION) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("4171"), // UNIONVILLE GO STATION PLATFORM 2
-								Stops.getALL_STOPS().get("6127"), // MCCOWAN RD STOP # 6127
-								Stops.getALL_STOPS().get("2971") // MAJOR MACKENZIE DR / RIDGECREST RD
+						Arrays.asList( //
+								"4171", // UNIONVILLE GO STATION PLATFORM 2
+								"6127", // MCCOWAN RD STOP # 6127
+								"2971" // MAJOR MACKENZIE DR / RIDGECREST RD
 						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("2971"), // MAJOR MACKENZIE DR / RIDGECREST RD
-								Stops.getALL_STOPS().get("6092"), // == BUR OAK AV STOP # 6092
-								Stops.getALL_STOPS().get("1401"), // != BUR OAK AV / THE BRIDLE WALK,
-								Stops.getALL_STOPS().get("6690"), // != THE BRIDLE WALK / HOST AV
-								Stops.getALL_STOPS().get("4171") // UNIONVILLE GO STATION PLATFORM 2
+						Arrays.asList( //
+								"2971", // MAJOR MACKENZIE DR / RIDGECREST RD
+								"6092", // == BUR OAK AV STOP # 6092
+								"1401", // != BUR OAK AV / THE BRIDLE WALK,
+								"6690", // != THE BRIDLE WALK / HOST AV
+								"4171" // UNIONVILLE GO STATION PLATFORM 2
 						)) //
 				.compileBothTripSort());
 		//noinspection deprecation
@@ -575,16 +575,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.EAST, MTrip.HEADSIGN_TYPE_STRING, "East", //
 				OneBusAwayCommons.WEST, MTrip.HEADSIGN_TYPE_STRING, "West") //
 				.addTripSort(OneBusAwayCommons.EAST, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("5246"), // HAGGERMANS CORNER
-								Stops.getALL_STOPS().get("1552"), // M-S HOSPITAL
-								Stops.getALL_STOPS().get("5986") // CORNELL PARK AV / WALKERVILLE RD
+						Arrays.asList( //
+								"5246", // HAGGERMANS CORNER
+								"1552", // M-S HOSPITAL
+								"5986" // CORNELL PARK AV / WALKERVILLE RD
 						)) //
 				.addTripSort(OneBusAwayCommons.WEST, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("5986"), // CORNELL PARK AV / WALKERVILLE RD
-								Stops.getALL_STOPS().get("6305"), // TONY WONG PLACE / KENNEDY RD
-								Stops.getALL_STOPS().get("5246") // HAGGERMANS CORNER
+						Arrays.asList( //
+								"5986", // CORNELL PARK AV / WALKERVILLE RD
+								"6305", // TONY WONG PLACE / KENNEDY RD
+								"5246" // HAGGERMANS CORNER
 						)) //
 				.compileBothTripSort());
 		//noinspection deprecation
@@ -592,27 +592,27 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Bernard / Dunlop St", //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("7106"), // "6525", // "7106" // HILLCREST MALL
-								Stops.getALL_STOPS().get("5319"), // "1366", // "5319" // OBSERVATORY TOWERS STOP # 5319
-								Stops.getALL_STOPS().get("2961"), // "490", // "2961" // == MAJOR MACKENZIE DR / HARDING BLVD
-								Stops.getALL_STOPS().get("2962"), // "491", // "2962" // != MAJOR MACKENZIE DR / ARNOLD CRES
-								Stops.getALL_STOPS().get("2964"), // "493", // "2964" // != MAJOR MACKENZIE DR / YONGE ST
-								Stops.getALL_STOPS().get("4694"), // "1207", // "4694" // != xx YONGE ST / ARNOLD CRES
-								Stops.getALL_STOPS().get("5322"), // "1368", // "5322" // != MCCONAGHY CENTRE STOP # 5322
-								Stops.getALL_STOPS().get("4694"), // "1207", // "4694" // != xx YONGE ST / ARNOLD CRES
-								Stops.getALL_STOPS().get("2965"), // "494", // "2965" // == MAJOR MACKENZIE DR / BAKER AV
-								Stops.getALL_STOPS().get("6605"), // "6049", // "6605" // ==
-								Stops.getALL_STOPS().get("5839"), // "4763", // "5839" // xx
-								Stops.getALL_STOPS().get("4402"), // "1098", // "4402" // xx
-								Stops.getALL_STOPS().get("1152"), // "1722", // "1152" // !=
-								Stops.getALL_STOPS().get("5839"), // "4763", // "5839" // xx
-								Stops.getALL_STOPS().get("4402"), // "1098", // "4402" // xx
-								Stops.getALL_STOPS().get("5839"), // "4763", // "5839" // xx
-								Stops.getALL_STOPS().get("1693"), // "207", // "1693" // ==
-								Stops.getALL_STOPS().get("2750"), // "372", // "2750" // DUNLOP ST STOP #
-								Stops.getALL_STOPS().get("6321"), // "7612", // "6321" // UPPER YONGE PLACE
-								Stops.getALL_STOPS().get("7228") // "8042", // "7228" // MON SHEONG COURT STOP # 7228
+						Arrays.asList( //
+								"7106", // HILLCREST MALL
+								"5319", // OBSERVATORY TOWERS STOP # 5319
+								"2961", // == MAJOR MACKENZIE DR / HARDING BLVD
+								"2962", // != MAJOR MACKENZIE DR / ARNOLD CRES
+								"2964", // != MAJOR MACKENZIE DR / YONGE ST
+								"4694", // != xx YONGE ST / ARNOLD CRES
+								"5322", // != MCCONAGHY CENTRE STOP # 5322
+								"4694", // != xx YONGE ST / ARNOLD CRES
+								"2965", // == MAJOR MACKENZIE DR / BAKER AV
+								"6605", // ==
+								"5839", // xx
+								"4402", // xx
+								"1152", // !=
+								"5839", // xx
+								"4402", // xx
+								"5839", // xx
+								"1693", // ==
+								"2750", // DUNLOP ST STOP #
+								"6321", // UPPER YONGE PLACE
+								"7228" // MON SHEONG COURT STOP # 7228
 						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
 						Collections.emptyList()) // NO STOPS
@@ -624,16 +624,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Collections.emptyList()) // NO STOPS
 				.addTripSort(OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("7228"), // "8042", // "7228" // MON SHEONG COURT STOP # 7228
-								Stops.getALL_STOPS().get("6321"), // "7612", // "6321" // UPPER YONGE PLACE
-								Stops.getALL_STOPS().get("4628"), // "1182", // "4628" // RICHMOND HEIGHTS NO FRILLS STOP # 4
-								Stops.getALL_STOPS().get("1707"), // "215", // "1707" // MAJOR MACKENZIE DR / BAKER AV
-								Stops.getALL_STOPS().get("4950"), // "1287", // "4950" // MAJOR MACKENZIE DR / YONGE ST
-								Stops.getALL_STOPS().get("4694"), // "1207", // "4694" // YONGE ST / ARNOLD CRES
-								Stops.getALL_STOPS().get("5322"), // "1368", // "5322" // MCCONAGHY CENTRE STOP # 5322
-								Stops.getALL_STOPS().get("6125"), // "5382", // "6125" // HARDING BLVD / KERSEY CRES
-								Stops.getALL_STOPS().get("7106") // "6525", // "7106" // HILLCREST MALL
+						Arrays.asList( //
+								"7228", // MON SHEONG COURT STOP # 7228
+								"6321", // UPPER YONGE PLACE
+								"4628", // RICHMOND HEIGHTS NO FRILLS STOP # 4
+								"1707", // MAJOR MACKENZIE DR / BAKER AV
+								"4950", // MAJOR MACKENZIE DR / YONGE ST
+								"4694", // YONGE ST / ARNOLD CRES
+								"5322", // MCCONAGHY CENTRE STOP # 5322
+								"6125", // HARDING BLVD / KERSEY CRES
+								"7106" // HILLCREST MALL
 						)) //
 				.compileBothTripSort());
 		//noinspection deprecation
@@ -641,18 +641,18 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.NORTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
 				OneBusAwayCommons.SOUTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(OneBusAwayCommons.NORTH, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("7232"), // OPERATIONS CENTRE
-								Stops.getALL_STOPS().get("6501"), // OAK RIDGES C.C. STOP # 6501
-								Stops.getALL_STOPS().get("4934"), // ELGIN WEST C.C. STOP # 4934
-								Stops.getALL_STOPS().get("7231") // RICHMOND HILL WAVE POOL
+						Arrays.asList( //
+								"7232", // OPERATIONS CENTRE
+								"6501", // OAK RIDGES C.C. STOP # 6501
+								"4934", // ELGIN WEST C.C. STOP # 4934
+								"7231" // RICHMOND HILL WAVE POOL
 						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("6501"), // OAK RIDGES C.C. STOP # 6501
-								Stops.getALL_STOPS().get("4934"), // ELGIN WEST C.C. STOP # 4934
-								Stops.getALL_STOPS().get("7231"), // RICHMOND HILL WAVE POOL
-								Stops.getALL_STOPS().get("7232") // OPERATIONS CENTRE
+						Arrays.asList( //
+								"6501", // OAK RIDGES C.C. STOP # 6501
+								"4934", // ELGIN WEST C.C. STOP # 4934
+								"7231", // RICHMOND HILL WAVE POOL
+								"7232" // OPERATIONS CENTRE
 						)) //
 				.compileBothTripSort());
 		//noinspection deprecation
@@ -660,16 +660,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				OneBusAwayCommons.NORTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.NORTH.getId(), //
 				OneBusAwayCommons.SOUTH, MTrip.HEADSIGN_TYPE_DIRECTION, MDirectionType.SOUTH.getId()) //
 				.addTripSort(OneBusAwayCommons.NORTH, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("7233"), // ELGIN BARROW ARENA
-								Stops.getALL_STOPS().get("7235"), // ROUGE WOODS COMMUNITY CENTRE
-								Stops.getALL_STOPS().get("7232") // OPERATIONS CENTRE
+						Arrays.asList( //
+								"7233", // ELGIN BARROW ARENA
+								"7235", // ROUGE WOODS COMMUNITY CENTRE
+								"7232" // OPERATIONS CENTRE
 						)) //
 				.addTripSort(OneBusAwayCommons.SOUTH, //
-						Arrays.asList(//
-								Stops.getALL_STOPS().get("7232"), // OPERATIONS CENTRE
-								Stops.getALL_STOPS().get("7233"), // ELGIN BARROW ARENA
-								Stops.getALL_STOPS().get("7235") // ROUGE WOODS COMMUNITY CENTRE
+						Arrays.asList( //
+								"7232", // OPERATIONS CENTRE
+								"7233", // ELGIN BARROW ARENA
+								"7235" // ROUGE WOODS COMMUNITY CENTRE
 						)) //
 				.compileBothTripSort());
 		ALL_ROUTE_TRIPS2 = map2;
@@ -774,6 +774,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			}
 			if (Arrays.asList( //
 					"P " + "Off Only", //
+					"Drop Off Only", //
 					DON_MILLS //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(DON_MILLS, mTrip.getHeadsignId());
@@ -913,6 +914,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					SMART_CENTRES_PLACE //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(SMART_CENTRES_PLACE, mTrip.getHeadsignId());
+				return true;
+			}
+			if (Arrays.asList( //
+					VAUGHAN_MILLS_MALL, //
+					"SmartVMC Bus Terminal" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("SmartVMC Bus Terminal", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 32L) {
