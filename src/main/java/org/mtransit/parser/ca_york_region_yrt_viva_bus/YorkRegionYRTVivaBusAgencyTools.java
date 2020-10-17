@@ -820,6 +820,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignString(STEELES_AVE, mTrip.getHeadsignId()); // Clayton / Harvest Moon
 				return true;
 			}
+		} else if (mTrip.getRouteId() == 10L) {
+			if (Arrays.asList( //
+					"Kipling Ave", // <>
+					"SmartVMC Bus Terminal" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("SmartVMC Bus Terminal", mTrip.getHeadsignId());
+				return true;
+			}
 		} else if (mTrip.getRouteId() == 12L) {
 			if (Arrays.asList( //
 					STEELES, //
@@ -926,18 +934,17 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		} else if (mTrip.getRouteId() == 32L) {
 			if (Arrays.asList( //
 					"Henderson", //
-					STONE_ROAD //
+					STONE_ROAD // <>
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(STONE_ROAD, mTrip.getHeadsignId());
 				return true;
-			} else if (Arrays.asList( //
-					AURORA_GO_STATION, //
-					BATHURST, //
-					"Seneca", //
-					SENECA_COLLEGE_KING_CAMPUS, //
-					STONE_ROAD //
+			}
+			if (Arrays.asList( //
+					STONE_ROAD, // <>
+					"Cardinal Carter HS", //
+					BATHURST //
 			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Seneca", mTrip.getHeadsignId());
+				mTrip.setHeadsignString(BATHURST, mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 33L) {
@@ -986,6 +993,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					NEWMARKET_TERMINAL //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(NEWMARKET_TERMINAL, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 58L) {
+			if (Arrays.asList( //
+					"Hwy 48", //
+					"404 Town Ctr" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("404 Town Ctr", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 82L) {
