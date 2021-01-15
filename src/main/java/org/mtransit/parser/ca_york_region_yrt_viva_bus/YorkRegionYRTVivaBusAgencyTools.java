@@ -180,7 +180,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 					|| routeShortNameLC.endsWith(YELLOW)) {
 				return VIVA_YELLOW_RID;
 			}
-		}  else {
+		} else {
 			if (routeShortNameLC.equalsIgnoreCase(BLUE)) {
 				return VIVA_BLUE_RID;
 			} else if (routeShortNameLC.equalsIgnoreCase(GREEN)) {
@@ -311,7 +311,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		routeLongName = GW.matcher(routeLongName).replaceAll(GW_REPLACEMENT);
 		routeLongName = GO.matcher(routeLongName).replaceAll(GO_REPLACEMENT);
 		routeLongName = CleanUtils.cleanSlashes(routeLongName);
-		routeLongName = CleanUtils.removePoints(routeLongName);
 		routeLongName = CleanUtils.cleanStreetTypes(routeLongName);
 		return CleanUtils.cleanLabel(routeLongName);
 	}
@@ -1013,7 +1012,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			}
 		} else if (mTrip.getRouteId() == 83L) {
 			if (Arrays.asList( //
-					"Richmond Hl H.S", //
+					"Richmond Hl HS", //
 					BERNARD_TERMINAL //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(BERNARD_TERMINAL, mTrip.getHeadsignId()); // Richmond Hl H.S
@@ -1222,7 +1221,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		tripHeadsign = UNIVERSITY_.matcher(tripHeadsign).replaceAll(UNIVERSITY_REPLACEMENT);
 		tripHeadsign = CleanUtils.CLEAN_AND.matcher(tripHeadsign).replaceAll(CleanUtils.CLEAN_AND_REPLACEMENT);
 		tripHeadsign = CleanUtils.cleanSlashes(tripHeadsign);
-		tripHeadsign = CleanUtils.removePoints(tripHeadsign);
 		tripHeadsign = CleanUtils.cleanStreetTypes(tripHeadsign);
 		return CleanUtils.cleanLabel(tripHeadsign);
 	}
@@ -1252,7 +1250,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		gStopName = PLATFORM.matcher(gStopName).replaceAll(PLATFORM_REPLACEMENT);
 		gStopName = COMMUNITY_CENTRE.matcher(gStopName).replaceAll(COMMUNITY_CENTRE_REPLACEMENT);
 		gStopName = HIGH_SCHOOL.matcher(gStopName).replaceAll(HIGH_SCHOOL_REPLACEMENT);
-		gStopName = CleanUtils.removePoints(gStopName);
 		gStopName = CleanUtils.cleanStreetTypes(gStopName);
 		gStopName = CleanUtils.cleanNumbers(gStopName);
 		return CleanUtils.cleanLabel(gStopName);
