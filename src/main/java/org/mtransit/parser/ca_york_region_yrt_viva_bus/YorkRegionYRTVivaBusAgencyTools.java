@@ -255,7 +255,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			return routeShortName;
 		}
 		StringBuilder sb = new StringBuilder();
-		routeShortName = routeShortName.replaceAll("/", "|");
+		routeShortName = routeShortName.replace("/", "|");
 		String[] rsns = routeShortName.split("\\|");
 		for (String rsn : rsns) {
 			if (sb.length() > 0) {
@@ -303,8 +303,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (true) {
 				return "Route " + rsn;
 			}
-			MTLog.logFatal("Unexpected route long name for %s!", gRoute);
-			return null;
+			throw new MTLog.Fatal("Unexpected route long name for %s!", gRoute);
 		}
 		routeLongName = routeLongName.toLowerCase(Locale.ENGLISH);
 		routeLongName = SS.matcher(routeLongName).replaceAll(SS_REPLACEMENT);
@@ -333,26 +332,25 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String DON_MILLS = "Don Mills";
 	private static final String DON_MILLS_STATION = DON_MILLS + " Sta";
 	private static final String MARTIN_GROVE = "Martin Grv";
-	private static final String FINCH_TERMINAL = "Finch Terminal";
+	private static final String FINCH_TERMINAL = "Finch Term";
 	private static final String YORK_UNIVERSITY = "York " + UNIVERSITY_SHORT;
 	private static final String VAUGHAN_MILLS = "Vaughan Mills";
 	private static final String VAUGHAN_MILLS_MALL = VAUGHAN_MILLS + " Mall";
-	private static final String VAUGHAN_MILLS_TERMINAL = VAUGHAN_MILLS + " Terminal";
+	private static final String VAUGHAN_MILLS_TERMINAL = VAUGHAN_MILLS + " Term";
 	private static final String WOODBINE_AVENUE = "Woodbine Ave";
 	private static final String MARKHAM = "Markham";
 	private static final String BERCZY = "Berczy";
 	private static final String UNIONVILLE_GO_STATION = "Unionville GO Sta";
 	private static final String GREEN_LANE = "Grn Ln";
-	private static final String NEWMARKET_TERMINAL = "Newmarket Terminal";
+	private static final String NEWMARKET_TERMINAL = "Newmarket Term";
 	private static final String MARKVILLE_MALL = "Markville Mall";
 	private static final String RICHMOND_HL_CTR = "Richmond Hl Ctr";
 	private static final String SENECA_COLLEGE_KING_CAMPUS = "Seneca College King Campus";
 	private static final String BATHURST = "Bathurst";
-	private static final String AURORA_GO_STATION = "Aurora GO Sta";
 	private static final String STONE_ROAD = "Stone Rd";
 	private static final String TESTON_ROAD = "Teston Rd";
 	private static final String LEBOVIC_CAMPUS_DRIVE = "Lebovic Campus Dr";
-	private static final String PROMENADE_TERMINAL = "Promenade Terminal";
+	private static final String PROMENADE_TERMINAL = "Promenade Term";
 	private static final String MAPLE_GO = "Maple GO";
 	private static final String MAPLE_GO_STATION = MAPLE_GO + " Sta";
 	private static final String SENECA_KING = "Seneca King";
@@ -372,16 +370,16 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final String MIDDLEFIELD = "Middlefield";
 	private static final String COPPER_CREEK_DRIVE = "Copper Crk Dr";
 	private static final String MARKHAM_ROAD = "Markham Rd";
-	private static final String BERNARD_TERMINAL = "Bernard Terminal";
+	private static final String BERNARD_TERMINAL = "Bernard Term";
 	private static final String BEAVER_CREEK = "Beaver Crk";
 	private static final String MINGAY = "Mingay";
 	private static final String PIONEER_VLG = "Pioneer Vlg";
-	private static final String PIONEER_VLG_TERMINAL = PIONEER_VLG + " Terminal";
+	private static final String PIONEER_VLG_TERMINAL = PIONEER_VLG + " Term";
 	private static final String MAJOR_MACKENZIE = "Major Mackenzie";
 	private static final String CANADA_DRIVE = "Canada Dr";
 	private static final String SMART_CENTRES_PLACE = "SmartCentres Pl";
 
-	private static HashMap<Long, RouteTripSpec> ALL_ROUTE_TRIPS2;
+	private static final HashMap<Long, RouteTripSpec> ALL_ROUTE_TRIPS2;
 
 	static {
 		HashMap<Long, RouteTripSpec> map2 = new HashMap<>();
@@ -743,7 +741,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign), OneBusAwayCommons.AFTERNOON);
 			return;
 		}
-		MTLog.logFatal("Unexpected trips to set: %s!", gTrip);
+		throw new MTLog.Fatal("Unexpected trips to set: %s!", gTrip);
 	}
 
 	@Override
@@ -822,9 +820,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		} else if (mTrip.getRouteId() == 10L) {
 			if (Arrays.asList( //
 					"Kipling Ave", // <>
-					"SmartVMC Bus Terminal" //
+					"SmartVMC Bus Term" //
 			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("SmartVMC Bus Terminal", mTrip.getHeadsignId());
+				mTrip.setHeadsignString("SmartVMC Bus Term", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 12L) {
@@ -925,9 +923,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			}
 			if (Arrays.asList( //
 					VAUGHAN_MILLS_MALL, //
-					"SmartVMC Bus Terminal" //
+					"SmartVMC Bus Term" //
 			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("SmartVMC Bus Terminal", mTrip.getHeadsignId());
+				mTrip.setHeadsignString("SmartVMC Bus Term", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 32L) {
@@ -981,9 +979,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		} else if (mTrip.getRouteId() == 52L) {
 			if (Arrays.asList( //
 					"North St", //
-					"Newmarket Terminal" //
+					"Newmarket Term" //
 			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Newmarket Terminal", mTrip.getHeadsignId());
+				mTrip.setHeadsignString("Newmarket Term", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 56L) {
@@ -1038,7 +1036,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		} else if (mTrip.getRouteId() == 86L) {
 			if (Arrays.asList( //
 					RICHMOND_HL_CTR, //
-					"Richmond Hl Ctr Terminal" //
+					"Richmond Hl Ctr Term" //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(RICHMOND_HL_CTR, mTrip.getHeadsignId()); // Richmond Hl Ctr Terminal
 				return true;
@@ -1115,9 +1113,9 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		} else if (mTrip.getRouteId() == 501L + RID_ENDS_WITH_A) { // 501A
 			if (Arrays.asList( //
 					"Bramalea City Ctr", //
-					"Downtown Brampton Terminal" //
+					"Downtown Brampton Term" //
 			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Downtown Brampton Terminal", mTrip.getHeadsignId());
+				mTrip.setHeadsignString("Downtown Brampton Term", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 760L) {
@@ -1153,8 +1151,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				return true;
 			}
 		}
-		MTLog.logFatal("Unexpected trips to merge: %s & %s!", mTrip, mTripToMerge);
-		return false;
+		throw new MTLog.Fatal("Unexpected trips to merge: %s & %s!", mTrip, mTripToMerge);
 	}
 
 	private static final Pattern BYPASSING = Pattern.compile("((^|\\W)(bypassing)(\\W|$))", Pattern.CASE_INSENSITIVE);
@@ -1228,9 +1225,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern STOP_CODE = Pattern.compile("( stop[\\W]*#[\\W]*[0-9]{1,4})", Pattern.CASE_INSENSITIVE);
 	private static final String STOP_CODE_REPLACEMENT = "";
 
-	private static final Pattern PLATFORM = Pattern.compile("( platform )", Pattern.CASE_INSENSITIVE);
-	private static final String PLATFORM_REPLACEMENT = " P";
-
 	private static final Pattern COMMUNITY_CENTRE = Pattern.compile("((^|\\W)(c\\.c\\.|cc|community centre)(\\W|$))", Pattern.CASE_INSENSITIVE);
 	private static final String COMMUNITY_CENTRE_REPLACEMENT = "$2" + "CC" + "$4";
 
@@ -1247,7 +1241,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		gStopName = STOP_CODE.matcher(gStopName).replaceAll(STOP_CODE_REPLACEMENT);
 		gStopName = CleanUtils.CLEAN_AT.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AT_REPLACEMENT);
 		gStopName = CleanUtils.CLEAN_AND.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AND_REPLACEMENT);
-		gStopName = PLATFORM.matcher(gStopName).replaceAll(PLATFORM_REPLACEMENT);
 		gStopName = COMMUNITY_CENTRE.matcher(gStopName).replaceAll(COMMUNITY_CENTRE_REPLACEMENT);
 		gStopName = HIGH_SCHOOL.matcher(gStopName).replaceAll(HIGH_SCHOOL_REPLACEMENT);
 		gStopName = CleanUtils.cleanStreetTypes(gStopName);
