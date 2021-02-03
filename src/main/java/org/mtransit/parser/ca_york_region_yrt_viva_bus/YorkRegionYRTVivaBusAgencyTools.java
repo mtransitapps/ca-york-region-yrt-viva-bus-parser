@@ -1,6 +1,5 @@
 package org.mtransit.parser.ca_york_region_yrt_viva_bus;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mtransit.commons.OneBusAwayCommons;
@@ -10,6 +9,7 @@ import org.mtransit.parser.MTLog;
 import org.mtransit.parser.Pair;
 import org.mtransit.parser.SplitUtils;
 import org.mtransit.parser.SplitUtils.RouteTripSpec;
+import org.mtransit.parser.StringUtils;
 import org.mtransit.parser.Utils;
 import org.mtransit.parser.gtfs.data.GCalendar;
 import org.mtransit.parser.gtfs.data.GCalendarDate;
@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static org.mtransit.parser.StringUtils.EMPTY;
 
 // https://www.yrt.ca/en/about-us/open-data.aspx
 // https://www.yrt.ca/google/google_transit.zip
@@ -83,7 +85,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public boolean excludeTrip(@NotNull GTrip gTrip) {
-		if (gTrip.getTripHeadsign().startsWith("YRT Training Bus")) {
+		final String tripHeadsignLC = gTrip.getTripHeadsignOrDefault().toLowerCase(Locale.ENGLISH);
+		if (tripHeadsignLC.startsWith("yrt training bus")) {
 			return true; // exclude training bus
 		}
 		if (this.serviceIds != null) {
@@ -261,19 +264,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			if (sb.length() > 0) {
 				sb.append("|");
 			}
-			sb.append(REMOVE_LEADING_ZEROS.matcher(rsn).replaceAll(StringUtils.EMPTY));
+			sb.append(REMOVE_LEADING_ZEROS.matcher(rsn).replaceAll(EMPTY));
 		}
 		return sb.toString();
 	}
 
 	private static final Pattern SS = Pattern.compile("((^|\\W)(school special|ss)(\\W|$))", Pattern.CASE_INSENSITIVE);
 	private static final String SS_REPLACEMENT = "$2" + "SS" + "$4";
-
-	private static final Pattern GW = Pattern.compile("((^|\\W)(g[.]?w[.]?)(\\W|$))", Pattern.CASE_INSENSITIVE);
-	private static final String GW_REPLACEMENT = "$2" + "GW" + "$4";
-
-	private static final Pattern GO = Pattern.compile("((^|\\W)(go)(\\W|$))", Pattern.CASE_INSENSITIVE);
-	private static final String GO_REPLACEMENT = "$2" + "GO" + "$4";
 
 	private static final String RLN_VIVA = "Viva";
 
@@ -305,10 +302,8 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			}
 			throw new MTLog.Fatal("Unexpected route long name for %s!", gRoute);
 		}
-		routeLongName = routeLongName.toLowerCase(Locale.ENGLISH);
+		routeLongName = CleanUtils.toLowerCaseUpperCaseWords(Locale.ENGLISH, routeLongName, getIgnoredWords());
 		routeLongName = SS.matcher(routeLongName).replaceAll(SS_REPLACEMENT);
-		routeLongName = GW.matcher(routeLongName).replaceAll(GW_REPLACEMENT);
-		routeLongName = GO.matcher(routeLongName).replaceAll(GO_REPLACEMENT);
 		routeLongName = CleanUtils.cleanSlashes(routeLongName);
 		routeLongName = CleanUtils.cleanStreetTypes(routeLongName);
 		return CleanUtils.cleanLabel(routeLongName);
@@ -587,7 +582,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		//noinspection deprecation
 		map2.put(589L, new RouteTripSpec(589L, //
 				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Bernard / Dunlop St", //
-				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY) //
+				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, EMPTY) //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Arrays.asList( //
 								"7106", // HILLCREST MALL
@@ -616,7 +611,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				.compileBothTripSort());
 		//noinspection deprecation
 		map2.put(590L, new RouteTripSpec(590L, //
-				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, StringUtils.EMPTY, //
+				OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, EMPTY, //
 				OneBusAwayCommons.SOUTH_SPLITTED_CIRCLE, MTrip.HEADSIGN_TYPE_STRING, "Hillcrest Mall") //
 				.addTripSort(OneBusAwayCommons.NORTH_SPLITTED_CIRCLE, //
 						Collections.emptyList()) // NO STOPS
@@ -712,15 +707,18 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		if (ALL_ROUTE_TRIPS2.containsKey(mRoute.getId())) {
 			return; // split
 		}
-		String tripHeadsign = gTrip.getTripHeadsign();
+		String tripHeadsign = gTrip.getTripHeadsignOrDefault();
 		if (tripHeadsign.startsWith(mRoute.getShortNameOrDefault())) {
 			tripHeadsign = tripHeadsign.substring(mRoute.getShortNameOrDefault().length() + 1);
 		}
 		if (mRoute.getId() >= 400L && mRoute.getId() <= 499L) {
-			mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign) + " " + gTrip.getDirectionId(), gTrip.getDirectionIdOrDefault());
+			mTrip.setHeadsignString(
+					cleanTripHeadsign(tripHeadsign) + " " + gTrip.getDirectionId(),
+					gTrip.getDirectionIdOrDefault()
+			);
 			return; // TODO better
 		}
-		String tripHeadsignLC = gTrip.getTripHeadsign().toLowerCase(Locale.ENGLISH);
+		String tripHeadsignLC = gTrip.getTripHeadsignOrDefault().toLowerCase(Locale.ENGLISH);
 		if (tripHeadsignLC.endsWith("- nb")) {
 			mTrip.setHeadsignString(cleanTripHeadsign(tripHeadsign), OneBusAwayCommons.NORTH);
 			return;
@@ -1154,8 +1152,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		throw new MTLog.Fatal("Unexpected trips to merge: %s & %s!", mTrip, mTripToMerge);
 	}
 
-	private static final Pattern BYPASSING = Pattern.compile("((^|\\W)(bypassing)(\\W|$))", Pattern.CASE_INSENSITIVE);
-
 	private static final Pattern STARTS_WITH_ROUTE_NUMBER = Pattern.compile("(^rt [\\d]+ )", Pattern.CASE_INSENSITIVE);
 
 	private static final Pattern ENDS_WITH_DASH_BOUND = Pattern.compile("( - [sewn]b$)", Pattern.CASE_INSENSITIVE);
@@ -1164,58 +1160,21 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	private static final Pattern STARTS_WITH_DASH = Pattern.compile("(^- )", Pattern.CASE_INSENSITIVE);
 
-	private static final Pattern PARK_AND_RIDE = Pattern.compile("((^|\\W)(park and ride|park & ride|P\\+R)(\\W|$))", Pattern.CASE_INSENSITIVE);
-	private static final String PARK_AND_RIDE_REPLACEMENT = "$2" + PARK_AND_RIDE_SHORT + "$4";
+	private static final Pattern ENDS_WITH_DROP_OFF_ONLY = Pattern.compile("( drop off only$)", Pattern.CASE_INSENSITIVE);
 
-	private static final Pattern UNIVERSITY_ = Pattern.compile("((^|\\W)(university)(\\W|$))", Pattern.CASE_INSENSITIVE);
-	private static final String UNIVERSITY_REPLACEMENT = "$2" + UNIVERSITY_SHORT + "$4";
-
-	private static final Pattern SECONDARY_SCHOOL_ = Pattern.compile("((^|\\W)(" //
-			+ "secondary school special" //
-			+ "|" //
-			+ "secondary school" //
-			+ ")(\\W|$))", Pattern.CASE_INSENSITIVE);
-	private static final String SECONDARY_SCHOOL_REPLACEMENT_ = "$2" + "SS" + "$4";
-
-	private static final Pattern HIGH_SCHOOL_ = Pattern.compile("((^|\\W)(" //
-			+ "high school special" //
-			+ "|" //
-			+ "high school" //
-			+ ")(\\W|$))", Pattern.CASE_INSENSITIVE);
-
-	private static final String HIGH_SCHOOL_REPLACEMENT_ = "$2" + "HS" + "$4";
-
-	private static final Pattern SCHOOL_ = Pattern.compile("((^|\\W)(" //
-			+ "school special" //
-			+ "|" //
-			+ "school" //
-			+ ")(\\W|$))", Pattern.CASE_INSENSITIVE);
-	private static final String SCHOOL_REPLACEMENT_ = "$2" + "S" + "$4";
-
-	private static final Pattern ENDS_WITH_DROP_OFF_ONLY = Pattern.compile("( DROP OFF ONLY$)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern SPECIAL_ = CleanUtils.cleanWords("special");
 
 	@NotNull
 	@Override
 	public String cleanTripHeadsign(@NotNull String tripHeadsign) {
-		if (Utils.isUppercaseOnly(tripHeadsign, true, true)) {
-			tripHeadsign = tripHeadsign.toLowerCase(Locale.ENGLISH);
-		}
-		tripHeadsign = STARTS_WITH_ROUTE_NUMBER.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
-		tripHeadsign = STARTS_WITH_DASH.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
-		tripHeadsign = ENDS_WITH_DASH_BOUND.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
-		tripHeadsign = ENDS_WITH_AM_PM.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
-		tripHeadsign = ENDS_WITH_DROP_OFF_ONLY.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
+		tripHeadsign = CleanUtils.toLowerCaseUpperCaseWords(Locale.ENGLISH, tripHeadsign, getIgnoredWords());
+		tripHeadsign = STARTS_WITH_ROUTE_NUMBER.matcher(tripHeadsign).replaceAll(EMPTY);
+		tripHeadsign = STARTS_WITH_DASH.matcher(tripHeadsign).replaceAll(EMPTY);
+		tripHeadsign = ENDS_WITH_DASH_BOUND.matcher(tripHeadsign).replaceAll(EMPTY);
+		tripHeadsign = ENDS_WITH_AM_PM.matcher(tripHeadsign).replaceAll(EMPTY);
+		tripHeadsign = ENDS_WITH_DROP_OFF_ONLY.matcher(tripHeadsign).replaceAll(EMPTY);
+		tripHeadsign = SPECIAL_.matcher(tripHeadsign).replaceAll(EMPTY);
 		tripHeadsign = CleanUtils.keepToAndRemoveVia(tripHeadsign);
-		Matcher matcherBYPASSING = BYPASSING.matcher(tripHeadsign);
-		if (matcherBYPASSING.find()) {
-			tripHeadsign = tripHeadsign.substring(0, matcherBYPASSING.start());
-		}
-		tripHeadsign = SECONDARY_SCHOOL_.matcher(tripHeadsign).replaceAll(SECONDARY_SCHOOL_REPLACEMENT_);
-		tripHeadsign = HIGH_SCHOOL_.matcher(tripHeadsign).replaceAll(HIGH_SCHOOL_REPLACEMENT_);
-		tripHeadsign = SCHOOL_.matcher(tripHeadsign).replaceAll(SCHOOL_REPLACEMENT_);
-		tripHeadsign = GO.matcher(tripHeadsign).replaceAll(GO_REPLACEMENT);
-		tripHeadsign = PARK_AND_RIDE.matcher(tripHeadsign).replaceAll(PARK_AND_RIDE_REPLACEMENT);
-		tripHeadsign = UNIVERSITY_.matcher(tripHeadsign).replaceAll(UNIVERSITY_REPLACEMENT);
 		tripHeadsign = CleanUtils.CLEAN_AND.matcher(tripHeadsign).replaceAll(CleanUtils.CLEAN_AND_REPLACEMENT);
 		tripHeadsign = CleanUtils.cleanSlashes(tripHeadsign);
 		tripHeadsign = CleanUtils.cleanStreetTypes(tripHeadsign);
@@ -1225,24 +1184,19 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern STOP_CODE = Pattern.compile("( stop[\\W]*#[\\W]*[0-9]{1,4})", Pattern.CASE_INSENSITIVE);
 	private static final String STOP_CODE_REPLACEMENT = "";
 
-	private static final Pattern COMMUNITY_CENTRE = Pattern.compile("((^|\\W)(c\\.c\\.|cc|community centre)(\\W|$))", Pattern.CASE_INSENSITIVE);
-	private static final String COMMUNITY_CENTRE_REPLACEMENT = "$2" + "CC" + "$4";
-
-	private static final Pattern HIGH_SCHOOL = Pattern.compile("((^|\\W)(h\\.s\\.|hs|high school)(\\W|$))", Pattern.CASE_INSENSITIVE);
-	private static final String HIGH_SCHOOL_REPLACEMENT = "$2" + "HS" + "$4";
+	private String[] getIgnoredWords() {
+		return new String[]{
+				"CHS", "GO", "HS",
+		};
+	}
 
 	@NotNull
 	@Override
 	public String cleanStopName(@NotNull String gStopName) {
-		if (Utils.isUppercaseOnly(gStopName, true, true)) {
-			gStopName = gStopName.toLowerCase(Locale.ENGLISH);
-		}
-		gStopName = GO.matcher(gStopName).replaceAll(GO_REPLACEMENT);
+		gStopName = CleanUtils.toLowerCaseUpperCaseWords(Locale.ENGLISH, gStopName, getIgnoredWords());
 		gStopName = STOP_CODE.matcher(gStopName).replaceAll(STOP_CODE_REPLACEMENT);
 		gStopName = CleanUtils.CLEAN_AT.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AT_REPLACEMENT);
 		gStopName = CleanUtils.CLEAN_AND.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AND_REPLACEMENT);
-		gStopName = COMMUNITY_CENTRE.matcher(gStopName).replaceAll(COMMUNITY_CENTRE_REPLACEMENT);
-		gStopName = HIGH_SCHOOL.matcher(gStopName).replaceAll(HIGH_SCHOOL_REPLACEMENT);
 		gStopName = CleanUtils.cleanStreetTypes(gStopName);
 		gStopName = CleanUtils.cleanNumbers(gStopName);
 		return CleanUtils.cleanLabel(gStopName);
@@ -1258,19 +1212,19 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 				return Integer.parseInt(matcher.group());
 			}
 			if ("VNYNBASB".equalsIgnoreCase(stopId)) {
-				return 10000;
+				return 10_000;
 			} else if ("VNBRYNSB".equalsIgnoreCase(stopId)) {
-				return 100001;
+				return 100_001;
 			} else if ("VNYNRONB".equalsIgnoreCase(stopId)) {
-				return 100002;
+				return 100_002;
 			} else if ("VNYNWDSB".equalsIgnoreCase(stopId)) {
-				return 100003;
+				return 100_003;
 			} else if ("VNYNCLNB".equalsIgnoreCase(stopId)) {
-				return 100004;
+				return 100_004;
 			} else if ("VNYN16SB".equalsIgnoreCase(stopId)) {
-				return 100005;
+				return 100_005;
 			} else if ("VNYNCTNB".equalsIgnoreCase(stopId)) {
-				return 100006;
+				return 100_006;
 			}
 			throw new MTLog.Fatal("Unexpected stop ID for %s !", gStop);
 		}
