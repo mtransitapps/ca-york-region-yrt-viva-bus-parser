@@ -2,10 +2,12 @@ package org.mtransit.parser.ca_york_region_yrt_viva_bus;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mtransit.parser.CleanUtils;
+import org.mtransit.commons.CharUtils;
+import org.mtransit.commons.CleanUtils;
+import org.mtransit.commons.StringUtils;
+import org.mtransit.commons.provider.OneBusAwayProviderCommons;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.MTLog;
-import org.mtransit.parser.StringUtils;
 import org.mtransit.parser.Utils;
 import org.mtransit.parser.gtfs.data.GCalendar;
 import org.mtransit.parser.gtfs.data.GCalendarDate;
@@ -143,14 +145,14 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	private static final long VIVA_YELLOW_RID = 607L;
 
 	@Override
-	public long getRouteId(@NotNull GRoute gRoute) {
-		String routeLongName = gRoute.getRouteLongNameOrDefault();
-		String routeShortName = gRoute.getRouteShortName();
-		if (routeShortName.length() > 0 && Utils.isDigitsOnly(routeShortName)) {
+	public long getRouteId(@NotNull GRoute gRoute) { // ! used for GTFS-RT !?!?
+		final String routeLongName = gRoute.getRouteLongNameOrDefault();
+		final String routeShortName = gRoute.getRouteShortName();
+		if (routeShortName.length() > 0 && CharUtils.isDigitsOnly(routeShortName)) {
 			return Integer.parseInt(routeShortName); // using route short name as route ID
 		}
-		String routeShortNameLC = routeShortName.toLowerCase(Locale.ENGLISH);
-		String routeLongNameLC = routeLongName.toLowerCase(Locale.ENGLISH);
+		final String routeShortNameLC = routeShortName.toLowerCase(Locale.ENGLISH);
+		final String routeLongNameLC = routeLongName.toLowerCase(Locale.ENGLISH);
 		if (routeLongNameLC.contains(VIVA)) {
 			if (routeLongNameLC.endsWith(BLUE)
 					|| routeShortNameLC.endsWith(BLUE)) {
@@ -192,7 +194,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			return _98_99_RID;
 		}
 		try {
-			Matcher matcher = DIGITS.matcher(routeShortName);
+			final Matcher matcher = DIGITS.matcher(routeShortName);
 			if (matcher.find()) {
 				long digits = Long.parseLong(matcher.group());
 				if (routeShortNameLC.endsWith(A)) {
@@ -243,13 +245,13 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		if (routeLongNameLC.equalsIgnoreCase("yellow")) {
 			return CleanUtils.cleanLabel(routeLongNameLC);
 		}
-		if (routeShortName.length() > 0 && Utils.isDigitsOnly(routeShortName)) {
+		if (routeShortName.length() > 0 && CharUtils.isDigitsOnly(routeShortName)) {
 			return routeShortName;
 		}
 		StringBuilder sb = new StringBuilder();
 		routeShortName = routeShortName.replace("/", "|");
-		String[] rsns = routeShortName.split("\\|");
-		for (String rsn : rsns) {
+		String[] rsnS = routeShortName.split("\\|");
+		for (String rsn : rsnS) {
 			if (sb.length() > 0) {
 				sb.append("|");
 			}
@@ -268,20 +270,21 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	public String getRouteLongName(@NotNull GRoute gRoute) {
 		String routeLongName = gRoute.getRouteLongNameOrDefault();
 		final String rsn = gRoute.getRouteShortName();
-		if (routeLongName.toLowerCase(Locale.ENGLISH).startsWith(VIVA) //
-				|| rsn.toLowerCase(Locale.ENGLISH).startsWith(VIVA)) {
+		final String rsnLC = rsn.toLowerCase(Locale.ENGLISH);
+		final String rlnLC = routeLongName.toLowerCase(Locale.ENGLISH);
+		if (rlnLC.startsWith(VIVA)
+				|| rsnLC.startsWith(VIVA)) {
 			return RLN_VIVA;
 		}
-		String routeShortNameLC = rsn.toLowerCase(Locale.ENGLISH);
-		if (routeShortNameLC.equalsIgnoreCase(BLUE)) {
+		if (rsnLC.equalsIgnoreCase(BLUE)) {
 			return RLN_VIVA;
-		} else if (routeShortNameLC.equalsIgnoreCase(GREEN)) {
+		} else if (rsnLC.equalsIgnoreCase(GREEN)) {
 			return RLN_VIVA;
-		} else if (routeShortNameLC.equalsIgnoreCase(ORANGE)) {
+		} else if (rsnLC.equalsIgnoreCase(ORANGE)) {
 			return RLN_VIVA;
-		} else if (routeShortNameLC.equalsIgnoreCase(PURPLE)) {
+		} else if (rsnLC.equalsIgnoreCase(PURPLE)) {
 			return RLN_VIVA;
-		} else if (routeShortNameLC.equalsIgnoreCase(YELLOW)) {
+		} else if (rsnLC.equalsIgnoreCase(YELLOW)) {
 			return RLN_VIVA;
 		}
 		if (StringUtils.isEmpty(routeLongName)) {
@@ -316,7 +319,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public void setTripHeadsign(@NotNull MRoute mRoute, @NotNull MTrip mTrip, @NotNull GTrip gTrip, @NotNull GSpec gtfs) {
 		mTrip.setHeadsignString(
-				cleanTripHeadsign(gTrip.getTripHeadsignOrDefault()),
+				cleanTripHeadsign(gTrip.getTripHeadsignOrDefault()), // used for OBA real-time provider
 				gTrip.getDirectionIdOrDefault()
 		);
 	}
@@ -331,6 +334,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		throw new MTLog.Fatal("Unexpected trips to merge: %s & %s!", mTrip, mTripToMerge);
 	}
 
+	// SYNC WITH GH:ca-york-region-yrt-viva-bus-android:src/main/res/values/oba_values.xml (https://git.io/Jtuhy)
 	private static final Pattern ENDS_W_DASH_TYPE_ = Pattern.compile("((.+) - (\\w{2}))", Pattern.CASE_INSENSITIVE);
 	private static final String ENDS_W_DASH_TYPE_REPLACEMENT_KEEP = "$3-$2"; // "Abcdef - AA" -> "AA-Abcdeb"
 
@@ -340,18 +344,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 
 	@NotNull
 	@Override
-	public String cleanTripHeadsign(@NotNull String tripHeadsign) {
+	public String cleanTripHeadsign(@NotNull String tripHeadsign) { // used for OBA real-time provider
 		tripHeadsign = ENDS_W_DASH_TYPE_.matcher(tripHeadsign).replaceAll(ENDS_W_DASH_TYPE_REPLACEMENT_KEEP);
 		tripHeadsign = SPECIAL_.matcher(tripHeadsign).replaceAll(EMPTY);
 		tripHeadsign = _DASH_.matcher(tripHeadsign).replaceAll(SPACE_);
-		tripHeadsign = CleanUtils.toLowerCaseUpperCaseWords(Locale.ENGLISH, tripHeadsign, getIgnoredWords());
-		tripHeadsign = CleanUtils.keepToAndRemoveVia(tripHeadsign);
-		tripHeadsign = CleanUtils.CLEAN_AND.matcher(tripHeadsign).replaceAll(CleanUtils.CLEAN_AND_REPLACEMENT);
-		tripHeadsign = CleanUtils.CLEAN_AT.matcher(tripHeadsign).replaceAll(CleanUtils.CLEAN_AT_REPLACEMENT);
-		tripHeadsign = CleanUtils.cleanSlashes(tripHeadsign);
-		tripHeadsign = CleanUtils.cleanBounds(tripHeadsign);
-		tripHeadsign = CleanUtils.cleanStreetTypes(tripHeadsign);
-		return CleanUtils.cleanLabel(tripHeadsign);
+		return OneBusAwayProviderCommons.cleanTripHeadsign(tripHeadsign, getIgnoredWords());
 	}
 
 	private static final Pattern REMOVE_STOP_CODE_ = Pattern.compile("( stop[\\W]*#[\\W]*[0-9]{1,4})", Pattern.CASE_INSENSITIVE);
@@ -382,7 +379,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	public int getStopId(@NotNull GStop gStop) {
 		//noinspection deprecation
 		final String stopId = gStop.getStopId();
-		if (!Utils.isDigitsOnly(stopId)) {
+		if (!CharUtils.isDigitsOnly(stopId)) {
 			Matcher matcher = DIGITS.matcher(stopId);
 			if (matcher.find()) {
 				return Integer.parseInt(matcher.group());
@@ -404,6 +401,6 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 			}
 			throw new MTLog.Fatal("Unexpected stop ID for %s !", gStop);
 		}
-		return super.getStopId(gStop); // original stop ID used by real-time API
+		return super.getStopId(gStop); // original stop ID used by real-time API (OBA & GTFS-RT)
 	}
 }
