@@ -90,7 +90,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	@NotNull
 	@Override
 	public String cleanRouteLongName(@NotNull String routeLongName) {
-		routeLongName = CleanUtils.toLowerCaseUpperCaseWords(Locale.ENGLISH, routeLongName, getIgnoredWords());
+		routeLongName = CleanUtils.toLowerCaseUpperCaseWords(getFirstLanguageNN(), routeLongName, getIgnoredWords());
 		routeLongName = SS.matcher(routeLongName).replaceAll(SS_REPLACEMENT);
 		routeLongName = CleanUtils.cleanSlashes(routeLongName);
 		routeLongName = CleanUtils.cleanStreetTypes(routeLongName);
@@ -153,7 +153,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 	@NotNull
 	@Override
 	public String cleanStopName(@NotNull String gStopName) {
-		gStopName = CleanUtils.toLowerCaseUpperCaseWords(Locale.ENGLISH, gStopName, getIgnoredWords());
+		gStopName = CleanUtils.toLowerCaseUpperCaseWords(getFirstLanguageNN(), gStopName, getIgnoredWords());
 		gStopName = REMOVE_STOP_CODE_.matcher(gStopName).replaceAll(REMOVE_STOP_CODE_REPLACEMENT);
 		gStopName = CleanUtils.CLEAN_AT.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AT_REPLACEMENT);
 		gStopName = CleanUtils.CLEAN_AND.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AND_REPLACEMENT);
@@ -168,7 +168,7 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		//noinspection deprecation
 		final String stopId = gStop.getStopId();
 		if (!CharUtils.isDigitsOnly(stopId)) {
-			Matcher matcher = DIGITS.matcher(stopId);
+			final Matcher matcher = DIGITS.matcher(stopId);
 			if (matcher.find()) {
 				return Integer.parseInt(matcher.group());
 			}
