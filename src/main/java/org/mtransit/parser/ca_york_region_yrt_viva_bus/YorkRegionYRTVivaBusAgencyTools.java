@@ -60,6 +60,11 @@ public class YorkRegionYRTVivaBusAgencyTools extends DefaultAgencyTools {
 		return false; // default route ID look good
 	}
 
+	@NotNull
+	public String cleanRouteOriginalId(@NotNull String routeId) {
+		return CleanUtils.cleanMergedID(routeId);
+	}
+
 	@Nullable
 	@Override
 	public String fixColor(@Nullable String color) {
